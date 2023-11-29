@@ -1,7 +1,7 @@
-package br.com.fiap.fasteats.entrypoint.controller.mapper;
+package br.com.fiap.fasteats.dataprovider.client.mapper;
 
 import br.com.fiap.fasteats.core.domain.model.PagamentoExterno;
-import br.com.fiap.fasteats.entrypoint.controller.response.PagamentoExternoResponse;
+import br.com.fiap.fasteats.dataprovider.client.response.PagamentoExternoResponse;
 import com.mercadopago.resources.payment.Payment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,4 +1,4 @@
-package br.com.fiap.fasteats.entrypoint.controller.response;
+package br.com.fiap.fasteats.dataprovider.client.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
