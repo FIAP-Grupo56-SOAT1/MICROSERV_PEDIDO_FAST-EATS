@@ -3,9 +3,7 @@ package br.com.fiap.fasteats.dataprovider.client.mapper;
 import br.com.fiap.fasteats.core.domain.model.Pagamento;
 import br.com.fiap.fasteats.dataprovider.client.response.PagamentoResponse;
 import br.com.fiap.fasteats.entrypoint.controller.mapper.ClienteMapper;
-import br.com.fiap.fasteats.entrypoint.controller.mapper.FormaPagamentoMapper;
 import br.com.fiap.fasteats.entrypoint.controller.mapper.PedidoMapper;
-import br.com.fiap.fasteats.entrypoint.controller.mapper.StatusPagamentoMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -35,4 +33,5 @@ public interface PagamentoMapper {
     @Mapping(target = "pedido", source = "pedido")
     @Mapping(target = "statusPagamento", source = "statusPagamento")
     Pagamento toPagamento(PagamentoResponse pagamento);
+
 }

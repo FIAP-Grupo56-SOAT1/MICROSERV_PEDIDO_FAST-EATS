@@ -1,9 +1,7 @@
 package br.com.fiap.fasteats.dataprovider.client.response;
 
 import br.com.fiap.fasteats.entrypoint.controller.response.ClienteResponse;
-import br.com.fiap.fasteats.entrypoint.controller.response.FormaPagamentoResponse;
 import br.com.fiap.fasteats.entrypoint.controller.response.PedidoResponse;
-import br.com.fiap.fasteats.entrypoint.controller.response.StatusPagamentoResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 

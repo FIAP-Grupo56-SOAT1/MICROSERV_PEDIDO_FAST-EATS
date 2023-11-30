@@ -1,4 +1,4 @@
-package br.com.fiap.fasteats.entrypoint.controller.response;
+package br.com.fiap.fasteats.dataprovider.client.response;
 
 import br.com.fiap.fasteats.core.domain.model.StatusPagamento;
 import com.fasterxml.jackson.annotation.JsonInclude;
