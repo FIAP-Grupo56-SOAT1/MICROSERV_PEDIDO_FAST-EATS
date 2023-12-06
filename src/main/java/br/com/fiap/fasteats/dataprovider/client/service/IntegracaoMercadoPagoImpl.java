@@ -5,7 +5,11 @@ import br.com.fiap.fasteats.core.domain.model.PagamentoExterno;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
 import br.com.fiap.fasteats.dataprovider.client.IntegracaoMercadoPago;
 import br.com.fiap.fasteats.dataprovider.client.mapper.PagamentoExternoMapper;
+import br.com.fiap.fasteats.dataprovider.client.mapper.StatusPagamentoMapper;
+import br.com.fiap.fasteats.dataprovider.client.request.PedidoPagamentoExternoRequest;
 import br.com.fiap.fasteats.dataprovider.client.response.PagamentoExternoResponse;
+import br.com.fiap.fasteats.dataprovider.client.response.PagamentoResponse;
+import br.com.fiap.fasteats.dataprovider.client.response.StatusPagamentoResponse;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.payment.PaymentClient;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Optional;
 
 
 @Component
@@ -23,17 +30,12 @@ public class IntegracaoMercadoPagoImpl implements IntegracaoMercadoPago {
 
     private final PagamentoExternoMapper pagamentoExternoMapper;
 
-    @Value("${pagamento.mercado.pago.email.empresa}")
-    private String emailEmpresa;
+    private final RestTemplate restTemplate;
 
-    @Value("${pagamento.mercado.pago.credencial}")
-    private String accessToken;
+    @Value("${URL_SERVICE}")
+    private String URL_BASE;
 
-    @Value("${pagamento.mercado.pago.userid}")
-    private String userIdAplicacaoMercadoPago;
-
-    @Value("${pagamento.mercado.pago.tipo.pagamento}")
-    private String tipoPagamentoMercadoPago;
+    private final String URI = "/pagamento-externo";
 
     @Override
     public PagamentoExterno enviarSolicitacaoPagamento(Pedido pedido) {
@@ -51,18 +53,12 @@ public class IntegracaoMercadoPagoImpl implements IntegracaoMercadoPago {
     }
 
     private PagamentoExterno consultarPagamentoExterno(PagamentoExterno pagamentoExternoRequisicao) {
-        MercadoPagoConfig.setAccessToken(accessToken);
-
-        PaymentClient client = new PaymentClient();
-
         try {
-            PagamentoExternoResponse pagamentoExternoResponse =  new PagamentoExternoResponse();
-            pagamentoExternoResponse.setId(1L);
+            //TODO precisa implementar endpoint no microservico de pagamento
+            PagamentoExternoResponse pagamentoExternoResponse =
+                    restTemplate.getForObject(URL_BASE + URI +"/{id}",
+                            PagamentoExternoResponse.class,pagamentoExternoRequisicao.getId());
 
-            //TODO requisicao pagamentoExterno
-
-            String paymentString = pagamentoExternoResponse.toString();
-            logger.info("retorno consultar mercado pago {}", paymentString);
             PagamentoExterno pagamentoExterno = pagamentoExternoMapper.
                     toPagamentoExternoResponse(pagamentoExternoResponse);
             if (pagamentoExternoRequisicao.isSimulacaoPagamento()) {
@@ -76,13 +72,13 @@ public class IntegracaoMercadoPagoImpl implements IntegracaoMercadoPago {
     }
 
     private PagamentoExterno criarPagamentoExterno(Pedido pedido){
-        //TODO criar chamada para pagamento
-
         try {
-            PagamentoExternoResponse pagamentoExternoResponse =  new PagamentoExternoResponse();
-            pagamentoExternoResponse.setId(1L);
-
-            //TODO requisicao pagamentoExterno
+            PedidoPagamentoExternoRequest pedidoPagamentoExternoRequest =
+                    pagamentoExternoMapper.toPagamentoExternoPedidoRequest(pedido);
+            //TODO precisa implementar endpoint no microservico de pagamento
+            PagamentoExternoResponse pagamentoExternoResponse =
+                    restTemplate.postForObject(URL_BASE +
+                            URI,pedidoPagamentoExternoRequest,PagamentoExternoResponse.class);
 
             logger.info("retorno criar pagamento mercado pago {}", pagamentoExternoResponse);
             return pagamentoExternoMapper.toPagamentoExternoResponse(pagamentoExternoResponse);
@@ -94,12 +90,9 @@ public class IntegracaoMercadoPagoImpl implements IntegracaoMercadoPago {
 
     private PagamentoExterno cancelarPagamentoExterno(Long idPagamentoExterno) {
         try {
-            PagamentoExternoResponse pagamentoExternoResponse =  new PagamentoExternoResponse();
-            pagamentoExternoResponse.setId(1L);
-
-            //TODO requisicao pagamentoExterno
-            String paymentString = pagamentoExternoResponse.toString();
-            logger.info("retorno cancelar pagamento mercado pago {}", paymentString);
+            PagamentoExternoResponse pagamentoExternoResponse =
+                    restTemplate.getForObject(URL_BASE + URI+"/mercadopago/{idPagamentoExterno}/cancelar",
+                            PagamentoExternoResponse.class,idPagamentoExterno);
             return pagamentoExternoMapper.toPagamentoExternoResponse(pagamentoExternoResponse);
         } catch (Exception ex) {
             throw new RegraNegocioException("Erro ao cancelar pagamento externo " + ex.getMessage());

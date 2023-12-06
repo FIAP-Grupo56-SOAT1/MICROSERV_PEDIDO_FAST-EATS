@@ -1,6 +1,8 @@
 package br.com.fiap.fasteats.dataprovider.client.mapper;
 
 import br.com.fiap.fasteats.core.domain.model.PagamentoExterno;
+import br.com.fiap.fasteats.core.domain.model.Pedido;
+import br.com.fiap.fasteats.dataprovider.client.request.PedidoPagamentoExternoRequest;
 import br.com.fiap.fasteats.dataprovider.client.response.PagamentoExternoResponse;
 import com.mercadopago.resources.payment.Payment;
 import org.mapstruct.Mapper;
@@ -17,4 +19,6 @@ public interface PagamentoExternoMapper {
     PagamentoExterno toPagamentoExterno(Payment payment);
 
     PagamentoExterno toPagamentoExternoResponse(PagamentoExternoResponse pagamentoExternoResponse);
+
+    PedidoPagamentoExternoRequest toPagamentoExternoPedidoRequest(Pedido pedido);
 }
