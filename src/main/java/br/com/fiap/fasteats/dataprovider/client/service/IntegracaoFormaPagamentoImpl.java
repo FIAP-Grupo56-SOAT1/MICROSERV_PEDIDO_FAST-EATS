@@ -5,7 +5,6 @@ import br.com.fiap.fasteats.core.domain.model.FormaPagamento;
 import br.com.fiap.fasteats.dataprovider.client.IntegracaoFormaPagamento;
 import br.com.fiap.fasteats.dataprovider.client.mapper.FormaPagamentoMapper;
 import br.com.fiap.fasteats.dataprovider.client.response.FormaPagamentoResponse;
-import br.com.fiap.fasteats.dataprovider.client.response.PagamentoResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
