@@ -96,21 +96,6 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
     }
 
     @Override
-    public Pagamento atualizarPagamento(Pagamento pagamento) {
-        try {
-            //TODO como vai ser o ENDPOINT ATUALIZAR PAGAMENTOS?
-            PagamentoResponse pagamentosResponse =
-                    restTemplate.patchForObject(URL_BASE +
-                            URI+"/{id}",pagamento,PagamentoResponse.class,pagamento.getId());
-
-            return pagamentoMapper.toPagamento(pagamentosResponse);
-        } catch (Exception ex) {
-            logger.error("Erro retorno microservice pagamentos ", ex.getCause());
-            throw new PagamentoNotFound("Erro retorno microservice pagamentos " + ex.getMessage());
-        }
-    }
-
-    @Override
     public Optional<Pagamento> consultarPorIdPagamentoExterno(Long idPagamentoExterno) {
         //TODO precisa implementar endpoint no microservico de pagamento
         return listar()

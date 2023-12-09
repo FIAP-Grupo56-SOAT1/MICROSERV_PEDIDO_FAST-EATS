@@ -35,11 +35,6 @@ public class PagamentoAdapter implements PagamentoOutputPort {
     }
 
     @Override
-    public Pagamento atualizarPagamento(Pagamento pagamento) {
-        return integracaoPagamento.atualizarPagamento(pagamento);
-    }
-
-    @Override
     public Optional<Pagamento> consultarPorIdPagamentoExterno(Long idPagamentoExterno) {
         return integracaoPagamento.consultarPorIdPagamentoExterno(idPagamentoExterno);
     }

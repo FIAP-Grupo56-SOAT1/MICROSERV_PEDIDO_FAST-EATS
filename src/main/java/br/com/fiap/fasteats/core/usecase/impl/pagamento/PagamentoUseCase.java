@@ -40,13 +40,6 @@ public class PagamentoUseCase implements PagamentoInputPort {
         pagamento.setDataHoraProcessamento(LocalDateTime.now());
         return pagamentoOutputPort.salvarPagamento(pagamento);
     }
-
-    @Override
-    public Pagamento atualizar(Pagamento pagamento) {
-        pagamentoValidator.validarAlterarPagamento(pagamento.getId());
-        return pagamentoOutputPort.atualizarPagamento(pagamento);
-    }
-
     @Override
     public Pagamento consultar(Long pagamentoId) {
         return pagamentoOutputPort.consultar(pagamentoId).orElseThrow(() -> new PagamentoNotFound("Pagamento não encontrato"));

@@ -18,7 +18,5 @@ public interface IntegracaoPagamento {
 
     Pagamento salvarPagamento(Pagamento pagamento);
 
-    Pagamento atualizarPagamento(Pagamento pagamento);
-
     Optional<Pagamento> consultarPorIdPagamentoExterno(Long idPagamentoExterno);
 }
