@@ -59,7 +59,7 @@ public class IntegracaoStatusPagamentoImpl implements IntegracaoStatusPagamento 
     public Optional<StatusPagamento> consultarPorNomeTemp(String nome) {
         try {
             StatusPagamentoResponse statusPagamentoResponse =
-                    restTemplate.getForObject(URL_BASE + URI +"/{nome}", StatusPagamentoResponse.class,nome);
+                    restTemplate.getForObject(URL_BASE + URI +"?nome={nome}", StatusPagamentoResponse.class,nome);
 
             return Optional.of(statusPagamentoMapper.toStatusPagamento(statusPagamentoResponse));
         } catch (Exception ex) {
