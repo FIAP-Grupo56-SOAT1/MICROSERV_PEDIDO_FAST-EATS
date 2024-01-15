@@ -1,9 +1,7 @@
 package br.com.fiap.fasteats.entrypoint.controller;
 
 import br.com.fiap.fasteats.core.domain.model.Pedido;
-import br.com.fiap.fasteats.core.usecase.pedido.CancelarPedidoInputPort;
-import br.com.fiap.fasteats.core.usecase.pedido.ConfirmarPedidoInputPort;
-import br.com.fiap.fasteats.core.usecase.pedido.PedidoInputPort;
+import br.com.fiap.fasteats.core.usecase.pedido.*;
 import br.com.fiap.fasteats.entrypoint.controller.mapper.PedidoMapper;
 import br.com.fiap.fasteats.entrypoint.controller.request.PedidoRequest;
 import br.com.fiap.fasteats.entrypoint.controller.response.PedidoResponse;
@@ -26,6 +24,7 @@ public class PedidoController {
     private final ConfirmarPedidoInputPort confirmarPedidoInputPort;
     private final CancelarPedidoInputPort cancelarPedidoInputPort;
     private final PedidoMapper pedidoMapper;
+    private final AlterarPedidoStatusInputPort alterarPedidoStatusInputPort;
 
     @PostMapping
     @Operation(summary = "Identificação do cliente e criar pedido", description = "Identifica ou não o cliente e cria um novo pedido.")
@@ -84,6 +83,54 @@ public class PedidoController {
                                                           @RequestParam(value = "tipoPagamentoId") Long tipoPagamentoId) {
         Pedido pedidoConfirmado = confirmarPedidoInputPort.confirmar(idPedido, tipoPagamentoId);
         PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedidoConfirmado);
+        return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
+    }
+
+    @PatchMapping("{idPedido}/aguardandopagamento")
+    @Operation(summary = "Status pedido para aguardando pagamento", description = "Altera status do pedido para aguardando pagamento.")
+    public ResponseEntity<PedidoResponse> alterarStatusPedidoAguardandoPagamento(@PathVariable("idPedido") Long idPedido) {
+        Pedido pedido = alterarPedidoStatusInputPort.aguardandoPagamento(idPedido);
+        PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedido);
+        return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
+    }
+
+    @PatchMapping("{idPedido}/pago")
+    @Operation(summary = "Status pedido para pago", description = "Altera status do pedido para pago.")
+    public ResponseEntity<PedidoResponse> alterarStatusPedidoPago(@PathVariable("idPedido") Long idPedido) {
+        Pedido pedido = alterarPedidoStatusInputPort.pago(idPedido);
+        PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedido);
+        return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
+    }
+
+    @PatchMapping("{idPedido}/recebido")
+    @Operation(summary = "Status pedido para recebido", description = "Altera status do pedido para recebido.")
+    public ResponseEntity<PedidoResponse> alterarStatusPedidoRecebido(@PathVariable("idPedido") Long idPedido) {
+        Pedido pedido = alterarPedidoStatusInputPort.recebido(idPedido);
+        PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedido);
+        return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
+    }
+
+    @PatchMapping("{idPedido}/empreparo")
+    @Operation(summary = "Status pedido para em preparo", description = "Altera status do pedido para em preparo.")
+    public ResponseEntity<PedidoResponse> alterarStatusPedidoEmPreparo(@PathVariable("idPedido") Long idPedido) {
+        Pedido pedido = alterarPedidoStatusInputPort.emPreparo(idPedido);
+        PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedido);
+        return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
+    }
+
+    @PatchMapping("{idPedido}/pronto")
+    @Operation(summary = "Status pedido para pronto", description = "Altera status do pedido para pronto.")
+    public ResponseEntity<PedidoResponse> alterarStatusPedidoPronto(@PathVariable("idPedido") Long idPedido) {
+        Pedido pedido = alterarPedidoStatusInputPort.pronto(idPedido);
+        PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedido);
+        return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
+    }
+
+    @PatchMapping("{idPedido}/finalizado")
+    @Operation(summary = "Status pedido para finalizado", description = "Altera status do pedido para finalizado.")
+    public ResponseEntity<PedidoResponse> alterarStatusPedidoFinalizado(@PathVariable("idPedido") Long idPedido) {
+        Pedido pedido = alterarPedidoStatusInputPort.finalizado(idPedido);
+        PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedido);
         return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
     }
 }
