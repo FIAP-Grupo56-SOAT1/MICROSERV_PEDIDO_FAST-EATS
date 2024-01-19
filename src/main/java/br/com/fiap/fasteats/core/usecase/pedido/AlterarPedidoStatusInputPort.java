@@ -16,4 +16,6 @@ public interface AlterarPedidoStatusInputPort {
     Pedido finalizado(Long pedidoId);
 
     Pedido cancelado(Long pedidoId);
+
+    Pedido atualizarStatusPedido(Long pedidoId, Long idStatus);
 }
