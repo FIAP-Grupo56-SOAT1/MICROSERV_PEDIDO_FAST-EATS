@@ -1,11 +1,9 @@
 package br.com.fiap.fasteats.dataprovider.client.service;
 
 import br.com.fiap.fasteats.core.domain.exception.PagamentoNotFound;
-import br.com.fiap.fasteats.core.domain.exception.RegraNegocioException;
 import br.com.fiap.fasteats.core.domain.model.Pagamento;
 import br.com.fiap.fasteats.dataprovider.client.IntegracaoPagamento;
 import br.com.fiap.fasteats.dataprovider.client.mapper.PagamentoMapper;
-import br.com.fiap.fasteats.dataprovider.client.response.PagamentoExternoResponse;
 import br.com.fiap.fasteats.dataprovider.client.response.PagamentoResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -15,12 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.util.Arrays.*;
-import static java.util.Arrays.asList;
-import static java.util.Objects.*;
+import static java.util.Arrays.stream;
+import static java.util.Objects.requireNonNull;
 
 
 @Component
@@ -33,10 +31,11 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
 
     private final PagamentoMapper pagamentoMapper;
 
-    @Value("${URL_SERVICE}")
+    @Value("${URL_PAGAMENTO_SERVICE}")
     private String URL_BASE;
 
     private final String URI = "/pagamentos";
+    private final String URI_GERAR_PAGAMENTO = "/gerar-pagamento";
 
     @Override
     public List<Pagamento> listar() {
@@ -61,7 +60,7 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
 
             return Optional.of(pagamentoMapper.toPagamento(pagamentosResponse));
         } catch (Exception ex) {
-            logger.error("Erro retorno microservice pagamentos ", ex.getCause());
+            logger.info("Erro retorno microservice pagamentos ", ex.getCause());
             throw new PagamentoNotFound("Erro retorno microservice pagamentos " + ex.getMessage());
         }
     }
@@ -75,7 +74,6 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
 
             return Optional.of(pagamentoMapper.toPagamento(pagamentosResponse));
         } catch (Exception ex) {
-            logger.error("Erro retorno microservice pagamentos ", ex.getCause());
             throw new PagamentoNotFound("Erro retorno microservice pagamentos " + ex.getMessage());
         }
     }
@@ -83,10 +81,12 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
     @Override
     public Pagamento salvarPagamento(Pagamento pagamento) {
         try {
-            //TODO como vai ser o ENDPOINT SALVAR PAGAMENTOS?
+            Long idPedido = pagamento.getPedido().getId();
+            Long idFormaPagamento = pagamento.getFormaPagamento().getId();
             PagamentoResponse pagamentosResponse =
                     restTemplate.postForObject(URL_BASE +
-                            URI,pagamento,PagamentoResponse.class);
+                            URI_GERAR_PAGAMENTO+"/pedido/{idPedido}/forma-pagamento/{idFormaPagamento}",
+                            null,PagamentoResponse.class,idPedido,idFormaPagamento);
 
             return pagamentoMapper.toPagamento(pagamentosResponse);
         } catch (Exception ex) {
@@ -97,10 +97,15 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
 
     @Override
     public Optional<Pagamento> consultarPorIdPagamentoExterno(Long idPagamentoExterno) {
-        //TODO precisa implementar endpoint no microservico de pagamento
-        return listar()
-                .stream()
-                .filter(pagamento -> pagamento.getIdPagamentoExterno().equals(idPagamentoExterno))
-                .findAny();
+
+        try {
+            PagamentoResponse pagamentosResponse =
+                    restTemplate.getForObject(URL_BASE +
+                            URI +"/{idPagamentoExterno}/consultar-por-id-pagamento-externo",PagamentoResponse.class,idPagamentoExterno);
+
+            return Optional.of(pagamentoMapper.toPagamento(pagamentosResponse));
+        } catch (Exception ex) {
+            throw new PagamentoNotFound("Erro retorno microservice pagamentos " + ex.getMessage());
+        }
     }
 }

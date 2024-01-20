@@ -7,19 +7,15 @@ import br.com.fiap.fasteats.core.usecase.impl.pagamento.paymentmethods.PixUseCas
 import br.com.fiap.fasteats.core.usecase.pagamento.FormaPagamentoInputPort;
 import br.com.fiap.fasteats.core.usecase.pagamento.MetodoPagamentoInputPort;
 import br.com.fiap.fasteats.core.usecase.pagamento.PagamentoInputPort;
-import br.com.fiap.fasteats.dataprovider.client.IntegracaoMercadoPago;
 
 public class MetodoPagamentoUseCase implements MetodoPagamentoInputPort {
     private final PagamentoInputPort pagamentoInputPort;
     private final FormaPagamentoInputPort formaPagamentoInputPort;
-    private final IntegracaoMercadoPago integracaoMercadoPago;
 
     public MetodoPagamentoUseCase(PagamentoInputPort pagamentoInputPort,
-                                  FormaPagamentoInputPort formaPagamentoInputPort,
-                                  IntegracaoMercadoPago integracaoMercadoPago) {
+                                  FormaPagamentoInputPort formaPagamentoInputPort) {
         this.pagamentoInputPort = pagamentoInputPort;
         this.formaPagamentoInputPort = formaPagamentoInputPort;
-        this.integracaoMercadoPago = integracaoMercadoPago;
     }
 
     @Override
@@ -30,7 +26,7 @@ public class MetodoPagamentoUseCase implements MetodoPagamentoInputPort {
 
     @Override
     public Pagamento mercadoPago(Pedido pedido) {
-        final MercadoPagoUseCase mercadoPagoUseCase = new MercadoPagoUseCase(pagamentoInputPort, formaPagamentoInputPort, integracaoMercadoPago);
+        final MercadoPagoUseCase mercadoPagoUseCase = new MercadoPagoUseCase(pagamentoInputPort, formaPagamentoInputPort);
         return mercadoPagoUseCase.gerarPagamento(pedido);
     }
 }

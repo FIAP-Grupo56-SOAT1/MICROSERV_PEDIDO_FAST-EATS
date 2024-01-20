@@ -90,7 +90,6 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
     @Override
     public Pedido atualizarStatusPedido(Long pedidoId, Long idStatus) {
         Pedido pedido = recuperarPedido(pedidoId);
-        alterarPedidoStatusValidator.validarAguardandoPagamento(pedidoId);
         Pedido pedidoAtualizado = atualizarStatusPedidoPorIdStatus(pedido, idStatus);
         return formatarPedido(pedidoOutputPort.salvarPedido(pedidoAtualizado));
     }

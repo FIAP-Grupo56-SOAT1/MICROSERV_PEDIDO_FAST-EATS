@@ -92,12 +92,15 @@ public class PedidoUseCase implements PedidoInputPort {
     }
 
     public static Pedido formatarPedido(Pedido pedido, PagamentoOutputPort pagamentoInputPort) {
-        Pagamento pagamento = pagamentoInputPort.consultarPorPedidoId(pedido.getId()).orElse(null);
-        if (pagamento != null) {
-            pedido.setIdPagamentoExterno(pagamento.getIdPagamentoExterno());
-            pedido.setUrlPagamento(pagamento.getUrlPagamento());
-            pedido.setQrCode(pagamento.getQrCode());
-        }
+       try {
+           Pagamento pagamento = pagamentoInputPort.consultarPorPedidoId(pedido.getId()).orElse(null);
+           if (pagamento != null) {
+               pedido.setIdPagamentoExterno(pagamento.getIdPagamentoExterno());
+               pedido.setUrlPagamento(pagamento.getUrlPagamento());
+               pedido.setQrCode(pagamento.getQrCode());
+           }
+       }catch (Exception ignored){}
+
         return pedido;
     }
 }
