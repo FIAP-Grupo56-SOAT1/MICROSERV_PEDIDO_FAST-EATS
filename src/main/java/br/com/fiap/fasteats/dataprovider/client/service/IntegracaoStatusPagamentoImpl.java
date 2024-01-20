@@ -35,7 +35,7 @@ public class IntegracaoStatusPagamentoImpl implements IntegracaoStatusPagamento 
 
     private final StatusPagamentoMapper statusPagamentoMapper;
 
-    @Value("${URL_SERVICE}")
+    @Value("${URL_PAGAMENTO_SERVICE}")
     private String URL_BASE;
 
     private final String URI = "/status-pagamentos";

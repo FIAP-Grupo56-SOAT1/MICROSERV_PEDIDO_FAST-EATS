@@ -25,7 +25,7 @@ public class IntegracaoFormaPagamentoImpl implements IntegracaoFormaPagamento {
 
     private final FormaPagamentoMapper formaPagamentoMapper;
 
-    @Value("${URL_SERVICE}")
+    @Value("${URL_PAGAMENTO_SERVICE}")
     private String URL_BASE;
 
     private final String URI = "/forma-pagamento";
@@ -34,7 +34,7 @@ public class IntegracaoFormaPagamentoImpl implements IntegracaoFormaPagamento {
     public Optional<FormaPagamento> consultarPorNome(String nome) {
         try {
             FormaPagamentoResponse formaPagamentoResponse =
-                    restTemplate.getForObject(URL_BASE + URI +"/{nome}", FormaPagamentoResponse.class,nome);
+                    restTemplate.getForObject(URL_BASE + URI +"/consultar-por-nome/{nome}", FormaPagamentoResponse.class,nome);
 
             return Optional.of(formaPagamentoMapper.toFormaPagamento(formaPagamentoResponse));
         } catch (Exception ex) {

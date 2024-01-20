@@ -33,10 +33,11 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
 
     private final PagamentoMapper pagamentoMapper;
 
-    @Value("${URL_SERVICE}")
+    @Value("${URL_PAGAMENTO_SERVICE}")
     private String URL_BASE;
 
     private final String URI = "/pagamentos";
+    private final String URI_GERAR_PAGAMENTO = "/gerar-pagamento";
 
     @Override
     public List<Pagamento> listar() {
@@ -61,7 +62,7 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
 
             return Optional.of(pagamentoMapper.toPagamento(pagamentosResponse));
         } catch (Exception ex) {
-            logger.error("Erro retorno microservice pagamentos ", ex.getCause());
+            logger.info("Erro retorno microservice pagamentos ", ex.getCause());
             throw new PagamentoNotFound("Erro retorno microservice pagamentos " + ex.getMessage());
         }
     }
@@ -75,7 +76,6 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
 
             return Optional.of(pagamentoMapper.toPagamento(pagamentosResponse));
         } catch (Exception ex) {
-            logger.error("Erro retorno microservice pagamentos ", ex.getCause());
             throw new PagamentoNotFound("Erro retorno microservice pagamentos " + ex.getMessage());
         }
     }
@@ -83,10 +83,12 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
     @Override
     public Pagamento salvarPagamento(Pagamento pagamento) {
         try {
-            //TODO como vai ser o ENDPOINT SALVAR PAGAMENTOS?
+            Long idPedido = pagamento.getPedido().getId();
+            Long idFormaPagamento = pagamento.getFormaPagamento().getId();
             PagamentoResponse pagamentosResponse =
                     restTemplate.postForObject(URL_BASE +
-                            URI,pagamento,PagamentoResponse.class);
+                            URI_GERAR_PAGAMENTO+"/pedido/{idPedido}/forma-pagamento/{idFormaPagamento}",
+                            null,PagamentoResponse.class,idPedido,idFormaPagamento);
 
             return pagamentoMapper.toPagamento(pagamentosResponse);
         } catch (Exception ex) {

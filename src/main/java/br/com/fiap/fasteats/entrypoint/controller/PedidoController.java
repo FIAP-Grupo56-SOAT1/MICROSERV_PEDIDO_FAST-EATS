@@ -86,7 +86,7 @@ public class PedidoController {
         return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
     }
 
-    @PatchMapping("{idPedido}/status/{idStatus}")
+    @PutMapping("{idPedido}/status/{idStatus}")
     @Operation(summary = "Atualizar Status pedido", description = "Atualizar status do pedido por idStatus")
     public ResponseEntity<PedidoResponse> alterarStatusPedido(@PathVariable("idPedido") Long idPedido,@PathVariable("idStatus") Long idStatus) {
         Pedido pedido = alterarPedidoStatusInputPort.atualizarStatusPedido(idPedido,idStatus);

@@ -32,7 +32,7 @@ public class IntegracaoMercadoPagoImpl implements IntegracaoMercadoPago {
 
     private final RestTemplate restTemplate;
 
-    @Value("${URL_SERVICE}")
+    @Value("${URL_PAGAMENTO_SERVICE}")
     private String URL_BASE;
 
     private final String URI = "/pagamento-externo";
