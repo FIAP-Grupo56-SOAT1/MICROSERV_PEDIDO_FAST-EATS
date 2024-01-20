@@ -12,8 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class PagamentoConfig {
     @Bean
     public PagamentoUseCase pagamentoUseCase(PagamentoAdapter pagamentoAdapter,
-                                             StatusPagamentoUseCase statusPagamentoUseCase,
-                                             PagamentoValidatorImpl pagamentoValidatorImpl) {
-        return new PagamentoUseCase(pagamentoAdapter, statusPagamentoUseCase, pagamentoValidatorImpl);
+                                             StatusPagamentoUseCase statusPagamentoUseCase) {
+        return new PagamentoUseCase(pagamentoAdapter, statusPagamentoUseCase);
     }
 }

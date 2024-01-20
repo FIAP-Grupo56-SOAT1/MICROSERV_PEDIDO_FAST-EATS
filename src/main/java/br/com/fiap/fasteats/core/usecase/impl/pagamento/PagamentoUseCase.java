@@ -5,7 +5,6 @@ import br.com.fiap.fasteats.core.domain.exception.PagamentoNotFound;
 import br.com.fiap.fasteats.core.domain.model.Pagamento;
 import br.com.fiap.fasteats.core.usecase.pagamento.PagamentoInputPort;
 import br.com.fiap.fasteats.core.usecase.pagamento.StatusPagamentoInputPort;
-import br.com.fiap.fasteats.core.validator.PagamentoValidator;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,12 +14,10 @@ import static br.com.fiap.fasteats.core.constants.StatusPagamentoConstants.STATU
 public class PagamentoUseCase implements PagamentoInputPort {
     private final PagamentoOutputPort pagamentoOutputPort;
     private final StatusPagamentoInputPort statusPagamentoInputPort;
-    private final PagamentoValidator pagamentoValidator;
 
-    public PagamentoUseCase(PagamentoOutputPort pagamentoOutputPort, StatusPagamentoInputPort statusPagamentoInputPort, PagamentoValidator pagamentoValidator) {
+    public PagamentoUseCase(PagamentoOutputPort pagamentoOutputPort, StatusPagamentoInputPort statusPagamentoInputPort) {
         this.pagamentoOutputPort = pagamentoOutputPort;
         this.statusPagamentoInputPort = statusPagamentoInputPort;
-        this.pagamentoValidator = pagamentoValidator;
     }
 
     @Override
@@ -40,13 +37,6 @@ public class PagamentoUseCase implements PagamentoInputPort {
         pagamento.setDataHoraProcessamento(LocalDateTime.now());
         return pagamentoOutputPort.salvarPagamento(pagamento);
     }
-
-    @Override
-    public Pagamento atualizar(Pagamento pagamento) {
-        pagamentoValidator.validarAlterarPagamento(pagamento.getId());
-        return pagamentoOutputPort.atualizarPagamento(pagamento);
-    }
-
     @Override
     public Pagamento consultar(Long pagamentoId) {
         return pagamentoOutputPort.consultar(pagamentoId).orElseThrow(() -> new PagamentoNotFound("Pagamento não encontrato"));

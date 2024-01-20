@@ -32,7 +32,7 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
     public Pedido aguardandoPagamento(Long pedidoId) {
         Pedido pedido = recuperarPedido(pedidoId);
         alterarPedidoStatusValidator.validarAguardandoPagamento(pedidoId);
-        Pedido pedidoAtualizado = atualizarStatusPedido(pedido, STATUS_PEDIDO_AGUARDANDO_PAGAMENTO);
+        Pedido pedidoAtualizado = atualizarStatusPedidoPorNomeStatus(pedido, STATUS_PEDIDO_AGUARDANDO_PAGAMENTO);
         return formatarPedido(pedidoOutputPort.salvarPedido(pedidoAtualizado));
     }
 
@@ -40,7 +40,7 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
     public Pedido pago(Long pedidoId) {
         Pedido pedido = recuperarPedido(pedidoId);
         alterarPedidoStatusValidator.validarPago(pedidoId);
-        Pedido pedidoAtualizado = atualizarStatusPedido(pedido, STATUS_PEDIDO_PAGO);
+        Pedido pedidoAtualizado = atualizarStatusPedidoPorNomeStatus(pedido, STATUS_PEDIDO_PAGO);
         return formatarPedido(pedidoOutputPort.salvarPedido(pedidoAtualizado));
     }
 
@@ -48,7 +48,7 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
     public Pedido recebido(Long pedidoId) {
         Pedido pedido = recuperarPedido(pedidoId);
         alterarPedidoStatusValidator.validarRecebido(pedidoId);
-        Pedido pedidoAtualizado = atualizarStatusPedido(pedido, STATUS_PEDIDO_RECEBIDO);
+        Pedido pedidoAtualizado = atualizarStatusPedidoPorNomeStatus(pedido, STATUS_PEDIDO_RECEBIDO);
         pedidoAtualizado.setDataHoraRecebimento(LocalDateTime.now());
         return formatarPedido(pedidoOutputPort.salvarPedido(pedidoAtualizado));
     }
@@ -57,7 +57,7 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
     public Pedido emPreparo(Long pedidoId) {
         Pedido pedido = recuperarPedido(pedidoId);
         alterarPedidoStatusValidator.validarEmPreparo(pedidoId);
-        Pedido pedidoAtualizado = atualizarStatusPedido(pedido, STATUS_PEDIDO_EM_PREPARO);
+        Pedido pedidoAtualizado = atualizarStatusPedidoPorNomeStatus(pedido, STATUS_PEDIDO_EM_PREPARO);
         return formatarPedido(pedidoOutputPort.salvarPedido(pedidoAtualizado));
     }
 
@@ -65,7 +65,7 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
     public Pedido pronto(Long pedidoId) {
         Pedido pedido = recuperarPedido(pedidoId);
         alterarPedidoStatusValidator.validarPronto(pedidoId);
-        Pedido pedidoAtualizado = atualizarStatusPedido(pedido, STATUS_PEDIDO_PRONTO);
+        Pedido pedidoAtualizado = atualizarStatusPedidoPorNomeStatus(pedido, STATUS_PEDIDO_PRONTO);
         return formatarPedido(pedidoOutputPort.salvarPedido(pedidoAtualizado));
     }
 
@@ -73,7 +73,7 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
     public Pedido finalizado(Long pedidoId) {
         Pedido pedido = recuperarPedido(pedidoId);
         alterarPedidoStatusValidator.validarFinalizado(pedidoId);
-        Pedido pedidoAtualizado = atualizarStatusPedido(pedido, STATUS_PEDIDO_FINALIZADO);
+        Pedido pedidoAtualizado = atualizarStatusPedidoPorNomeStatus(pedido, STATUS_PEDIDO_FINALIZADO);
         pedidoAtualizado.setDataHoraFinalizado(LocalDateTime.now());
         return formatarPedido(pedidoOutputPort.salvarPedido(pedidoAtualizado));
     }
@@ -82,8 +82,15 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
     public Pedido cancelado(Long pedidoId) {
         Pedido pedido = recuperarPedido(pedidoId);
         alterarPedidoStatusValidator.validarCancelado(pedidoId);
-        Pedido pedidoAtualizado = atualizarStatusPedido(pedido, STATUS_PEDIDO_CANCELADO);
+        Pedido pedidoAtualizado = atualizarStatusPedidoPorNomeStatus(pedido, STATUS_PEDIDO_CANCELADO);
         pedido.setDataHoraFinalizado(LocalDateTime.now());
+        return formatarPedido(pedidoOutputPort.salvarPedido(pedidoAtualizado));
+    }
+
+    @Override
+    public Pedido atualizarStatusPedido(Long pedidoId, Long idStatus) {
+        Pedido pedido = recuperarPedido(pedidoId);
+        Pedido pedidoAtualizado = atualizarStatusPedidoPorIdStatus(pedido, idStatus);
         return formatarPedido(pedidoOutputPort.salvarPedido(pedidoAtualizado));
     }
 
@@ -92,8 +99,13 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
                 .orElseThrow(() -> new PedidoNotFound("Pedido não encontrado id " + pedidoId));
     }
 
-    private Pedido atualizarStatusPedido(Pedido pedido, String novoStatusPedido) {
+    private Pedido atualizarStatusPedidoPorNomeStatus(Pedido pedido, String novoStatusPedido) {
         pedido.setStatusPedido(statusPedidoInputPort.consultarPorNome(novoStatusPedido).getId());
+        return pedido;
+    }
+
+    private Pedido atualizarStatusPedidoPorIdStatus(Pedido pedido, Long idStatus) {
+        pedido.setStatusPedido(statusPedidoInputPort.consultar(idStatus).getId());
         return pedido;
     }
 

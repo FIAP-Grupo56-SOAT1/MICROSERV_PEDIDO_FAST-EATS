@@ -11,8 +11,6 @@ public interface PagamentoInputPort {
 
     Pagamento criar(Pagamento pagamento);
 
-    Pagamento atualizar(Pagamento pagamento);
-
     Pagamento consultar(Long pagamentoId);
 
     Pagamento consultarPorIdPagamentoExterno(Long pagamentoExternoId);

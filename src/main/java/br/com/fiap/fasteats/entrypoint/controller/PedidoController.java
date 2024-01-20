@@ -1,9 +1,7 @@
 package br.com.fiap.fasteats.entrypoint.controller;
 
 import br.com.fiap.fasteats.core.domain.model.Pedido;
-import br.com.fiap.fasteats.core.usecase.pedido.CancelarPedidoInputPort;
-import br.com.fiap.fasteats.core.usecase.pedido.ConfirmarPedidoInputPort;
-import br.com.fiap.fasteats.core.usecase.pedido.PedidoInputPort;
+import br.com.fiap.fasteats.core.usecase.pedido.*;
 import br.com.fiap.fasteats.entrypoint.controller.mapper.PedidoMapper;
 import br.com.fiap.fasteats.entrypoint.controller.request.PedidoRequest;
 import br.com.fiap.fasteats.entrypoint.controller.response.PedidoResponse;
@@ -26,6 +24,7 @@ public class PedidoController {
     private final ConfirmarPedidoInputPort confirmarPedidoInputPort;
     private final CancelarPedidoInputPort cancelarPedidoInputPort;
     private final PedidoMapper pedidoMapper;
+    private final AlterarPedidoStatusInputPort alterarPedidoStatusInputPort;
 
     @PostMapping
     @Operation(summary = "Identificação do cliente e criar pedido", description = "Identifica ou não o cliente e cria um novo pedido.")
@@ -84,6 +83,14 @@ public class PedidoController {
                                                           @RequestParam(value = "tipoPagamentoId") Long tipoPagamentoId) {
         Pedido pedidoConfirmado = confirmarPedidoInputPort.confirmar(idPedido, tipoPagamentoId);
         PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedidoConfirmado);
+        return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("{idPedido}/status/{idStatus}")
+    @Operation(summary = "Atualizar Status pedido", description = "Atualizar status do pedido por idStatus")
+    public ResponseEntity<PedidoResponse> alterarStatusPedido(@PathVariable("idPedido") Long idPedido,@PathVariable("idStatus") Long idStatus) {
+        Pedido pedido = alterarPedidoStatusInputPort.atualizarStatusPedido(idPedido,idStatus);
+        PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedido);
         return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
     }
 }
