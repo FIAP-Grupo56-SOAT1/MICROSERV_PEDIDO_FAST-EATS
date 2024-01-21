@@ -1,4 +1,4 @@
-package br.com.fiap.fasteats.core.usecase.impl.unit;
+package br.com.fiap.fasteats.core.usecase.impl.pedido.unit;
 
 import br.com.fiap.fasteats.core.dataprovider.PedidoOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.PedidoNotFound;
