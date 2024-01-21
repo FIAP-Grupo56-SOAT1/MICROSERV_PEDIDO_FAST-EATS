@@ -123,10 +123,8 @@ class AlterarPagamentoStatusUseCaseUnitTest {
     private Pagamento getPagamento(Long pagamentoId, Long pedidoId) {
         Pagamento pagamento = new Pagamento();
         pagamento.setId(pagamentoId);
-        //pagamento.setPedidoId(pedidoId);
         pagamento.setFormaPagamento(getFormaPagamentoInterno(1L));
         pagamento.setStatusPagamento(getStatusPagamento(1L, STATUS_EM_PROCESSAMENTO));
-        //pagamento.setValor(100.0);
         pagamento.setIdPagamentoExterno(null);
         pagamento.setQrCode(null);
         pagamento.setUrlPagamento(null);
