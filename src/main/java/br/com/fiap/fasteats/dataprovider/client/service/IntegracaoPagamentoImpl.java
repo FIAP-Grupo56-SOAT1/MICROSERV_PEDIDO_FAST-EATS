@@ -3,6 +3,7 @@ package br.com.fiap.fasteats.dataprovider.client.service;
 import br.com.fiap.fasteats.core.domain.exception.PagamentoNotFound;
 import br.com.fiap.fasteats.core.domain.model.Pagamento;
 import br.com.fiap.fasteats.dataprovider.client.IntegracaoPagamento;
+import br.com.fiap.fasteats.dataprovider.client.exeption.MicroservicoPagamentoException;
 import br.com.fiap.fasteats.dataprovider.client.mapper.PagamentoMapper;
 import br.com.fiap.fasteats.dataprovider.client.response.PagamentoResponse;
 import lombok.RequiredArgsConstructor;
@@ -74,7 +75,7 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
 
             return Optional.of(pagamentoMapper.toPagamento(pagamentosResponse));
         } catch (Exception ex) {
-            throw new PagamentoNotFound("Erro retorno microservice pagamentos " + ex.getMessage());
+            throw new MicroservicoPagamentoException("Erro retorno microservice pagamentos " + ex.getMessage());
         }
     }
 
@@ -91,7 +92,7 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
             return pagamentoMapper.toPagamento(pagamentosResponse);
         } catch (Exception ex) {
             logger.error("Erro retorno microservice pagamentos ", ex.getCause());
-            throw new PagamentoNotFound("Erro retorno microservice pagamentos " + ex.getMessage());
+            throw new MicroservicoPagamentoException("Erro retorno microservice pagamentos " + ex.getMessage());
         }
     }
 
@@ -105,7 +106,7 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
 
             return Optional.of(pagamentoMapper.toPagamento(pagamentosResponse));
         } catch (Exception ex) {
-            throw new PagamentoNotFound("Erro retorno microservice pagamentos " + ex.getMessage());
+            throw new MicroservicoPagamentoException("Erro retorno microservice pagamentos " + ex.getMessage());
         }
     }
 }

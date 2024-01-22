@@ -4,6 +4,7 @@ import br.com.fiap.fasteats.core.domain.exception.PagamentoNotFound;
 import br.com.fiap.fasteats.core.domain.model.StatusPagamento;
 import br.com.fiap.fasteats.dataprovider.client.IntegracaoPagamento;
 import br.com.fiap.fasteats.dataprovider.client.IntegracaoStatusPagamento;
+import br.com.fiap.fasteats.dataprovider.client.exeption.MicroservicoPagamentoException;
 import br.com.fiap.fasteats.dataprovider.client.mapper.FormaPagamentoMapper;
 import br.com.fiap.fasteats.dataprovider.client.mapper.StatusPagamentoMapper;
 import br.com.fiap.fasteats.dataprovider.client.response.FormaPagamentoResponse;
@@ -51,7 +52,7 @@ public class IntegracaoStatusPagamentoImpl implements IntegracaoStatusPagamento 
                             .collect(Collectors.toList()));
         } catch (Exception ex) {
             logger.error("Erro retorno microservice pagamentos ", ex.getCause());
-            throw new PagamentoNotFound("Erro ao consultar pagamentos " + ex.getMessage());
+            throw new MicroservicoPagamentoException("Erro ao consultar pagamentos " + ex.getMessage());
         }
     }
 
@@ -64,7 +65,7 @@ public class IntegracaoStatusPagamentoImpl implements IntegracaoStatusPagamento 
             return Optional.of(statusPagamentoMapper.toStatusPagamento(statusPagamentoResponse));
         } catch (Exception ex) {
             logger.error("Erro retorno microservice pagamentos ", ex.getCause());
-            throw new PagamentoNotFound("Erro retorno microservice pagamentos " + ex.getMessage());
+            throw new MicroservicoPagamentoException("Erro retorno microservice pagamentos " + ex.getMessage());
         }
     }
 
@@ -86,7 +87,7 @@ public class IntegracaoStatusPagamentoImpl implements IntegracaoStatusPagamento 
             return Optional.of(statusPagamentoMapper.toStatusPagamento(statusPagamentoResponse));
         } catch (Exception ex) {
             logger.error("Erro retorno microservice pagamentos ", ex.getCause());
-            throw new PagamentoNotFound("Erro retorno microservice pagamentos " + ex.getMessage());
+            throw new MicroservicoPagamentoException("Erro retorno microservice pagamentos " + ex.getMessage());
         }
     }
     @Override

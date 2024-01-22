@@ -2,8 +2,8 @@ package br.com.fiap.fasteats.config;
 
 import br.com.fiap.fasteats.core.usecase.impl.pagamento.EmitirComprovantePagamentoUseCase;
 import br.com.fiap.fasteats.core.usecase.impl.pagamento.PagamentoUseCase;
-import br.com.fiap.fasteats.core.usecase.impl.pedido.CozinhaPedidoUseCase;
 import br.com.fiap.fasteats.core.validator.impl.EmitirComprovantePagamentoValidatorImpl;
+import br.com.fiap.fasteats.dataprovider.CozinhaPedidoAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 public class EmitirComprovantePagamentoConfig {
     @Bean
     public EmitirComprovantePagamentoUseCase emitirComprovantePagamentoUseCase(PagamentoUseCase pagamentoUseCase,
-                                                                               CozinhaPedidoUseCase cozinhaPedidoUseCase,
+                                                                               CozinhaPedidoAdapter cozinhaPedidoAdapter,
                                                                                EmitirComprovantePagamentoValidatorImpl emitirComprovantePagamentoValidator) {
-        return new EmitirComprovantePagamentoUseCase(pagamentoUseCase, cozinhaPedidoUseCase, emitirComprovantePagamentoValidator);
+        return new EmitirComprovantePagamentoUseCase(pagamentoUseCase, cozinhaPedidoAdapter, emitirComprovantePagamentoValidator);
     }
 }
