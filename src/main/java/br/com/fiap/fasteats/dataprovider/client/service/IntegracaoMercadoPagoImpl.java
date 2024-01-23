@@ -3,6 +3,7 @@ package br.com.fiap.fasteats.dataprovider.client.service;
 import br.com.fiap.fasteats.core.domain.exception.RegraNegocioException;
 import br.com.fiap.fasteats.core.domain.model.PagamentoExterno;
 import br.com.fiap.fasteats.dataprovider.client.IntegracaoMercadoPago;
+import br.com.fiap.fasteats.dataprovider.client.exeption.MicroservicoPagamentoException;
 import br.com.fiap.fasteats.dataprovider.client.mapper.PagamentoExternoMapper;
 import br.com.fiap.fasteats.dataprovider.client.response.PagamentoExternoResponse;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +54,7 @@ public class IntegracaoMercadoPagoImpl implements IntegracaoMercadoPago {
             }
             return pagamentoExterno;
         } catch (Exception ex) {
-            throw new RegraNegocioException("Erro ao consultar pagamento externo " + ex.getMessage());
+            throw new MicroservicoPagamentoException("Erro ao consultar pagamento externo " + ex.getMessage());
         }
     }
 
@@ -64,7 +65,7 @@ public class IntegracaoMercadoPagoImpl implements IntegracaoMercadoPago {
                             PagamentoExternoResponse.class,idPagamentoExterno);
             return pagamentoExternoMapper.toPagamentoExternoResponse(pagamentoExternoResponse);
         } catch (Exception ex) {
-            throw new RegraNegocioException("Erro ao cancelar pagamento externo " + ex.getMessage());
+            throw new MicroservicoPagamentoException("Erro ao cancelar pagamento externo " + ex.getMessage());
         }
     }
 }

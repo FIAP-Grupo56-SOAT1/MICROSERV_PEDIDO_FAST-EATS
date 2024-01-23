@@ -4,6 +4,7 @@ import br.com.fiap.fasteats.core.domain.exception.PagamentoNotFound;
 import br.com.fiap.fasteats.core.domain.model.StatusPagamento;
 import br.com.fiap.fasteats.dataprovider.client.IntegracaoPagamento;
 import br.com.fiap.fasteats.dataprovider.client.IntegracaoStatusPagamento;
+import br.com.fiap.fasteats.dataprovider.client.exeption.MicroservicoPagamentoException;
 import br.com.fiap.fasteats.dataprovider.client.mapper.FormaPagamentoMapper;
 import br.com.fiap.fasteats.dataprovider.client.mapper.StatusPagamentoMapper;
 import br.com.fiap.fasteats.dataprovider.client.response.FormaPagamentoResponse;
@@ -51,50 +52,34 @@ public class IntegracaoStatusPagamentoImpl implements IntegracaoStatusPagamento 
                             .collect(Collectors.toList()));
         } catch (Exception ex) {
             logger.error("Erro retorno microservice pagamentos ", ex.getCause());
-            throw new PagamentoNotFound("Erro ao consultar pagamentos " + ex.getMessage());
-        }
-    }
-
-    //TODO trocar por consultarPorNome
-    public Optional<StatusPagamento> consultarPorNomeTemp(String nome) {
-        try {
-            StatusPagamentoResponse statusPagamentoResponse =
-                    restTemplate.getForObject(URL_BASE + URI +"?nome={nome}", StatusPagamentoResponse.class,nome);
-
-            return Optional.of(statusPagamentoMapper.toStatusPagamento(statusPagamentoResponse));
-        } catch (Exception ex) {
-            logger.error("Erro retorno microservice pagamentos ", ex.getCause());
-            throw new PagamentoNotFound("Erro retorno microservice pagamentos " + ex.getMessage());
+            throw new MicroservicoPagamentoException("Erro ao consultar pagamentos " + ex.getMessage());
         }
     }
 
     @Override
-    public Optional<StatusPagamento> consultarPorNome(String nome) {
-        //TODO precisa implementar endpoint no microservico de pagamento
-        return listar()
-                .stream()
-                .filter(pagamento -> pagamento.getNome().equals(nome))
-                .findAny();
+    public StatusPagamento consultarPorNome(String nome) {
+        try {
+            StatusPagamentoResponse statusPagamentoResponse =
+                    restTemplate.getForObject(URL_BASE + URI +"/status-pagamentos/{nome}", StatusPagamentoResponse.class,nome);
+
+            return statusPagamentoMapper.toStatusPagamento(statusPagamentoResponse);
+        } catch (Exception ex) {
+            logger.error("Erro retorno microservice pagamentos ", ex.getCause());
+            throw new MicroservicoPagamentoException("Erro retorno microservice pagamentos " + ex.getMessage());
+        }
     }
 
-    //TODO trocar por consultar
-    public Optional<StatusPagamento> consultarTemp(Long id) {
+
+    @Override
+    public StatusPagamento consultar(Long id) {
         try {
             StatusPagamentoResponse statusPagamentoResponse =
                     restTemplate.getForObject(URL_BASE + URI +"/{id}", StatusPagamentoResponse.class,id);
 
-            return Optional.of(statusPagamentoMapper.toStatusPagamento(statusPagamentoResponse));
+            return statusPagamentoMapper.toStatusPagamento(statusPagamentoResponse);
         } catch (Exception ex) {
             logger.error("Erro retorno microservice pagamentos ", ex.getCause());
-            throw new PagamentoNotFound("Erro retorno microservice pagamentos " + ex.getMessage());
+            throw new MicroservicoPagamentoException("Erro retorno microservice pagamentos " + ex.getMessage());
         }
-    }
-    @Override
-    public Optional<StatusPagamento> consultar(Long id) {
-        //TODO precisa implementar endpoint no microservico de pagamento
-        return listar()
-                .stream()
-                .filter(pagamento -> pagamento.getId().equals(id))
-                .findAny();
     }
 }

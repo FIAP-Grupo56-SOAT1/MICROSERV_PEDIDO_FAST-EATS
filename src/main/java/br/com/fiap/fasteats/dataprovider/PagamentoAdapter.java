@@ -30,12 +30,12 @@ public class PagamentoAdapter implements PagamentoOutputPort {
     }
 
     @Override
-    public Pagamento salvarPagamento(Pagamento pagamento) {
-        return integracaoPagamento.salvarPagamento(pagamento);
+    public Pagamento gerarPagamento(Long idPedido, Long idFormaPagamento) {
+        return integracaoPagamento.gerarPagamento(idPedido,idFormaPagamento);
     }
 
     @Override
-    public Optional<Pagamento> consultarPorIdPagamentoExterno(Long idPagamentoExterno) {
+    public Pagamento consultarPorIdPagamentoExterno(Long idPagamentoExterno) {
         return integracaoPagamento.consultarPorIdPagamentoExterno(idPagamentoExterno);
     }
 }
