@@ -20,12 +20,12 @@ public class StatusPagamentoAdapter implements StatusPagamentoOutputPort {
     }
 
     @Override
-    public Optional<StatusPagamento> consultarPorNome(String nome) {
+    public StatusPagamento consultarPorNome(String nome) {
         return integracaoStatusPagamento.consultarPorNome(nome);
     }
 
     @Override
-    public Optional<StatusPagamento> consultar(Long id) {
+    public StatusPagamento consultar(Long id) {
         return integracaoStatusPagamento.consultar(id);
     }
 }

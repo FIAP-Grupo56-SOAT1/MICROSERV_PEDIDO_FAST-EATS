@@ -56,46 +56,30 @@ public class IntegracaoStatusPagamentoImpl implements IntegracaoStatusPagamento 
         }
     }
 
-    //TODO trocar por consultarPorNome
-    public Optional<StatusPagamento> consultarPorNomeTemp(String nome) {
+    @Override
+    public StatusPagamento consultarPorNome(String nome) {
         try {
             StatusPagamentoResponse statusPagamentoResponse =
-                    restTemplate.getForObject(URL_BASE + URI +"?nome={nome}", StatusPagamentoResponse.class,nome);
+                    restTemplate.getForObject(URL_BASE + URI +"/status-pagamentos/{nome}", StatusPagamentoResponse.class,nome);
 
-            return Optional.of(statusPagamentoMapper.toStatusPagamento(statusPagamentoResponse));
+            return statusPagamentoMapper.toStatusPagamento(statusPagamentoResponse);
         } catch (Exception ex) {
             logger.error("Erro retorno microservice pagamentos ", ex.getCause());
             throw new MicroservicoPagamentoException("Erro retorno microservice pagamentos " + ex.getMessage());
         }
     }
 
-    @Override
-    public Optional<StatusPagamento> consultarPorNome(String nome) {
-        //TODO precisa implementar endpoint no microservico de pagamento
-        return listar()
-                .stream()
-                .filter(pagamento -> pagamento.getNome().equals(nome))
-                .findAny();
-    }
 
-    //TODO trocar por consultar
-    public Optional<StatusPagamento> consultarTemp(Long id) {
+    @Override
+    public StatusPagamento consultar(Long id) {
         try {
             StatusPagamentoResponse statusPagamentoResponse =
                     restTemplate.getForObject(URL_BASE + URI +"/{id}", StatusPagamentoResponse.class,id);
 
-            return Optional.of(statusPagamentoMapper.toStatusPagamento(statusPagamentoResponse));
+            return statusPagamentoMapper.toStatusPagamento(statusPagamentoResponse);
         } catch (Exception ex) {
             logger.error("Erro retorno microservice pagamentos ", ex.getCause());
             throw new MicroservicoPagamentoException("Erro retorno microservice pagamentos " + ex.getMessage());
         }
-    }
-    @Override
-    public Optional<StatusPagamento> consultar(Long id) {
-        //TODO precisa implementar endpoint no microservico de pagamento
-        return listar()
-                .stream()
-                .filter(pagamento -> pagamento.getId().equals(id))
-                .findAny();
     }
 }

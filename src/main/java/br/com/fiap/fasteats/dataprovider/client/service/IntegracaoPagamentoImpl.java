@@ -80,10 +80,8 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
     }
 
     @Override
-    public Pagamento salvarPagamento(Pagamento pagamento) {
+    public Pagamento gerarPagamento(Long idPedido, Long idFormaPagamento) {
         try {
-            Long idPedido = pagamento.getPedido().getId();
-            Long idFormaPagamento = pagamento.getFormaPagamento().getId();
             PagamentoResponse pagamentosResponse =
                     restTemplate.postForObject(URL_BASE +
                             URI_GERAR_PAGAMENTO+"/pedido/{idPedido}/forma-pagamento/{idFormaPagamento}",
@@ -97,14 +95,14 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
     }
 
     @Override
-    public Optional<Pagamento> consultarPorIdPagamentoExterno(Long idPagamentoExterno) {
+    public Pagamento consultarPorIdPagamentoExterno(Long idPagamentoExterno) {
 
         try {
             PagamentoResponse pagamentosResponse =
                     restTemplate.getForObject(URL_BASE +
                             URI +"/{idPagamentoExterno}/consultar-por-id-pagamento-externo",PagamentoResponse.class,idPagamentoExterno);
 
-            return Optional.of(pagamentoMapper.toPagamento(pagamentosResponse));
+            return pagamentoMapper.toPagamento(pagamentosResponse);
         } catch (Exception ex) {
             throw new MicroservicoPagamentoException("Erro retorno microservice pagamentos " + ex.getMessage());
         }

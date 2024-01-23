@@ -1,15 +1,16 @@
 package br.com.fiap.fasteats.dataprovider;
 
+import br.com.fiap.fasteats.core.dataprovider.PagamentoOutputPort;
+import br.com.fiap.fasteats.core.dataprovider.StatusPagamentoOutputPort;
 import br.com.fiap.fasteats.dataprovider.constants.StatusMercadoPagoConstants;
 import br.com.fiap.fasteats.core.dataprovider.PagamentoExternoOutputPort;
 import br.com.fiap.fasteats.core.domain.model.Pagamento;
 import br.com.fiap.fasteats.core.domain.model.PagamentoExterno;
 import br.com.fiap.fasteats.core.domain.model.StatusPagamento;
-import br.com.fiap.fasteats.core.usecase.pagamento.PagamentoInputPort;
-import br.com.fiap.fasteats.core.usecase.pagamento.StatusPagamentoInputPort;
 import br.com.fiap.fasteats.dataprovider.client.IntegracaoMercadoPago;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 
 import static br.com.fiap.fasteats.core.constants.StatusPagamentoConstants.*;
 import static br.com.fiap.fasteats.core.constants.StatusPagamentoConstants.STATUS_RECUSADO;
@@ -17,8 +18,8 @@ import static br.com.fiap.fasteats.core.constants.StatusPagamentoConstants.STATU
 @Component
 @RequiredArgsConstructor
 public class PagamentoExternoAdapter implements PagamentoExternoOutputPort {
-    private final PagamentoInputPort pagamentoInputPort;
-    private final StatusPagamentoInputPort statusPagamentoInputPort;
+    private final PagamentoOutputPort pagamentoInputPort;
+    private final StatusPagamentoOutputPort statusPagamentoOutputPort;
     private final IntegracaoMercadoPago integracaoMercadoPago;
 
     @Override
@@ -44,20 +45,20 @@ public class PagamentoExternoAdapter implements PagamentoExternoOutputPort {
             case  StatusMercadoPagoConstants.STATUS_APPROVED,
                     StatusMercadoPagoConstants.STATUS_AUTHORIZED
                     ->{
-                return statusPagamentoInputPort.consultarPorNome(STATUS_PAGO);
+                return statusPagamentoOutputPort.consultarPorNome(STATUS_PAGO);
             }
             case  StatusMercadoPagoConstants.STATUS_IN_PROCESS,
                     StatusMercadoPagoConstants.STATUS_IN_MEDIATION,
                     StatusMercadoPagoConstants.STATUS_PENDING ->{
-                return statusPagamentoInputPort.consultarPorNome(STATUS_EM_PROCESSAMENTO);
+                return statusPagamentoOutputPort.consultarPorNome(STATUS_EM_PROCESSAMENTO);
             }
             case  StatusMercadoPagoConstants.STATUS_CANCELLED,
                     StatusMercadoPagoConstants.STATUS_CHARGED_BACK,
                     StatusMercadoPagoConstants.STATUS_REFUNDED ->{
-                return statusPagamentoInputPort.consultarPorNome(STATUS_CANCELADO);
+                return statusPagamentoOutputPort.consultarPorNome(STATUS_CANCELADO);
             }
             case  StatusMercadoPagoConstants.STATUS_REJECTED->{
-                return statusPagamentoInputPort.consultarPorNome(STATUS_RECUSADO);
+                return statusPagamentoOutputPort.consultarPorNome(STATUS_RECUSADO);
             }
             default -> {
                 return new StatusPagamento();

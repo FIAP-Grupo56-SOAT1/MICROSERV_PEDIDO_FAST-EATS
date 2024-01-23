@@ -1,11 +1,11 @@
 package br.com.fiap.fasteats.core.usecase.impl.pedido.unit;
 
+import br.com.fiap.fasteats.core.dataprovider.PagamentoOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.ProdutoNotFound;
 import br.com.fiap.fasteats.core.domain.model.Pagamento;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
 import br.com.fiap.fasteats.core.domain.model.ProdutoPedido;
 import br.com.fiap.fasteats.core.usecase.impl.pedido.ConfirmarPedidoUseCase;
-import br.com.fiap.fasteats.core.usecase.pagamento.GerarPagamentoInputPort;
 import br.com.fiap.fasteats.core.usecase.pedido.AlterarPedidoStatusInputPort;
 import br.com.fiap.fasteats.core.usecase.pedido.ConfirmarPedidoInputPort;
 import br.com.fiap.fasteats.core.usecase.pedido.PedidoInputPort;
@@ -30,7 +30,7 @@ class ConfirmarPedidoUseCaseUnitTest {
     @Mock
     private AlterarPedidoStatusInputPort alterarPedidoStatusInputPort;
     @Mock
-    private GerarPagamentoInputPort gerarPagamentoInputPort;
+    private PagamentoOutputPort pagamentoOutputPort;
     @Mock
     private PedidoValidator pedidoValidator;
 
@@ -40,7 +40,7 @@ class ConfirmarPedidoUseCaseUnitTest {
         confirmarPedidoUseCase = new ConfirmarPedidoUseCase(
                 pedidoInputPort,
                 alterarPedidoStatusInputPort,
-                gerarPagamentoInputPort,
+                pagamentoOutputPort,
                 pedidoValidator);
     }
 
@@ -78,7 +78,7 @@ class ConfirmarPedidoUseCaseUnitTest {
 
         when(pedidoInputPort.consultar(idPedido)).thenReturn(pedido);
         doNothing().when(pedidoValidator).validarAlterarPedido(pedido);
-        when(gerarPagamentoInputPort.gerar(pedido, tipoPagamentoId)).thenReturn(pagamento);
+        when(pagamentoOutputPort.gerarPagamento(pedido.getId(), tipoPagamentoId)).thenReturn(pagamento);
         when(alterarPedidoStatusInputPort.aguardandoPagamento(idPedido)).thenReturn(pedidoAguardandoPagamento);
 
         Pedido resultado = confirmarPedidoUseCase.confirmar(idPedido, tipoPagamentoId);
