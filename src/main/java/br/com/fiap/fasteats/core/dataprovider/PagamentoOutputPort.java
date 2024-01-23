@@ -12,7 +12,7 @@ public interface PagamentoOutputPort {
 
     Optional<Pagamento> consultarPorPedidoId(long pedidoId);
 
-    Pagamento salvarPagamento(Pagamento pagamento);
+    Pagamento gerarPagamento(Long idPedido, Long idFormaPagamento);
 
-    Optional<Pagamento> consultarPorIdPagamentoExterno(Long idPagamentoExterno);
+    Pagamento consultarPorIdPagamentoExterno(Long idPagamentoExterno);
 }

@@ -11,7 +11,7 @@ public interface IntegracaoStatusPagamento {
 
     List<StatusPagamento> listar();
 
-    Optional<StatusPagamento> consultarPorNome(String nome);
+    StatusPagamento consultarPorNome(String nome);
 
-    Optional<StatusPagamento> consultar(Long id);
+    StatusPagamento consultar(Long id);
 }
