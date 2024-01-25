@@ -77,6 +77,7 @@ public class PedidoController {
         return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
     }
 
+
     @PatchMapping("{idPedido}/confirmar")
     @Operation(summary = "Confirmar pedido", description = "Confirma um pedido.")
     public ResponseEntity<PedidoResponse> confirmarPedido(@PathVariable("idPedido") Long idPedido,
@@ -91,6 +92,30 @@ public class PedidoController {
     public ResponseEntity<PedidoResponse> alterarStatusPedido(@PathVariable("idPedido") Long idPedido,@PathVariable("idStatus") Long idStatus) {
         Pedido pedido = alterarPedidoStatusInputPort.atualizarStatusPedido(idPedido,idStatus);
         PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedido);
+        return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("{idPedido}/finalizar")
+    @Operation(summary = "Finalizar pedido", description = "Finalizar um pedido.")
+    public ResponseEntity<PedidoResponse> finalizar(@PathVariable("idPedido") Long idPedido) {
+        Pedido pedidoCancelado = alterarPedidoStatusInputPort.finalizado(idPedido);
+        PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedidoCancelado);
+        return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("{idPedido}/pronto")
+    @Operation(summary = "Pedido pronto", description = "Pedido pronto.")
+    public ResponseEntity<PedidoResponse> pronto(@PathVariable("idPedido") Long idPedido) {
+        Pedido pedidoCancelado = alterarPedidoStatusInputPort.pronto(idPedido);
+        PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedidoCancelado);
+        return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("{idPedido}/recebido")
+    @Operation(summary = "Pedido recebido", description = "Pedido recebido.")
+    public ResponseEntity<PedidoResponse> recebido(@PathVariable("idPedido") Long idPedido) {
+        Pedido pedidoCancelado = alterarPedidoStatusInputPort.recebido(idPedido);
+        PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedidoCancelado);
         return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
     }
 }
