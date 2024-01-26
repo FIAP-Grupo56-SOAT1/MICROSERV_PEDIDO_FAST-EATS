@@ -59,6 +59,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
     @Test
     @DisplayName("Deve atualizar o status de um pedido para aguardandoPagamento")
     void testeAguardandoPagamento() {
+        //Arrange
         Long idPedido = 1L;
         Long idStatusPedido = 2L;
         StatusPedido statusPedido = criarStatusPedido(2L, STATUS_PEDIDO_AGUARDANDO_PAGAMENTO);
@@ -74,8 +75,10 @@ class AlterarPedidoStatusUseCaseUnitTest {
 
         doNothing().when(alterarPedidoStatusValidator).validarAguardandoPagamento(anyLong());
 
+        //Act
         Pedido resultado = alterarPedidoStatusInputPort.aguardandoPagamento(anyLong());
 
+        // Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
         assertEquals(idStatusPedido, resultado.getStatusPedido());
@@ -85,6 +88,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
     @Test
     @DisplayName("Deve atualizar o status de um pedido para pago")
     void testePago() {
+        //Arrange
         Long idPedido = 1L;
         Long idStatusPedido = 3L;
         StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_PAGO);
@@ -97,9 +101,9 @@ class AlterarPedidoStatusUseCaseUnitTest {
         when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
 
         doNothing().when(alterarPedidoStatusValidator).validarPago(anyLong());
-
+        //Act
         Pedido resultado = alterarPedidoStatusInputPort.pago(anyLong());
-
+        // Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
         assertEquals(idStatusPedido, resultado.getStatusPedido());
@@ -109,6 +113,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
     @Test
     @DisplayName("Deve atualizar o status de um pedido para recebido")
     void testeRecebido() {
+        //Arrange
         Long idPedido = 1L;
         Long idStatusPedido = 4L;
         StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_RECEBIDO);
@@ -121,9 +126,9 @@ class AlterarPedidoStatusUseCaseUnitTest {
         when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
 
         doNothing().when(alterarPedidoStatusValidator).validarRecebido(anyLong());
-
+        //Act
         Pedido resultado = alterarPedidoStatusInputPort.recebido(anyLong());
-
+        //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
         assertEquals(idStatusPedido, resultado.getStatusPedido());
@@ -133,6 +138,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
     @Test
     @DisplayName("Deve atualizar o status de um pedido para emPreparo")
     void testeEmPreparo() {
+        //Arrange
         Long idPedido = 1L;
         Long idStatusPedido = 5L;
         StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_EM_PREPARO);
@@ -145,9 +151,9 @@ class AlterarPedidoStatusUseCaseUnitTest {
         when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
 
         doNothing().when(alterarPedidoStatusValidator).validarEmPreparo(anyLong());
-
+        //Act
         Pedido resultado = alterarPedidoStatusInputPort.emPreparo(anyLong());
-
+        //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
         assertEquals(idStatusPedido, resultado.getStatusPedido());
@@ -157,6 +163,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
     @Test
     @DisplayName("Deve atualizar o status de um pedido para pronto")
     void testePronto() {
+        //Arrange
         Long idPedido = 1L;
         Long idStatusPedido = 6L;
         StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_PRONTO);
@@ -169,9 +176,9 @@ class AlterarPedidoStatusUseCaseUnitTest {
         when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
 
         doNothing().when(alterarPedidoStatusValidator).validarPronto(anyLong());
-
+        //Act
         Pedido resultado = alterarPedidoStatusInputPort.pronto(anyLong());
-
+        //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
         assertEquals(idStatusPedido, resultado.getStatusPedido());
@@ -181,6 +188,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
     @Test
     @DisplayName("Deve atualizar o status de um pedido para finalizado")
     void testeFinalizado() {
+        //Arrange
         Long idPedido = 1L;
         Long idStatusPedido = 7L;
         StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_FINALIZADO);
@@ -193,9 +201,9 @@ class AlterarPedidoStatusUseCaseUnitTest {
         when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
 
         doNothing().when(alterarPedidoStatusValidator).validarFinalizado(anyLong());
-
+        //Act
         Pedido resultado = alterarPedidoStatusInputPort.finalizado(anyLong());
-
+        //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
         assertEquals(idStatusPedido, resultado.getStatusPedido());
@@ -205,6 +213,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
     @Test
     @DisplayName("Deve atualizar o status de um pedido para cancelado")
     void testeCancelado() {
+        //Arrange
         Long idPedido = 1L;
         Long idStatusPedido = 8L;
         StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_CANCELADO);
@@ -217,9 +226,9 @@ class AlterarPedidoStatusUseCaseUnitTest {
         when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
 
         doNothing().when(alterarPedidoStatusValidator).validarCancelado(anyLong());
-
+        //Act
         Pedido resultado = alterarPedidoStatusInputPort.cancelado(anyLong());
-
+        //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
         assertEquals(idStatusPedido, resultado.getStatusPedido());
@@ -229,17 +238,21 @@ class AlterarPedidoStatusUseCaseUnitTest {
     @Test
     @DisplayName("Deve atualizar o status de um pedido")
     void testeAtualizarStatusPedido() {
+        //Arrange
         Long idPedido = 1L;
         Long idStatusPedido = 2L;
+        Long idStatusPedidoCriado = 1L;
         StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_AGUARDANDO_PAGAMENTO);
-        Pedido pedido = getPedido(idPedido, idStatusPedido);
+        Pedido pedido = getPedido(idPedido, idStatusPedidoCriado);
 
         when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
         when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
         when(statusPedidoInputPort.consultar(anyLong())).thenReturn(statusPedido);
-
+        doNothing().when(alterarPedidoStatusValidator).validarAguardandoPagamento(anyLong());
+        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
+        //Act
         Pedido resultado = alterarPedidoStatusInputPort.atualizarStatusPedido(idPedido,idStatusPedido);
-
+        //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
         assertEquals(idStatusPedido, resultado.getStatusPedido());

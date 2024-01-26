@@ -111,6 +111,7 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
 
     private Pedido verificarAtualizarStatusPedido(Long pedidoId, String novoStatusPedido) {
         return switch (novoStatusPedido) {
+            case STATUS_PEDIDO_AGUARDANDO_PAGAMENTO -> aguardandoPagamento(pedidoId);
             case STATUS_PEDIDO_PAGO -> pago(pedidoId);
             case STATUS_PEDIDO_RECEBIDO -> recebido(pedidoId);
             case STATUS_PEDIDO_EM_PREPARO -> emPreparo(pedidoId);
