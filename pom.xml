@@ -289,6 +289,20 @@
                             <includes>
                                 <include>**/*UnitTest.java</include>
                             </includes>
+                            <excludes>
+                                <exclude>**/bdd/**</exclude>
+                            </excludes>
+                            <properties>
+                                <configurationParameters>
+                                    junit.jupiter.displayname.generator.default.remove-parent=true
+                                </configurationParameters>
+                            </properties>
+                            <systemPropertyVariables>
+                                <junit.jupiter.extensions.autodetection.enabled>true
+                                </junit.jupiter.extensions.autodetection.enabled>
+                                <allure.results.directory>${project.build.directory}/allure-results
+                                </allure.results.directory>
+                            </systemPropertyVariables>
                         </configuration>
                     </plugin>
                 </plugins>

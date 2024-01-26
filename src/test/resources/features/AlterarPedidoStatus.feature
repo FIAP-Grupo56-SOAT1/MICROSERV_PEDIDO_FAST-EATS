@@ -1,4 +1,5 @@
 # language: pt
+
 Funcionalidade: Alterar Pedido Status
 
   Cenario: Alterar status do pedido para aguardando pagamento
