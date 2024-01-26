@@ -6,7 +6,6 @@ import br.com.fiap.fasteats.core.domain.model.Pagamento;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
 import br.com.fiap.fasteats.core.domain.model.StatusPedido;
 import br.com.fiap.fasteats.core.usecase.impl.pedido.AlterarPedidoStatusUseCase;
-import br.com.fiap.fasteats.core.usecase.pedido.AlterarPedidoStatusInputPort;
 import br.com.fiap.fasteats.core.usecase.pedido.StatusPedidoInputPort;
 import br.com.fiap.fasteats.core.validator.AlterarPedidoStatusValidator;
 import io.cucumber.java.After;
@@ -14,6 +13,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -25,7 +25,8 @@ import static org.mockito.Mockito.*;
 
 public class AlterarPedidoStatusSteps {
 
-    private AlterarPedidoStatusInputPort alterarPedidoStatusInputPort;
+    @InjectMocks
+    private AlterarPedidoStatusUseCase pedidoStatusUseCase;
 
     @Mock
     private PedidoOutputPort pedidoOutputPort;
@@ -58,8 +59,6 @@ public class AlterarPedidoStatusSteps {
     @Before
     public void setUp() {
         openMocks = MockitoAnnotations.openMocks(this);
-        alterarPedidoStatusInputPort = new AlterarPedidoStatusUseCase(alterarPedidoStatusValidator,
-                statusPedidoInputPort, pedidoOutputPort, pagamentoOutputPort);
     }
 
     @After
@@ -86,7 +85,7 @@ public class AlterarPedidoStatusSteps {
         when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
 
         //Act
-        resultado = alterarPedidoStatusInputPort.aguardandoPagamento(anyLong());
+        resultado = pedidoStatusUseCase.aguardandoPagamento(anyLong());
     }
     @Entao("o status do pedido deve ser alterado para aguardando pagamento")
     public void o_status_do_pedido_deve_ser_alterado_para_aguardando_pagamento() {
@@ -116,7 +115,7 @@ public class AlterarPedidoStatusSteps {
         when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
         doNothing().when(alterarPedidoStatusValidator).validarPago(anyLong());
         //Act
-        resultado = alterarPedidoStatusInputPort.pago(anyLong());
+        resultado = pedidoStatusUseCase.pago(anyLong());
     }
     @Entao("o status do pedido deve ser alterado para pago")
     public void o_status_do_pedido_deve_ser_alterado_para_pago() {
@@ -146,7 +145,7 @@ public class AlterarPedidoStatusSteps {
         when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
         doNothing().when(alterarPedidoStatusValidator).validarRecebido(anyLong());
         //Act
-        resultado = alterarPedidoStatusInputPort.recebido(anyLong());
+        resultado = pedidoStatusUseCase.recebido(anyLong());
     }
     @Entao("o status do pedido deve ser alterado para recebido")
     public void o_status_do_pedido_deve_ser_alterado_para_recebido() {
@@ -176,7 +175,7 @@ public class AlterarPedidoStatusSteps {
         when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
         doNothing().when(alterarPedidoStatusValidator).validarEmPreparo(anyLong());
         //Act
-        resultado = alterarPedidoStatusInputPort.emPreparo(anyLong());
+        resultado = pedidoStatusUseCase.emPreparo(anyLong());
     }
     @Entao("o status do pedido deve ser alterado para em preparo")
     public void o_status_do_pedido_deve_ser_alterado_para_em_preparo() {
@@ -206,7 +205,7 @@ public class AlterarPedidoStatusSteps {
         when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
         doNothing().when(alterarPedidoStatusValidator).validarPronto(anyLong());
         //Act
-        resultado = alterarPedidoStatusInputPort.pronto(anyLong());
+        resultado = pedidoStatusUseCase.pronto(anyLong());
     }
     @Entao("o status do pedido deve ser alterado para pronto")
     public void o_status_do_pedido_deve_ser_alterado_para_pronto() {
@@ -236,7 +235,7 @@ public class AlterarPedidoStatusSteps {
         when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
         doNothing().when(alterarPedidoStatusValidator).validarFinalizado(anyLong());
         //Act
-        resultado = alterarPedidoStatusInputPort.finalizado(anyLong());
+        resultado = pedidoStatusUseCase.finalizado(anyLong());
     }
     @Entao("o status do pedido deve ser alterado finalizado")
     public void o_status_do_pedido_deve_ser_alterado_finalizado() {
@@ -268,7 +267,7 @@ public class AlterarPedidoStatusSteps {
 
         doNothing().when(alterarPedidoStatusValidator).validarCancelado(anyLong());
         //Act
-        resultado = alterarPedidoStatusInputPort.cancelado(anyLong());
+        resultado = pedidoStatusUseCase.cancelado(anyLong());
     }
     @Entao("o status do pedido deve ser alterado cancelado")
     public void o_status_do_pedido_deve_ser_alterado_cancelado() {
