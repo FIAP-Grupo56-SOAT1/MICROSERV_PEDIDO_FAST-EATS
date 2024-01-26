@@ -94,28 +94,4 @@ public class PedidoController {
         PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedido);
         return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
     }
-
-    @PutMapping("{idPedido}/finalizar")
-    @Operation(summary = "Finalizar pedido", description = "Finalizar um pedido.")
-    public ResponseEntity<PedidoResponse> finalizar(@PathVariable("idPedido") Long idPedido) {
-        Pedido pedidoCancelado = alterarPedidoStatusInputPort.finalizado(idPedido);
-        PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedidoCancelado);
-        return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
-    }
-
-    @PutMapping("{idPedido}/pronto")
-    @Operation(summary = "Pedido pronto", description = "Pedido pronto.")
-    public ResponseEntity<PedidoResponse> pronto(@PathVariable("idPedido") Long idPedido) {
-        Pedido pedidoCancelado = alterarPedidoStatusInputPort.pronto(idPedido);
-        PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedidoCancelado);
-        return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
-    }
-
-    @PutMapping("{idPedido}/recebido")
-    @Operation(summary = "Pedido recebido", description = "Pedido recebido.")
-    public ResponseEntity<PedidoResponse> recebido(@PathVariable("idPedido") Long idPedido) {
-        Pedido pedidoCancelado = alterarPedidoStatusInputPort.recebido(idPedido);
-        PedidoResponse pedidoResponse = pedidoMapper.toPedidoResponse(pedidoCancelado);
-        return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
-    }
 }
