@@ -37,7 +37,6 @@ public interface PedidoMapper {
     List<ProdutoPedido> toProdutosPedidoRequest(List<ProdutoPedidoRequest> produtosPedidoRequest);
 
     @Mapping(source = "nomeStatusPedido", target = "statusPedido")
-    @Mapping(source = "statusPedido.", target = "idStatusPedido")
     PedidoResponse toPedidoResponse(Pedido pedido);
 
     List<PedidoResponse> toPedidosResponse(List<Pedido> pedidos);
