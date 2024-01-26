@@ -241,12 +241,15 @@ class AlterarPedidoStatusUseCaseUnitTest {
         //Arrange
         Long idPedido = 1L;
         Long idStatusPedido = 2L;
+        Long idStatusPedidoCriado = 1L;
         StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_AGUARDANDO_PAGAMENTO);
-        Pedido pedido = getPedido(idPedido, idStatusPedido);
+        Pedido pedido = getPedido(idPedido, idStatusPedidoCriado);
 
         when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
         when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
         when(statusPedidoInputPort.consultar(anyLong())).thenReturn(statusPedido);
+        doNothing().when(alterarPedidoStatusValidator).validarAguardandoPagamento(anyLong());
+        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
         //Act
         Pedido resultado = alterarPedidoStatusInputPort.atualizarStatusPedido(idPedido,idStatusPedido);
         //Assert
