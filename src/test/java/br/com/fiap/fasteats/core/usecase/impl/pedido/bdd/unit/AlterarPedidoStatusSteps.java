@@ -20,8 +20,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Optional;
 
 import static br.com.fiap.fasteats.core.constants.StatusPedidoConstants.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class AlterarPedidoStatusSteps {
@@ -47,6 +46,11 @@ public class AlterarPedidoStatusSteps {
     final Long ID_STATUS_AGUARDAMDO_PAGAMENTO = 2L;
     final Long ID_STATUS_PAGO = 3L;
     final Long ID_STATUS_RECEBIDO = 4L;
+    final Long ID_STATUS_EM_PREPARO = 5L;
+    final Long ID_STATUS_PRONTO = 6L;
+    final Long ID_STATUS_FINALIZADO = 7L;
+
+    final Long ID_STATUS_CANCELADO = 8L;
 
     private Pedido pedido;
     private Pedido resultado;
@@ -74,11 +78,8 @@ public class AlterarPedidoStatusSteps {
     public void o_status_do_pedido_for_alterado_para_aguardando_pagamento() {
         //Arrange
         StatusPedido statusPedido = criarStatusPedido(ID_STATUS_AGUARDAMDO_PAGAMENTO, STATUS_PEDIDO_AGUARDANDO_PAGAMENTO);
-
         Pagamento pagamento = getPagamento();
-
         resultado = getPedido(PEDIDO_ID, ID_STATUS_AGUARDAMDO_PAGAMENTO);
-
         when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(resultado);
         when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
         when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
@@ -109,12 +110,10 @@ public class AlterarPedidoStatusSteps {
         StatusPedido statusPedido = criarStatusPedido(PEDIDO_ID, STATUS_PEDIDO_PAGO);
         Pagamento pagamento = getPagamento();
         resultado = getPedido(PEDIDO_ID, ID_STATUS_PAGO);
-
         when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(resultado);
         when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
         when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
         when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
-
         doNothing().when(alterarPedidoStatusValidator).validarPago(anyLong());
         //Act
         resultado = alterarPedidoStatusInputPort.pago(anyLong());
@@ -137,15 +136,14 @@ public class AlterarPedidoStatusSteps {
     }
     @Quando("o status do pedido for alterado para recebido")
     public void o_status_do_pedido_for_alterado_para_recebido() {
+        //Arrange
         StatusPedido statusPedido = criarStatusPedido(PEDIDO_ID, STATUS_PEDIDO_RECEBIDO);
         Pagamento pagamento = getPagamento();
         resultado = getPedido(PEDIDO_ID, ID_STATUS_RECEBIDO);
-
         when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(resultado);
         when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
         when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
         when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
-
         doNothing().when(alterarPedidoStatusValidator).validarRecebido(anyLong());
         //Act
         resultado = alterarPedidoStatusInputPort.recebido(anyLong());
@@ -162,69 +160,123 @@ public class AlterarPedidoStatusSteps {
     //ALTERAR STATUS DO PEDIDO PARA EM PREPARO
     @Dado("que o pedido exista no sistema com status recebido")
     public void que_o_pedido_exista_no_sistema_com_status_recebido() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        //Arrange
+        pedido = getPedido(PEDIDO_ID,ID_STATUS_RECEBIDO);
+        assertEquals(ID_STATUS_RECEBIDO, pedido.getStatusPedido());
     }
     @Quando("o status do pedido for alterado para em preparo")
     public void o_status_do_pedido_for_alterado_para_em_preparo() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        //Arrange
+        StatusPedido statusPedido = criarStatusPedido(PEDIDO_ID, STATUS_PEDIDO_EM_PREPARO);
+        Pagamento pagamento = getPagamento();
+        resultado = getPedido(PEDIDO_ID, ID_STATUS_EM_PREPARO);
+        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(resultado);
+        when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
+        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
+        when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
+        doNothing().when(alterarPedidoStatusValidator).validarEmPreparo(anyLong());
+        //Act
+        resultado = alterarPedidoStatusInputPort.emPreparo(anyLong());
     }
     @Entao("o status do pedido deve ser alterado para em preparo")
     public void o_status_do_pedido_deve_ser_alterado_para_em_preparo() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        // Assert
+        assertNotNull(resultado);
+        assertEquals(PEDIDO_ID, resultado.getId());
+        assertEquals(ID_STATUS_EM_PREPARO, resultado.getStatusPedido());
+        verify(pedidoOutputPort, times(1)).salvarPedido(pedido);
     }
 
     //ALTERAR STATUS DO PEDIDO PARA PRONTO
     @Dado("que o pedido exista no sistema com status em preparo")
     public void que_o_pedido_exista_no_sistema_com_status_em_preparo() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        //Arrange
+        pedido = getPedido(PEDIDO_ID,ID_STATUS_EM_PREPARO);
+        assertEquals(ID_STATUS_EM_PREPARO, pedido.getStatusPedido());
     }
     @Quando("o status do pedido for alterado para pronto")
     public void o_status_do_pedido_for_alterado_para_pronto() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        //Arrange
+        StatusPedido statusPedido = criarStatusPedido(PEDIDO_ID, STATUS_PEDIDO_PRONTO);
+        Pagamento pagamento = getPagamento();
+        resultado = getPedido(PEDIDO_ID, ID_STATUS_PRONTO);
+        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(resultado);
+        when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
+        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
+        when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
+        doNothing().when(alterarPedidoStatusValidator).validarPronto(anyLong());
+        //Act
+        resultado = alterarPedidoStatusInputPort.pronto(anyLong());
     }
     @Entao("o status do pedido deve ser alterado para pronto")
     public void o_status_do_pedido_deve_ser_alterado_para_pronto() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        // Assert
+        assertNotNull(resultado);
+        assertEquals(PEDIDO_ID, resultado.getId());
+        assertEquals(ID_STATUS_PRONTO, resultado.getStatusPedido());
+        verify(pedidoOutputPort, times(1)).salvarPedido(pedido);
     }
 
     //ALTERAR STATUS DO PEDIDO PARA FINALIZADO
     @Dado("que o pedido exista no sistema com status pronto")
     public void que_o_pedido_exista_no_sistema_com_status_pronto() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        //Arrange
+        pedido = getPedido(PEDIDO_ID,ID_STATUS_PRONTO);
+        assertEquals(ID_STATUS_PRONTO, pedido.getStatusPedido());
     }
     @Quando("o status do pedido for alterado para finalizado")
     public void o_status_do_pedido_for_alterado_para_finalizado() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        //Arrange
+        StatusPedido statusPedido = criarStatusPedido(PEDIDO_ID, STATUS_PEDIDO_FINALIZADO);
+        Pagamento pagamento = getPagamento();
+        resultado = getPedido(PEDIDO_ID, ID_STATUS_FINALIZADO);
+        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(resultado);
+        when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
+        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
+        when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
+        doNothing().when(alterarPedidoStatusValidator).validarFinalizado(anyLong());
+        //Act
+        resultado = alterarPedidoStatusInputPort.finalizado(anyLong());
     }
     @Entao("o status do pedido deve ser alterado finalizado")
     public void o_status_do_pedido_deve_ser_alterado_finalizado() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        // Assert
+        assertNotNull(resultado);
+        assertEquals(PEDIDO_ID, resultado.getId());
+        assertEquals(ID_STATUS_FINALIZADO, resultado.getStatusPedido());
+        verify(pedidoOutputPort, times(1)).salvarPedido(pedido);
     }
 
     //ALTERAR STATUS DO PEDIDO PARA CANCELADO
     @Dado("que o pedido exista no sistema com status diferente de cancelado")
     public void que_o_pedido_exista_no_sistema_com_status_diferente_de_cancelado() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        //Arrange
+        pedido = getPedido(PEDIDO_ID,ID_STATUS_AGUARDAMDO_PAGAMENTO);
+        assertNotEquals(ID_STATUS_CANCELADO, pedido.getStatusPedido());
     }
     @Quando("o status do pedido for alterado para cancelado")
     public void o_status_do_pedido_for_alterado_para_cancelado() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        //Arrange
+        StatusPedido statusPedido = criarStatusPedido(PEDIDO_ID, STATUS_PEDIDO_CANCELADO);
+        Pagamento pagamento = getPagamento();
+        resultado = getPedido(PEDIDO_ID, ID_STATUS_CANCELADO);
+
+        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(resultado);
+        when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
+        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
+        when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
+
+        doNothing().when(alterarPedidoStatusValidator).validarCancelado(anyLong());
+        //Act
+        resultado = alterarPedidoStatusInputPort.cancelado(anyLong());
     }
     @Entao("o status do pedido deve ser alterado cancelado")
     public void o_status_do_pedido_deve_ser_alterado_cancelado() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        // Assert
+        assertNotNull(resultado);
+        assertEquals(PEDIDO_ID, resultado.getId());
+        assertEquals(ID_STATUS_CANCELADO, resultado.getStatusPedido());
+        verify(pedidoOutputPort, times(1)).salvarPedido(pedido);
     }
 
 
