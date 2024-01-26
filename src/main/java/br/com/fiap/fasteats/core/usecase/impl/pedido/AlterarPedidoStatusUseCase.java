@@ -3,7 +3,9 @@ package br.com.fiap.fasteats.core.usecase.impl.pedido;
 import br.com.fiap.fasteats.core.dataprovider.PagamentoOutputPort;
 import br.com.fiap.fasteats.core.dataprovider.PedidoOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.PedidoNotFound;
+import br.com.fiap.fasteats.core.domain.exception.RegraNegocioException;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
+import br.com.fiap.fasteats.core.domain.model.StatusPedido;
 import br.com.fiap.fasteats.core.usecase.pedido.AlterarPedidoStatusInputPort;
 import br.com.fiap.fasteats.core.usecase.pedido.StatusPedidoInputPort;
 import br.com.fiap.fasteats.core.validator.AlterarPedidoStatusValidator;
@@ -19,9 +21,9 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
     private final PagamentoOutputPort pagamentoOutputPort;
 
     public AlterarPedidoStatusUseCase(AlterarPedidoStatusValidator alterarPedidoStatusValidator,
-            StatusPedidoInputPort statusPedidoInputPort,
-            PedidoOutputPort pedidoOutputPort,
-            PagamentoOutputPort pagamentoOutputPort) {
+                                      StatusPedidoInputPort statusPedidoInputPort,
+                                      PedidoOutputPort pedidoOutputPort,
+                                      PagamentoOutputPort pagamentoOutputPort) {
         this.alterarPedidoStatusValidator = alterarPedidoStatusValidator;
         this.statusPedidoInputPort = statusPedidoInputPort;
         this.pedidoOutputPort = pedidoOutputPort;
@@ -89,9 +91,8 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
 
     @Override
     public Pedido atualizarStatusPedido(Long pedidoId, Long idStatus) {
-        Pedido pedido = recuperarPedido(pedidoId);
-        Pedido pedidoAtualizado = atualizarStatusPedidoPorIdStatus(pedido, idStatus);
-        return formatarPedido(pedidoOutputPort.salvarPedido(pedidoAtualizado));
+        String statusPedidoNome = statusPedidoInputPort.consultar(idStatus).getNome();
+        return verificarAtualizarStatusPedido(pedidoId, statusPedidoNome);
     }
 
     private Pedido recuperarPedido(Long pedidoId) {
@@ -104,12 +105,20 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
         return pedido;
     }
 
-    private Pedido atualizarStatusPedidoPorIdStatus(Pedido pedido, Long idStatus) {
-        pedido.setStatusPedido(statusPedidoInputPort.consultar(idStatus).getId());
-        return pedido;
-    }
-
     private Pedido formatarPedido(Pedido pedido) {
         return PedidoUseCase.formatarPedido(pedido, pagamentoOutputPort);
+    }
+
+    private Pedido verificarAtualizarStatusPedido(Long pedidoId, String novoStatusPedido) {
+        return switch (novoStatusPedido) {
+            case STATUS_PEDIDO_AGUARDANDO_PAGAMENTO -> aguardandoPagamento(pedidoId);
+            case STATUS_PEDIDO_PAGO -> pago(pedidoId);
+            case STATUS_PEDIDO_RECEBIDO -> recebido(pedidoId);
+            case STATUS_PEDIDO_EM_PREPARO -> emPreparo(pedidoId);
+            case STATUS_PEDIDO_PRONTO -> pronto(pedidoId);
+            case STATUS_PEDIDO_FINALIZADO -> finalizado(pedidoId);
+            case STATUS_PEDIDO_CANCELADO -> cancelado(pedidoId);
+            default -> throw new RegraNegocioException("Status do pedido inválido");
+        };
     }
 }

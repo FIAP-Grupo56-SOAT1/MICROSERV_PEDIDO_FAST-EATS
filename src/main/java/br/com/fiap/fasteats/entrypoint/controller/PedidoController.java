@@ -77,6 +77,7 @@ public class PedidoController {
         return new ResponseEntity<>(pedidoResponse, HttpStatus.OK);
     }
 
+
     @PatchMapping("{idPedido}/confirmar")
     @Operation(summary = "Confirmar pedido", description = "Confirma um pedido.")
     public ResponseEntity<PedidoResponse> confirmarPedido(@PathVariable("idPedido") Long idPedido,
