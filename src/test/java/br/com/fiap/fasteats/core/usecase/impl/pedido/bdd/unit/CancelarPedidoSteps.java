@@ -9,6 +9,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.*;
 
 public class CancelarPedidoSteps {
 
+    @InjectMocks
     private CancelarPedidoUseCase cancelarPedidoUseCase;
     @Mock
     private PedidoInputPort pedidoInputPort;
@@ -38,10 +40,6 @@ public class CancelarPedidoSteps {
     @Before
     public void setUp() {
         openMocks = MockitoAnnotations.openMocks(this);
-        cancelarPedidoUseCase = new CancelarPedidoUseCase(
-                pedidoInputPort,
-                alterarPedidoStatusInputPort
-        );
     }
 
     @After
