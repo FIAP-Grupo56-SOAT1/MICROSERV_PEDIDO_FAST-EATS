@@ -27,3 +27,4 @@ replay_pid*
 /.vscode/
 .project
 /api-fasteats.iml
+/allure-results/
