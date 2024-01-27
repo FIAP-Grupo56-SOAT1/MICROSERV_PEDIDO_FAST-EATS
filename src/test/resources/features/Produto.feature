@@ -36,8 +36,8 @@ Funcionalidade: Produto
     Quando eu deletar a produto
     Entao a produto deve ser removida
 
-  Cenario: Listar todas as produtos
-    Dado que existem produtos cadastradas
+  Cenario: Listar todos as produtos
+    Dado que existem produtos cadastrados
     Quando eu listar todas as produtos
     Entao devo receber a lista de produtos
 

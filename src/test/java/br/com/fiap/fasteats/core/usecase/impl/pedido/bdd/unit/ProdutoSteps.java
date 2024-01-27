@@ -196,8 +196,8 @@ public class ProdutoSteps {
         verify(produtoOutputPort, times(1)).deletar(idProduto);
     }
 
-    @Dado("que existem produtos cadastradas")
-    public void que_existem_produtos_cadastradas() {
+    @Dado("que existem produtos cadastrados")
+    public void que_existem_produtos_cadastrados() {
         produtos = List.of(getProduto(idProduto, "Hambúrguer"),getProduto(2L, "Hambúrguer X"));
     }
 
