@@ -58,6 +58,7 @@ class ProdutoPedidoUseCaseUnitTest {
         produtoPedido.setIdPedido(idPedido);
         produtoPedido.setIdProduto(idProduto);
         produtoPedido.setQuantidade(1);
+        produtoPedido.setDescricaoProduto("Teste");
 
         Pedido pedido = new Pedido();
         pedido.setId(idPedido);
@@ -84,6 +85,7 @@ class ProdutoPedidoUseCaseUnitTest {
         assertEquals(idStatusPedido, resultado.getStatusPedido());
         assertNotNull(resultado.getProdutos());
         assertEquals(1, resultado.getProdutos().size());
+        assertEquals(pedidoModificado.getProdutos().get(0).hashCode(), produtoPedido.hashCode());
 
         verify(pedidoInputPort, times(1)).consultar(idPedido);
         verify(produtoInputPort, times(1)).consultar(idProduto);
