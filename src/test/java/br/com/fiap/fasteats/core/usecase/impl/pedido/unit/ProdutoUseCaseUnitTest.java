@@ -1,12 +1,12 @@
 package br.com.fiap.fasteats.core.usecase.impl.pedido.unit;
 
+import br.com.fiap.fasteats.core.dataprovider.CategoriaOutputPort;
+import br.com.fiap.fasteats.core.dataprovider.ProdutoOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.CategoriaNotFound;
 import br.com.fiap.fasteats.core.domain.exception.ProdutoNotFound;
 import br.com.fiap.fasteats.core.domain.model.Categoria;
 import br.com.fiap.fasteats.core.domain.model.Produto;
 import br.com.fiap.fasteats.core.usecase.impl.ProdutoUseCase;
-import br.com.fiap.fasteats.core.dataprovider.CategoriaOutputPort;
-import br.com.fiap.fasteats.core.dataprovider.ProdutoOutputPort;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

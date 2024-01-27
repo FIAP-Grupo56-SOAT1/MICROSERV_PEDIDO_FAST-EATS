@@ -1,10 +1,12 @@
 package br.com.fiap.fasteats.core.usecase.impl.pedido.unit;
 
+import br.com.fiap.fasteats.core.dataprovider.StatusPedidoOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.StatusPedidoNotFound;
 import br.com.fiap.fasteats.core.domain.model.StatusPedido;
 import br.com.fiap.fasteats.core.usecase.impl.pedido.StatusPedidoUseCase;
-import br.com.fiap.fasteats.core.dataprovider.StatusPedidoOutputPort;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 

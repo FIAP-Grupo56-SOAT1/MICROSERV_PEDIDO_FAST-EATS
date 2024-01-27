@@ -1,7 +1,7 @@
 package br.com.fiap.fasteats.config;
 
-import br.com.fiap.fasteats.dataprovider.ClienteAdapter;
 import br.com.fiap.fasteats.core.usecase.impl.ClienteUseCase;
+import br.com.fiap.fasteats.dataprovider.ClienteAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

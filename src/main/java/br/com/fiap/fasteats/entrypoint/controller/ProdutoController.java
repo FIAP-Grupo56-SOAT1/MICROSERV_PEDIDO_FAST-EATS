@@ -1,10 +1,10 @@
 package br.com.fiap.fasteats.entrypoint.controller;
 
+import br.com.fiap.fasteats.core.domain.model.Produto;
+import br.com.fiap.fasteats.core.usecase.ProdutoInputPort;
 import br.com.fiap.fasteats.entrypoint.controller.mapper.ProdutoMapper;
 import br.com.fiap.fasteats.entrypoint.controller.request.ProdutoRequest;
 import br.com.fiap.fasteats.entrypoint.controller.response.ProdutoResponse;
-import br.com.fiap.fasteats.core.domain.model.Produto;
-import br.com.fiap.fasteats.core.usecase.ProdutoInputPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

@@ -1,13 +1,16 @@
 package br.com.fiap.fasteats.dataprovider.repository.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = "cpf")
 @Table(name = "clientes")
 @Entity(name = "Cliente")
 public class ClienteEntity {

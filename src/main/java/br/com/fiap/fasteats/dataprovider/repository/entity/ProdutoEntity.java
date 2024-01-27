@@ -1,15 +1,15 @@
 package br.com.fiap.fasteats.dataprovider.repository.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity(name = "Produto")
 @Table(name = "produtos")
-@EqualsAndHashCode(of = "id")
 public class ProdutoEntity {
 
     @Id

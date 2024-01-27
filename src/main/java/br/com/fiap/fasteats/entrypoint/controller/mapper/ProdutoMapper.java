@@ -1,8 +1,8 @@
 package br.com.fiap.fasteats.entrypoint.controller.mapper;
 
+import br.com.fiap.fasteats.core.domain.model.Produto;
 import br.com.fiap.fasteats.entrypoint.controller.request.ProdutoRequest;
 import br.com.fiap.fasteats.entrypoint.controller.response.ProdutoResponse;
-import br.com.fiap.fasteats.core.domain.model.Produto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
