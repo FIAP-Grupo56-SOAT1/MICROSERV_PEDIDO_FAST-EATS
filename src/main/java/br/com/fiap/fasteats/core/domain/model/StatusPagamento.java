@@ -1,7 +1,5 @@
 package br.com.fiap.fasteats.core.domain.model;
 
-import java.util.Objects;
-
 public class StatusPagamento {
     private Long id;
     private String nome;
