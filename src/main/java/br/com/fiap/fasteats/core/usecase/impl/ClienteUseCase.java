@@ -1,12 +1,12 @@
 package br.com.fiap.fasteats.core.usecase.impl;
 
+import br.com.fiap.fasteats.core.dataprovider.ClienteOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.ClienteNotFound;
 import br.com.fiap.fasteats.core.domain.exception.ValidarClienteException;
 import br.com.fiap.fasteats.core.domain.model.Cliente;
 import br.com.fiap.fasteats.core.domain.valueobject.Cpf;
 import br.com.fiap.fasteats.core.domain.valueobject.Email;
 import br.com.fiap.fasteats.core.usecase.ClienteInputPort;
-import br.com.fiap.fasteats.core.dataprovider.ClienteOutputPort;
 
 import java.util.List;
 

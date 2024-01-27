@@ -2,17 +2,16 @@ package br.com.fiap.fasteats.dataprovider.repository.entity;
 
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity(name = "StatusPedido")
 @Table(name = "statuspedidos")
-@EqualsAndHashCode(of = "id")
 public class StatusPedidoEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,5 +21,4 @@ public class StatusPedidoEntity {
 
     @Column()
     private Boolean ativo = true;
-
 }

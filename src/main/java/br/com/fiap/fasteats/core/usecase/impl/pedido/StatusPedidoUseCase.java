@@ -1,9 +1,9 @@
 package br.com.fiap.fasteats.core.usecase.impl.pedido;
 
+import br.com.fiap.fasteats.core.dataprovider.StatusPedidoOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.StatusPedidoNotFound;
 import br.com.fiap.fasteats.core.domain.model.StatusPedido;
 import br.com.fiap.fasteats.core.usecase.pedido.StatusPedidoInputPort;
-import br.com.fiap.fasteats.core.dataprovider.StatusPedidoOutputPort;
 
 import java.util.List;
 

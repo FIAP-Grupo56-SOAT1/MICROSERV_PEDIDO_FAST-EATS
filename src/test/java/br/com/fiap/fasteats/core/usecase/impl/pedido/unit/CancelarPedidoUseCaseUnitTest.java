@@ -2,9 +2,9 @@ package br.com.fiap.fasteats.core.usecase.impl.pedido.unit;
 
 import br.com.fiap.fasteats.core.domain.exception.ProdutoNotFound;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
+import br.com.fiap.fasteats.core.usecase.impl.pedido.CancelarPedidoUseCase;
 import br.com.fiap.fasteats.core.usecase.pedido.AlterarPedidoStatusInputPort;
 import br.com.fiap.fasteats.core.usecase.pedido.PedidoInputPort;
-import br.com.fiap.fasteats.core.usecase.impl.pedido.CancelarPedidoUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

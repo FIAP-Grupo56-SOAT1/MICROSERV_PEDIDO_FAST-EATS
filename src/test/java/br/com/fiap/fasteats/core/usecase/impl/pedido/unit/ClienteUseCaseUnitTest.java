@@ -1,10 +1,10 @@
 package br.com.fiap.fasteats.core.usecase.impl.pedido.unit;
 
+import br.com.fiap.fasteats.core.dataprovider.ClienteOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.ClienteNotFound;
 import br.com.fiap.fasteats.core.domain.exception.RegraNegocioException;
 import br.com.fiap.fasteats.core.domain.model.Cliente;
 import br.com.fiap.fasteats.core.usecase.impl.ClienteUseCase;
-import br.com.fiap.fasteats.core.dataprovider.ClienteOutputPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

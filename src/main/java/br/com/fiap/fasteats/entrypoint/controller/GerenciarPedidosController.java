@@ -1,9 +1,9 @@
 package br.com.fiap.fasteats.entrypoint.controller;
 
-import br.com.fiap.fasteats.entrypoint.controller.mapper.GerenciarPedidoMapper;
-import br.com.fiap.fasteats.entrypoint.controller.response.GerenciarPedidoResponse;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
 import br.com.fiap.fasteats.core.usecase.pedido.AndamentoPedidoInputPort;
+import br.com.fiap.fasteats.entrypoint.controller.mapper.GerenciarPedidoMapper;
+import br.com.fiap.fasteats.entrypoint.controller.response.GerenciarPedidoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

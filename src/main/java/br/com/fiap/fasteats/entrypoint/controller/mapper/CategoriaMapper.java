@@ -1,9 +1,9 @@
 package br.com.fiap.fasteats.entrypoint.controller.mapper;
 
 
+import br.com.fiap.fasteats.core.domain.model.Categoria;
 import br.com.fiap.fasteats.entrypoint.controller.request.CategoriaRequest;
 import br.com.fiap.fasteats.entrypoint.controller.response.CategoriaResponse;
-import br.com.fiap.fasteats.core.domain.model.Categoria;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
