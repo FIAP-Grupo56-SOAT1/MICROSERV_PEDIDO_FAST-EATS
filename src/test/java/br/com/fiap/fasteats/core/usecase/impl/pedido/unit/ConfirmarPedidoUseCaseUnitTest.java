@@ -47,6 +47,7 @@ class ConfirmarPedidoUseCaseUnitTest {
     @Test
     @DisplayName("Deve confirmar um pedido")
     void testeConfirmarPedido() {
+        //Arrange
         Long idPedido = 1L;
         Long idStatusPedidoAguardandoPagamento = 2L;
         Long tipoPagamentoId = 2L;
@@ -80,9 +81,9 @@ class ConfirmarPedidoUseCaseUnitTest {
         doNothing().when(pedidoValidator).validarAlterarPedido(pedido);
         when(pagamentoOutputPort.gerarPagamento(pedido.getId(), tipoPagamentoId)).thenReturn(pagamento);
         when(alterarPedidoStatusInputPort.aguardandoPagamento(idPedido)).thenReturn(pedidoAguardandoPagamento);
-
+        //Act
         Pedido resultado = confirmarPedidoUseCase.confirmar(idPedido, tipoPagamentoId);
-
+        //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
         assertEquals(pagamentoAtualizado.getQrCode(), resultado.getQrCode());
@@ -95,6 +96,7 @@ class ConfirmarPedidoUseCaseUnitTest {
     @Test
     @DisplayName("Deve lançar ProdutoNotFound ao confirmar um pedido sem produtos")
     void testeConfirmarPedidoInexistente() {
+        //Arrange
         Long idPedido = 1L;
         Long tipoPagamentoId = 2L;
 
@@ -104,7 +106,7 @@ class ConfirmarPedidoUseCaseUnitTest {
         pedido.setProdutos(new ArrayList<>());
 
         when(pedidoInputPort.consultar(idPedido)).thenReturn(pedido);
-
+        //Act e Assert
         assertThrows(ProdutoNotFound.class, () -> confirmarPedidoUseCase.confirmar(idPedido, tipoPagamentoId));
         verify(pedidoInputPort, times(1)).consultar(idPedido);
         verify(pedidoInputPort, never()).atualizar(any(Pedido.class));
