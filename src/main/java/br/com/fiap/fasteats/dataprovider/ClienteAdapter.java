@@ -1,10 +1,10 @@
 package br.com.fiap.fasteats.dataprovider;
 
+import br.com.fiap.fasteats.core.dataprovider.ClienteOutputPort;
+import br.com.fiap.fasteats.core.domain.model.Cliente;
 import br.com.fiap.fasteats.dataprovider.repository.ClienteRepository;
 import br.com.fiap.fasteats.dataprovider.repository.entity.ClienteEntity;
 import br.com.fiap.fasteats.dataprovider.repository.mapper.ClienteEntityMapper;
-import br.com.fiap.fasteats.core.domain.model.Cliente;
-import br.com.fiap.fasteats.core.dataprovider.ClienteOutputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -26,14 +26,7 @@ public class ClienteAdapter implements ClienteOutputPort {
 
     @Override
     public Optional<Cliente> consultarCliente(String cpf) {
-        Optional<ClienteEntity> clienteEntity = clienteRepository.findById(cpf);
-
-        if (clienteEntity.isEmpty()) {
-            return Optional.empty();
-        }
-
-        Cliente cliente = clienteEntityMapper.toCliente(clienteEntity.get());
-        return Optional.of(cliente);
+        return clienteRepository.findById(cpf).map(clienteEntityMapper::toCliente);
     }
 
     @Override

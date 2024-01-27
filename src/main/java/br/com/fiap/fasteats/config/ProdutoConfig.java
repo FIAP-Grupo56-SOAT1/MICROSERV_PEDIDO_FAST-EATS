@@ -1,8 +1,8 @@
 package br.com.fiap.fasteats.config;
 
+import br.com.fiap.fasteats.core.usecase.impl.ProdutoUseCase;
 import br.com.fiap.fasteats.dataprovider.CategoriaAdapter;
 import br.com.fiap.fasteats.dataprovider.ProdutoAdapter;
-import br.com.fiap.fasteats.core.usecase.impl.ProdutoUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

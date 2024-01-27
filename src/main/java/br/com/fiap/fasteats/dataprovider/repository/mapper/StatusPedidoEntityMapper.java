@@ -1,7 +1,7 @@
 package br.com.fiap.fasteats.dataprovider.repository.mapper;
 
-import br.com.fiap.fasteats.dataprovider.repository.entity.StatusPedidoEntity;
 import br.com.fiap.fasteats.core.domain.model.StatusPedido;
+import br.com.fiap.fasteats.dataprovider.repository.entity.StatusPedidoEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

@@ -1,13 +1,13 @@
 package br.com.fiap.fasteats.core.usecase.impl;
 
+import br.com.fiap.fasteats.core.dataprovider.CategoriaOutputPort;
+import br.com.fiap.fasteats.core.dataprovider.ProdutoOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.CategoriaNotFound;
 import br.com.fiap.fasteats.core.domain.exception.ProdutoNotFound;
 import br.com.fiap.fasteats.core.domain.exception.ValidarValorException;
 import br.com.fiap.fasteats.core.domain.model.Categoria;
 import br.com.fiap.fasteats.core.domain.model.Produto;
 import br.com.fiap.fasteats.core.usecase.ProdutoInputPort;
-import br.com.fiap.fasteats.core.dataprovider.CategoriaOutputPort;
-import br.com.fiap.fasteats.core.dataprovider.ProdutoOutputPort;
 
 import java.util.List;
 import java.util.Optional;

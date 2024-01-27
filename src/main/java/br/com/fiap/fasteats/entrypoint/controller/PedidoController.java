@@ -1,7 +1,10 @@
 package br.com.fiap.fasteats.entrypoint.controller;
 
 import br.com.fiap.fasteats.core.domain.model.Pedido;
-import br.com.fiap.fasteats.core.usecase.pedido.*;
+import br.com.fiap.fasteats.core.usecase.pedido.AlterarPedidoStatusInputPort;
+import br.com.fiap.fasteats.core.usecase.pedido.CancelarPedidoInputPort;
+import br.com.fiap.fasteats.core.usecase.pedido.ConfirmarPedidoInputPort;
+import br.com.fiap.fasteats.core.usecase.pedido.PedidoInputPort;
 import br.com.fiap.fasteats.entrypoint.controller.mapper.PedidoMapper;
 import br.com.fiap.fasteats.entrypoint.controller.request.PedidoRequest;
 import br.com.fiap.fasteats.entrypoint.controller.response.PedidoResponse;

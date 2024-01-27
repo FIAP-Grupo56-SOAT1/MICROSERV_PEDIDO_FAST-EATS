@@ -1,7 +1,7 @@
 package br.com.fiap.fasteats.config;
 
-import br.com.fiap.fasteats.dataprovider.StatusPedidoAdapter;
 import br.com.fiap.fasteats.core.usecase.impl.pedido.StatusPedidoUseCase;
+import br.com.fiap.fasteats.dataprovider.StatusPedidoAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

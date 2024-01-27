@@ -1,9 +1,9 @@
 package br.com.fiap.fasteats.dataprovider;
 
+import br.com.fiap.fasteats.core.dataprovider.StatusPedidoOutputPort;
+import br.com.fiap.fasteats.core.domain.model.StatusPedido;
 import br.com.fiap.fasteats.dataprovider.repository.StatusPedidoRepository;
 import br.com.fiap.fasteats.dataprovider.repository.mapper.StatusPedidoEntityMapper;
-import br.com.fiap.fasteats.core.domain.model.StatusPedido;
-import br.com.fiap.fasteats.core.dataprovider.StatusPedidoOutputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,9 +18,7 @@ public class StatusPedidoAdapter implements StatusPedidoOutputPort {
 
     @Override
     public StatusPedido criar(StatusPedido statusPedido) {
-        var statusPedidoEntity = statusPedidoEntityMapper.toStatusPedidoEntity(statusPedido);
-        var statusPedidoEntitySalvo = statusPedidoRepository.save(statusPedidoEntity);
-        return statusPedidoEntityMapper.toStatusPedido(statusPedidoEntitySalvo);
+        return salvar(statusPedido);
     }
 
     @Override
@@ -30,9 +28,7 @@ public class StatusPedidoAdapter implements StatusPedidoOutputPort {
 
     @Override
     public StatusPedido atualizar(StatusPedido statusPedido) {
-        var statusPedidoEntity = statusPedidoEntityMapper.toStatusPedidoEntity(statusPedido);
-        var statusPedidoEntityAtualizado = statusPedidoRepository.save(statusPedidoEntity);
-        return statusPedidoEntityMapper.toStatusPedido(statusPedidoEntityAtualizado);
+        return salvar(statusPedido);
     }
 
     @Override
@@ -42,20 +38,19 @@ public class StatusPedidoAdapter implements StatusPedidoOutputPort {
 
     @Override
     public Optional<List<StatusPedido>> listar() {
-        var statusPedidoEntities = statusPedidoRepository.findAll();
-        var statusPedidos = statusPedidoEntities.stream()
-                .map(statusPedidoEntityMapper::toStatusPedido)
-                .toList();
-        return Optional.of(statusPedidos);
+        return Optional.of(statusPedidoRepository.findAll()
+                .stream().map(statusPedidoEntityMapper::toStatusPedido).toList());
     }
 
     @Override
     public Optional<StatusPedido> consultarPorNome(String nome) {
-        var statusPedidoEntity = statusPedidoRepository.findByNome(nome.toUpperCase());
-        var statusPedidos = statusPedidoEntity.stream()
-                .map(statusPedidoEntityMapper::toStatusPedido)
-                .toList();
-        return statusPedidos.stream().findFirst();
+        return statusPedidoRepository.findByNome(nome.toUpperCase())
+                .stream().findFirst().map(statusPedidoEntityMapper::toStatusPedido);
+    }
+
+    private StatusPedido salvar(StatusPedido statusPedido) {
+        var statusPedidoEntity = statusPedidoEntityMapper.toStatusPedidoEntity(statusPedido);
+        return statusPedidoEntityMapper.toStatusPedido(statusPedidoRepository.save(statusPedidoEntity));
     }
 }
 

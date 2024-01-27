@@ -1,10 +1,10 @@
 package br.com.fiap.fasteats.entrypoint.controller;
 
+import br.com.fiap.fasteats.core.domain.model.StatusPedido;
+import br.com.fiap.fasteats.core.usecase.pedido.StatusPedidoInputPort;
 import br.com.fiap.fasteats.entrypoint.controller.mapper.StatusPedidoMapper;
 import br.com.fiap.fasteats.entrypoint.controller.request.StatusPedidoRequest;
 import br.com.fiap.fasteats.entrypoint.controller.response.StatusPedidoResponse;
-import br.com.fiap.fasteats.core.domain.model.StatusPedido;
-import br.com.fiap.fasteats.core.usecase.pedido.StatusPedidoInputPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

@@ -3,7 +3,6 @@ package br.com.fiap.fasteats.dataprovider;
 import br.com.fiap.fasteats.core.dataprovider.ProdutoPedidoOutputPort;
 import br.com.fiap.fasteats.core.domain.model.ProdutoPedido;
 import br.com.fiap.fasteats.dataprovider.repository.ProdutoPedidoRepository;
-import br.com.fiap.fasteats.dataprovider.repository.entity.ProdutoPedidoEntity;
 import br.com.fiap.fasteats.dataprovider.repository.entity.ProdutoPedidoIdEntity;
 import br.com.fiap.fasteats.dataprovider.repository.mapper.ProdutoPedidoEntityMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +26,6 @@ public class ProdutoPedidoAdapter implements ProdutoPedidoOutputPort {
     @Override
     public Optional<ProdutoPedido> consultarProdutoPedido(ProdutoPedido produtoPedido) {
         ProdutoPedidoIdEntity id = produtoPedidoEntityMapper.toProdutoPedidoId(produtoPedido);
-        Optional<ProdutoPedidoEntity> produtoPedidoEntityOptional = produtoPedidoRepository.findById(id);
-
-        if (produtoPedidoEntityOptional.isEmpty()) {
-            return Optional.empty();
-        }
-
-        ProdutoPedido produtoPedidoConsulta = produtoPedidoEntityMapper.toProdutoPedido(produtoPedidoEntityOptional.get());
-        return Optional.of(produtoPedidoConsulta);
+        return produtoPedidoRepository.findById(id).map(produtoPedidoEntityMapper::toProdutoPedido);
     }
 }
