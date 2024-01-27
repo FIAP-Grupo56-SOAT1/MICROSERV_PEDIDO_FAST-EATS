@@ -2,9 +2,7 @@ package br.com.fiap.fasteats.core.usecase.impl.pedido.unit;
 
 import br.com.fiap.fasteats.core.dataprovider.PagamentoOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.ProdutoNotFound;
-import br.com.fiap.fasteats.core.domain.model.Pagamento;
-import br.com.fiap.fasteats.core.domain.model.Pedido;
-import br.com.fiap.fasteats.core.domain.model.ProdutoPedido;
+import br.com.fiap.fasteats.core.domain.model.*;
 import br.com.fiap.fasteats.core.usecase.impl.pedido.ConfirmarPedidoUseCase;
 import br.com.fiap.fasteats.core.usecase.pedido.AlterarPedidoStatusInputPort;
 import br.com.fiap.fasteats.core.usecase.pedido.ConfirmarPedidoInputPort;
@@ -16,8 +14,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import static br.com.fiap.fasteats.core.constants.FormaPagamentoConstants.MERCADO_PAGO;
+import static br.com.fiap.fasteats.core.constants.FormaPagamentoConstants.PIX;
+import static br.com.fiap.fasteats.core.constants.StatusPagamentoConstants.STATUS_EM_PROCESSAMENTO;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -69,11 +71,24 @@ class ConfirmarPedidoUseCaseUnitTest {
         pedidoAguardandoPagamento.setQrCode("qrCode");
         pedidoAguardandoPagamento.setUrlPagamento("urlPagamento");
 
-        Pagamento pagamento = new Pagamento();
-        pagamento.setId(1L);
+        FormaPagamento formaPagamento = new FormaPagamento(1L, MERCADO_PAGO, true);
+        StatusPagamento statusPagamento = new StatusPagamento(1L, STATUS_EM_PROCESSAMENTO, true);
+
+        LocalDateTime dataHoraTeste = LocalDateTime.now();
+
+        Pagamento pagamento = new Pagamento(1L, formaPagamento, statusPagamento, pedido,
+                dataHoraTeste, dataHoraTeste, dataHoraTeste,
+                123456L, "qrCode", "urlPagamento");
 
         Pagamento pagamentoAtualizado = new Pagamento();
         pagamentoAtualizado.setId(1L);
+        pagamentoAtualizado.setFormaPagamento(formaPagamento);
+        pagamentoAtualizado.setStatusPagamento(statusPagamento);
+        pagamentoAtualizado.setPedido(pedido);
+        pagamentoAtualizado.setDataHoraCriado(dataHoraTeste);
+        pagamentoAtualizado.setDataHoraProcessamento(dataHoraTeste);
+        pagamentoAtualizado.setDataHoraFinalizado(dataHoraTeste);
+        pagamentoAtualizado.setIdPagamentoExterno(123456L);
         pagamentoAtualizado.setQrCode("qrCode");
         pagamentoAtualizado.setUrlPagamento("urlPagamento");
 
