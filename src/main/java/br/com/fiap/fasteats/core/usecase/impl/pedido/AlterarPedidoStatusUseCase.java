@@ -5,7 +5,6 @@ import br.com.fiap.fasteats.core.dataprovider.PedidoOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.PedidoNotFound;
 import br.com.fiap.fasteats.core.domain.exception.RegraNegocioException;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
-import br.com.fiap.fasteats.core.domain.model.StatusPedido;
 import br.com.fiap.fasteats.core.usecase.pedido.AlterarPedidoStatusInputPort;
 import br.com.fiap.fasteats.core.usecase.pedido.StatusPedidoInputPort;
 import br.com.fiap.fasteats.core.validator.AlterarPedidoStatusValidator;
