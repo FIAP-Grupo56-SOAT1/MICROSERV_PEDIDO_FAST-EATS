@@ -38,6 +38,7 @@ class AndamentoPedidoUseCaseUnitTest {
     @Test
     @DisplayName("Deve consultar lista de pedidos em andamento")
     void testeConsultarAndamentoPedido() {
+        //Arrange
         List<Pedido> pedidos = new ArrayList<>();
         pedidos.add(new Pedido() {
             {
@@ -53,9 +54,9 @@ class AndamentoPedidoUseCaseUnitTest {
         });
 
         when(pedidoOutputPort.listarPedidosAndamento()).thenReturn(pedidos);
-
+        //Act
         List<Pedido> resultado = andamentoPedidoUseCase.consultarPedidosEmAndamento();
-
+        //Assert
         assertNotNull(resultado);
         assertEquals(pedidos.size(), resultado.size());
         verify(pedidoOutputPort, times(1)).listarPedidosAndamento();
@@ -64,6 +65,7 @@ class AndamentoPedidoUseCaseUnitTest {
     @Test
     @DisplayName("Deve consultar um pedido em andamento")
     void testeConsultarUmPedidoAndamentoPedido() {
+        //Arrange
         Long idPedido = 1L;
         List<Pedido> pedidos = new ArrayList<>();
         pedidos.add(new Pedido() {
@@ -74,9 +76,9 @@ class AndamentoPedidoUseCaseUnitTest {
         });
 
         when(pedidoOutputPort.consultarPedidoAndamento(anyLong())).thenReturn(pedidos);
-
+        //Act
         Pedido resultado = andamentoPedidoUseCase.consultarAndamentoPedido(anyLong());
-
+        //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
         verify(pedidoOutputPort, times(1)).consultarPedidoAndamento(anyLong());
@@ -85,10 +87,11 @@ class AndamentoPedidoUseCaseUnitTest {
     @Test
     @DisplayName("Não deve encontrar um pedido em andamento")
     void testeConsultarUmPedidoAndamentoPedidoNotFound() {
+        //Arrange
         List<Pedido> pedidos = new ArrayList<>();
-
+        //Act
         when(pedidoOutputPort.consultarPedidoAndamento(anyLong())).thenReturn(pedidos);
-
+        //Assert
         assertThrows(PedidoNotFound.class, () -> andamentoPedidoUseCase.consultarAndamentoPedido(anyLong()));
         verify(pedidoOutputPort, times(1)).consultarPedidoAndamento(anyLong());
     }
