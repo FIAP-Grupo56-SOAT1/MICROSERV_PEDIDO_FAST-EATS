@@ -5,14 +5,9 @@ import br.com.fiap.fasteats.core.domain.exception.ProdutoNotFound;
 import br.com.fiap.fasteats.core.domain.model.Pagamento;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
 import br.com.fiap.fasteats.core.domain.model.ProdutoPedido;
-import br.com.fiap.fasteats.core.domain.model.StatusPedido;
-import br.com.fiap.fasteats.core.usecase.impl.pedido.AlterarPedidoStatusUseCase;
 import br.com.fiap.fasteats.core.usecase.impl.pedido.ConfirmarPedidoUseCase;
 import br.com.fiap.fasteats.core.usecase.pedido.AlterarPedidoStatusInputPort;
-import br.com.fiap.fasteats.core.usecase.pedido.ConfirmarPedidoInputPort;
 import br.com.fiap.fasteats.core.usecase.pedido.PedidoInputPort;
-import br.com.fiap.fasteats.core.usecase.pedido.StatusPedidoInputPort;
-import br.com.fiap.fasteats.core.validator.AlterarPedidoStatusValidator;
 import br.com.fiap.fasteats.core.validator.PedidoValidator;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -24,9 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
-import static br.com.fiap.fasteats.core.constants.StatusPedidoConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

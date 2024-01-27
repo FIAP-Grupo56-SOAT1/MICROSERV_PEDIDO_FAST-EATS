@@ -11,14 +11,14 @@ public class ProdutoPedido {
 
     private String descricaoProduto;
 
-    private int quantidade;
+    private Integer quantidade;
 
-    private double valor;
+    private Double valor;
 
     public ProdutoPedido() {
     }
 
-    public ProdutoPedido(Long idPedido, Long idProduto, String nomeProduto, String descricaoProduto, int quantidade, double valor) {
+    public ProdutoPedido(Long idPedido, Long idProduto, String nomeProduto, String descricaoProduto, Integer quantidade, Double valor) {
         this.idPedido = idPedido;
         this.idProduto = idProduto;
         this.nomeProduto = nomeProduto;
@@ -28,7 +28,7 @@ public class ProdutoPedido {
     }
 
     public Long getIdPedido() {
-        return this.idPedido;
+        return idPedido;
     }
 
     public void setIdPedido(Long idPedido) {
@@ -36,7 +36,7 @@ public class ProdutoPedido {
     }
 
     public Long getIdProduto() {
-        return this.idProduto;
+        return idProduto;
     }
 
     public void setIdProduto(Long idProduto) {
@@ -44,7 +44,7 @@ public class ProdutoPedido {
     }
 
     public String getNomeProduto() {
-        return this.nomeProduto;
+        return nomeProduto;
     }
 
     public void setNomeProduto(String nomeProduto) {
@@ -52,16 +52,15 @@ public class ProdutoPedido {
     }
 
     public String getDescricaoProduto() {
-        return this.descricaoProduto;
+        return descricaoProduto;
     }
 
     public void setDescricaoProduto(String descricaoProduto) {
         this.descricaoProduto = descricaoProduto;
     }
 
-
     public Integer getQuantidade() {
-        return this.quantidade;
+        return quantidade;
     }
 
     public void setQuantidade(Integer quantidade) {
@@ -69,68 +68,23 @@ public class ProdutoPedido {
     }
 
     public Double getValor() {
-        return this.valor;
+        return valor;
     }
 
     public void setValor(Double valor) {
         this.valor = valor;
     }
 
-    public ProdutoPedido idPedido(Long idPedido) {
-        setIdPedido(idPedido);
-        return this;
-    }
-
-    public ProdutoPedido idProduto(Long idProduto) {
-        setIdProduto(idProduto);
-        return this;
-    }
-
-    public ProdutoPedido nomeProduto(String nomeProduto) {
-        setNomeProduto(nomeProduto);
-        return this;
-    }
-
-    public ProdutoPedido descricaoProduto(String descricaoProduto) {
-        setDescricaoProduto(descricaoProduto);
-        return this;
-    }
-
-    public ProdutoPedido quantidade(Integer quantidade) {
-        setQuantidade(quantidade);
-        return this;
-    }
-
-    public ProdutoPedido valor(Double valor) {
-        setValor(valor);
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof ProdutoPedido produtoPedido)) {
-            return false;
-        }
-        return Objects.equals(idPedido, produtoPedido.idPedido) && Objects.equals(idProduto, produtoPedido.idProduto) && Objects.equals(nomeProduto, produtoPedido.nomeProduto) && Objects.equals(descricaoProduto, produtoPedido.descricaoProduto) && Objects.equals(quantidade, produtoPedido.quantidade) && Objects.equals(valor, produtoPedido.valor);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProdutoPedido that = (ProdutoPedido) o;
+        return Objects.equals(idPedido, that.idPedido) && Objects.equals(idProduto, that.idProduto) && Objects.equals(nomeProduto, that.nomeProduto) && Objects.equals(descricaoProduto, that.descricaoProduto) && Objects.equals(quantidade, that.quantidade) && Objects.equals(valor, that.valor);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(idPedido, idProduto, nomeProduto, descricaoProduto, quantidade, valor);
     }
-
-    @Override
-    public String toString() {
-        return "{" +
-                ", idPedido='" + getIdPedido() + "'" +
-                ", idProduto='" + getIdProduto() + "'" +
-                ", nomeProduto='" + getNomeProduto() + "'" +
-                ", descricaoProduto='" + getDescricaoProduto() + "'" +
-                ", quantidade='" + getQuantidade() + "'" +
-                ", valor='" + getValor() + "'" +
-                "}";
-    }
-
 }

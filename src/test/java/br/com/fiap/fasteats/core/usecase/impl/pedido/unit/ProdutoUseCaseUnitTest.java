@@ -4,6 +4,7 @@ import br.com.fiap.fasteats.core.dataprovider.CategoriaOutputPort;
 import br.com.fiap.fasteats.core.dataprovider.ProdutoOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.CategoriaNotFound;
 import br.com.fiap.fasteats.core.domain.exception.ProdutoNotFound;
+import br.com.fiap.fasteats.core.domain.exception.ValidarValorException;
 import br.com.fiap.fasteats.core.domain.model.Categoria;
 import br.com.fiap.fasteats.core.domain.model.Produto;
 import br.com.fiap.fasteats.core.usecase.impl.ProdutoUseCase;
@@ -77,6 +78,25 @@ class ProdutoUseCaseUnitTest {
 
         verify(categoriaOutputPort, times(1)).consultar(categoria.getId());
         verify(produtoOutputPort, never()).criar(produto);
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao criar um produto com valor menor que zero")
+    void deveLancarExcecaoAoCriarProdutoComValorMenorQueZero() {
+        Produto produto = new Produto();
+        produto.setNome("Hambúrguer");
+        produto.setDescricao("Delicioso hambúrguer artesanal");
+        produto.setValor(-10.0);
+        Categoria categoria = new Categoria();
+        categoria.setId(1L);
+        produto.setCategoria(categoria);
+
+        when(categoriaOutputPort.consultar(categoria.getId())).thenReturn(Optional.of(categoria));
+        when(produtoOutputPort.criar(produto)).thenReturn(produto);
+
+       assertThrows(ValidarValorException.class, () -> produtoUseCase.criar(produto));
+        verify(categoriaOutputPort, times(1)).consultar(categoria.getId());
+        verify(produtoOutputPort, times(0)).criar(produto);
     }
 
     @Test
