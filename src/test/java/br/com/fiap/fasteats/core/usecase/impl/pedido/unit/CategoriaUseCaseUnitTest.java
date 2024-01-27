@@ -1,9 +1,9 @@
 package br.com.fiap.fasteats.core.usecase.impl.pedido.unit;
 
+import br.com.fiap.fasteats.core.dataprovider.CategoriaOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.CategoriaNotFound;
 import br.com.fiap.fasteats.core.domain.model.Categoria;
 import br.com.fiap.fasteats.core.usecase.impl.CategoriaUseCase;
-import br.com.fiap.fasteats.core.dataprovider.CategoriaOutputPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,9 +1,9 @@
 package br.com.fiap.fasteats.dataprovider;
 
+import br.com.fiap.fasteats.core.dataprovider.CategoriaOutputPort;
+import br.com.fiap.fasteats.core.domain.model.Categoria;
 import br.com.fiap.fasteats.dataprovider.repository.CategoriaRepository;
 import br.com.fiap.fasteats.dataprovider.repository.mapper.CategoriaEntityMapper;
-import br.com.fiap.fasteats.core.domain.model.Categoria;
-import br.com.fiap.fasteats.core.dataprovider.CategoriaOutputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

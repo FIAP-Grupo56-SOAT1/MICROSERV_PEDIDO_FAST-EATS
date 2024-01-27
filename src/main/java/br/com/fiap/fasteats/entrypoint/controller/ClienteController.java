@@ -1,10 +1,10 @@
 package br.com.fiap.fasteats.entrypoint.controller;
 
+import br.com.fiap.fasteats.core.domain.model.Cliente;
+import br.com.fiap.fasteats.core.usecase.ClienteInputPort;
 import br.com.fiap.fasteats.entrypoint.controller.mapper.ClienteMapper;
 import br.com.fiap.fasteats.entrypoint.controller.request.ClienteRequest;
 import br.com.fiap.fasteats.entrypoint.controller.response.ClienteResponse;
-import br.com.fiap.fasteats.core.domain.model.Cliente;
-import br.com.fiap.fasteats.core.usecase.ClienteInputPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 

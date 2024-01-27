@@ -1,7 +1,7 @@
 package br.com.fiap.fasteats.dataprovider.repository.mapper;
 
-import br.com.fiap.fasteats.dataprovider.repository.entity.ProdutoEntity;
 import br.com.fiap.fasteats.core.domain.model.Produto;
+import br.com.fiap.fasteats.dataprovider.repository.entity.ProdutoEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

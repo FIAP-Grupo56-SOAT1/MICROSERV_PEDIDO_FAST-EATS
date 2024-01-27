@@ -1,9 +1,9 @@
 package br.com.fiap.fasteats.core.usecase.impl;
 
+import br.com.fiap.fasteats.core.dataprovider.CategoriaOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.CategoriaNotFound;
 import br.com.fiap.fasteats.core.domain.model.Categoria;
 import br.com.fiap.fasteats.core.usecase.CategoriaInputPort;
-import br.com.fiap.fasteats.core.dataprovider.CategoriaOutputPort;
 
 import java.util.List;
 
