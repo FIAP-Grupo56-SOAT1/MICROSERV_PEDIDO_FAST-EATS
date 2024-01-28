@@ -259,6 +259,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
         verify(pedidoOutputPort, times(1)).salvarPedido(pedido);
     }
 
+
     private static Pedido getPedido(Long idPedido, Long idStatusPedido) {
         Pedido pedido = new Pedido();
         pedido.setId(idPedido);
