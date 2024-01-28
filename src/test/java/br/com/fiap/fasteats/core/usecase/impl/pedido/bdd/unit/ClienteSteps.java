@@ -1,14 +1,12 @@
 package br.com.fiap.fasteats.core.usecase.impl.pedido.bdd.unit;
 
-import br.com.fiap.fasteats.core.dataprovider.CategoriaOutputPort;
 import br.com.fiap.fasteats.core.dataprovider.ClienteOutputPort;
 import br.com.fiap.fasteats.core.dataprovider.ProdutoOutputPort;
-import br.com.fiap.fasteats.core.domain.exception.*;
-import br.com.fiap.fasteats.core.domain.model.Categoria;
+import br.com.fiap.fasteats.core.domain.exception.ClienteNotFound;
+import br.com.fiap.fasteats.core.domain.exception.RegraNegocioException;
+import br.com.fiap.fasteats.core.domain.exception.ValidarClienteException;
 import br.com.fiap.fasteats.core.domain.model.Cliente;
-import br.com.fiap.fasteats.core.domain.model.Produto;
 import br.com.fiap.fasteats.core.usecase.impl.ClienteUseCase;
-import br.com.fiap.fasteats.core.usecase.impl.ProdutoUseCase;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.pt.Dado;
@@ -18,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

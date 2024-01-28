@@ -6,7 +6,6 @@ import br.com.fiap.fasteats.core.domain.exception.CategoriaNotFound;
 import br.com.fiap.fasteats.core.domain.exception.ProdutoNotFound;
 import br.com.fiap.fasteats.core.domain.model.Categoria;
 import br.com.fiap.fasteats.core.domain.model.Produto;
-import br.com.fiap.fasteats.core.usecase.impl.CategoriaUseCase;
 import br.com.fiap.fasteats.core.usecase.impl.ProdutoUseCase;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -21,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 public class ProdutoSteps {

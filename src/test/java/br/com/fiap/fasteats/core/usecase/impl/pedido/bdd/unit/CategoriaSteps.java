@@ -1,28 +1,22 @@
 package br.com.fiap.fasteats.core.usecase.impl.pedido.bdd.unit;
 
 import br.com.fiap.fasteats.core.dataprovider.CategoriaOutputPort;
-import br.com.fiap.fasteats.core.dataprovider.CategoriaOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.CategoriaNotFound;
-import br.com.fiap.fasteats.core.domain.exception.RegraNegocioException;
 import br.com.fiap.fasteats.core.domain.model.Categoria;
-import br.com.fiap.fasteats.core.usecase.impl.CategoriaUseCase;
 import br.com.fiap.fasteats.core.usecase.impl.CategoriaUseCase;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.pt.Dado;
-import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 

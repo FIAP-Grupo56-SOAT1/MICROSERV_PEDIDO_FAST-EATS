@@ -2,7 +2,6 @@ package br.com.fiap.fasteats.core.usecase.impl.pedido.bdd.unit;
 
 import br.com.fiap.fasteats.core.dataprovider.ProdutoPedidoOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.ProdutoNotFound;
-import br.com.fiap.fasteats.core.domain.exception.RegraNegocioException;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
 import br.com.fiap.fasteats.core.domain.model.Produto;
 import br.com.fiap.fasteats.core.domain.model.ProdutoPedido;

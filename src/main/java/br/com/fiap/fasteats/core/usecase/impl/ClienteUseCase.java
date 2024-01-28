@@ -4,12 +4,10 @@ import br.com.fiap.fasteats.core.dataprovider.ClienteOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.ClienteNotFound;
 import br.com.fiap.fasteats.core.domain.exception.RegraNegocioException;
 import br.com.fiap.fasteats.core.domain.exception.ValidarClienteException;
-import br.com.fiap.fasteats.core.domain.exception.ValidarValorException;
 import br.com.fiap.fasteats.core.domain.model.Cliente;
 import br.com.fiap.fasteats.core.domain.valueobject.Cpf;
 import br.com.fiap.fasteats.core.domain.valueobject.Email;
 import br.com.fiap.fasteats.core.usecase.ClienteInputPort;
-import ch.qos.logback.core.net.server.Client;
 
 import java.util.List;
 
