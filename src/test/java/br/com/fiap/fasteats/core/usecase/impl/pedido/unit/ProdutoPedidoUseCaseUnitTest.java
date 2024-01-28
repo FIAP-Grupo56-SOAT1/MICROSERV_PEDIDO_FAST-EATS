@@ -1,6 +1,7 @@
 package br.com.fiap.fasteats.core.usecase.impl.pedido.unit;
 
 import br.com.fiap.fasteats.core.dataprovider.ProdutoPedidoOutputPort;
+import br.com.fiap.fasteats.core.domain.exception.RegraNegocioException;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
 import br.com.fiap.fasteats.core.domain.model.Produto;
 import br.com.fiap.fasteats.core.domain.model.ProdutoPedido;
@@ -17,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -93,6 +95,42 @@ class ProdutoPedidoUseCaseUnitTest {
     }
 
     @Test
+    @DisplayName("Deve apresentar erro ao adicionar um produto que já existe no pedido")
+    void testeAdicionarProdutoQueJaExisteNoPedido() {
+        Long idPedido = 1L;
+        Long idProduto = 2L;
+        Long idStatusPedido = 2L;
+        ProdutoPedido produtoPedido = new ProdutoPedido();
+        produtoPedido.setIdPedido(idPedido);
+        produtoPedido.setIdProduto(idProduto);
+        produtoPedido.setQuantidade(1);
+        produtoPedido.setDescricaoProduto("Teste");
+
+        Pedido pedido = new Pedido();
+        pedido.setId(idPedido);
+        pedido.setStatusPedido(idStatusPedido);
+        pedido.setProdutos(List.of(produtoPedido));
+
+        Produto produto = new Produto();
+        produto.setId(idProduto);
+        produto.setValor(10.0);
+
+        Pedido pedidoModificado = new Pedido();
+        pedidoModificado.setId(idPedido);
+        pedidoModificado.setStatusPedido(idStatusPedido);
+        pedidoModificado.getProdutos().add(produtoPedido);
+
+        when(pedidoInputPort.consultar(idPedido)).thenReturn(pedido);
+        when(produtoInputPort.consultar(idProduto)).thenReturn(produto);
+        when(pedidoInputPort.atualizar(pedido)).thenReturn(pedidoModificado);
+
+        assertThrows(RegraNegocioException.class, () -> produtoPedidoUseCase.adicionarProdutoPedido(produtoPedido));
+        verify(pedidoInputPort, times(1)).consultar(idPedido);
+        verify(produtoInputPort, times(1)).consultar(idProduto);
+        verify(pedidoInputPort, times(0)).atualizar(pedido);
+    }
+
+    @Test
     @DisplayName("Deve atualizar um produto em um pedido")
     void testeAtualizarProdutoNoPedido() {
         Long idPedido = 1L;
@@ -135,6 +173,45 @@ class ProdutoPedidoUseCaseUnitTest {
         verify(pedidoInputPort, times(1)).consultar(idPedido);
         verify(produtoInputPort, times(1)).consultar(idProduto);
         verify(pedidoInputPort, times(1)).atualizar(pedido);
+    }
+
+    @Test
+    @DisplayName("Deve apresentar erro ao tentar atualizar um produto que não existe no pedido")
+    void testeAtualizarProdutoQueNaoExiteNoPedido() {
+        Long idPedido = 1L;
+        Long idProduto = 2L;
+        Long idStatusPedido = 2L;
+        ProdutoPedido produtoPedidoSalvo = new ProdutoPedido();
+        produtoPedidoSalvo.setIdPedido(idPedido);
+        produtoPedidoSalvo.setIdProduto(idProduto);
+        produtoPedidoSalvo.setQuantidade(1);
+
+        ProdutoPedido produtoPedido = new ProdutoPedido();
+        produtoPedido.setIdPedido(idPedido);
+        produtoPedido.setIdProduto(idProduto);
+        produtoPedido.setQuantidade(2);
+
+        Pedido pedido = new Pedido();
+        pedido.setId(idPedido);
+        pedido.setStatusPedido(idStatusPedido);
+
+        Produto produto = new Produto();
+        produto.setId(idProduto);
+        produto.setValor(10.0);
+
+        Pedido pedidoSalvo = new Pedido();
+        pedidoSalvo.setId(idPedido);
+        pedidoSalvo.setStatusPedido(idStatusPedido);
+        pedidoSalvo.getProdutos().add(produtoPedido);
+
+        when(pedidoInputPort.consultar(idPedido)).thenReturn(pedido);
+        when(produtoInputPort.consultar(idProduto)).thenReturn(produto);
+        when(pedidoInputPort.atualizar(pedido)).thenReturn(pedidoSalvo);
+
+        assertThrows(RegraNegocioException.class, () -> produtoPedidoUseCase.atualizarProdutoPedido(produtoPedido));
+        verify(pedidoInputPort, times(1)).consultar(idPedido);
+        verify(produtoInputPort, times(1)).consultar(idProduto);
+        verify(pedidoInputPort, times(0)).atualizar(pedido);
     }
 
     @Test

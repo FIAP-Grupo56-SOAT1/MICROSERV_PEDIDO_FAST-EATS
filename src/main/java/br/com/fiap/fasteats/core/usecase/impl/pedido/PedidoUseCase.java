@@ -75,7 +75,6 @@ public class PedidoUseCase implements PedidoInputPort {
     }
 
     private void identificarCliente(Pedido pedido) {
-
         if (!pedido.isIdentificaCliente()) {
             pedido.setCliente(CLIENTE_SEM_IDENTIFICAR);
             return;

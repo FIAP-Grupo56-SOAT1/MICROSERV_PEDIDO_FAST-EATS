@@ -5,6 +5,7 @@ import br.com.fiap.fasteats.core.dataprovider.PedidoOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.PedidoNotFound;
 import br.com.fiap.fasteats.core.domain.model.Cliente;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
+import br.com.fiap.fasteats.core.domain.model.ProdutoPedido;
 import br.com.fiap.fasteats.core.domain.model.StatusPedido;
 import br.com.fiap.fasteats.core.usecase.ClienteInputPort;
 import br.com.fiap.fasteats.core.usecase.impl.pedido.PedidoUseCase;
@@ -88,6 +89,48 @@ class PedidoUseCaseUnitTest {
         assertNotNull(resultado.getDataHoraCriado());
         verify(pedidoOutputPort, times(1)).salvarPedido(any(Pedido.class));
         verify(clienteInputPort, times(1)).criar(any(Cliente.class));
+    }
+
+    @Test
+    @DisplayName("Deve criar um pedido com cliente identificado que já existe")
+    void testeCriarPedidoComClienteIdentificadoQueJaExiste() {
+        Long idPedido = 1L;
+        String cpf = "12345678909";
+        Long idStatusPedidoCriado = 1L;
+        LocalDateTime dataHoraCriado = LocalDateTime.now();
+
+        Cliente cliente = new Cliente();
+        cliente.setCpf(cpf);
+        cliente.setPrimeiroNome("Cliente");
+        cliente.setUltimoNome("Teste");
+        cliente.setEmail("teste@teste.com");
+        cliente.setAtivo(true);
+
+
+        Pedido pedido = new Pedido();
+        pedido.setIdentificaCliente(true);
+        pedido.setCliente(cliente);
+
+        Pedido pedidoComCliente = new Pedido();
+        pedidoComCliente.setId(idPedido);
+        pedidoComCliente.setDataHoraCriado(dataHoraCriado);
+        pedidoComCliente.setStatusPedido(idStatusPedidoCriado);
+
+        StatusPedido statusPedidoCriado = criarStatusPedido(idStatusPedidoCriado, STATUS_PEDIDO_CRIADO);
+
+        when(statusPedidoInputPort.consultarPorNome(STATUS_PEDIDO_CRIADO)).thenReturn(statusPedidoCriado);
+        when(clienteInputPort.clienteExiste(cpf)).thenReturn(true);
+        when(clienteInputPort.consultar(cpf)).thenReturn(cliente);
+        when(pedidoOutputPort.salvarPedido(any(Pedido.class))).thenReturn(pedidoComCliente);
+
+        Pedido resultado = pedidoUseCase.criar(pedido);
+
+        assertNotNull(resultado);
+        assertEquals(idPedido, resultado.getId());
+        assertEquals(idStatusPedidoCriado, resultado.getStatusPedido());
+        assertNotNull(resultado.getDataHoraCriado());
+        verify(pedidoOutputPort, times(1)).salvarPedido(any(Pedido.class));
+        verify(clienteInputPort, times(0)).criar(any(Cliente.class));
     }
 
     @Test
@@ -232,6 +275,24 @@ class PedidoUseCaseUnitTest {
         assertThrows(PedidoNotFound.class, () -> pedidoUseCase.deletar(idPedido));
         verify(pedidoOutputPort, times(1)).consultarPedido(idPedido);
         verify(pedidoOutputPort, never()).deletar(idPedido);
+    }
+
+    @Test
+    @DisplayName("Deve atualizar o valor do pedido")
+    void testeAtualizarValorPedido() {
+        // Arrange
+        Pedido pedido = new Pedido();
+        ProdutoPedido produtoPedido = new ProdutoPedido();
+        produtoPedido.setValor(20.0);
+        produtoPedido.setQuantidade(2);
+        pedido.setValor(100.0);
+        pedido.setProdutos(List.of(produtoPedido));
+
+        // Act
+        pedidoUseCase.atualizarValorPedido(pedido);
+
+        // Assert
+        assertEquals(40.0, pedido.getValor());
     }
 
     private StatusPedido criarStatusPedido(Long id, String nome) {
