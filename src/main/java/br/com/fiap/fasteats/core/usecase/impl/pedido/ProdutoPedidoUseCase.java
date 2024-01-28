@@ -81,10 +81,9 @@ public class ProdutoPedidoUseCase implements ProdutoPedidoInputPort {
     }
 
     private ProdutoPedido adicionarProdutoPedido(Produto produto, ProdutoPedido produtoDoPedido, ProdutoPedido produtoPedidoRequisicao) {
-        if (produtoDoPedido.getQuantidade() == null) produtoDoPedido.setQuantidade(1);
-        produtoDoPedido.setQuantidade(produtoDoPedido.getQuantidade() + produtoPedidoRequisicao.getQuantidade());
-        produtoDoPedido.setValor(produto.getValor());
+        produtoDoPedido.setQuantidade(produtoPedidoRequisicao.getQuantidade());
         produtoDoPedido.setIdPedido(produtoPedidoRequisicao.getIdPedido());
+        produtoDoPedido.setValor(produto.getValor());
         produtoDoPedido.setIdProduto(produto.getId());
         return produtoDoPedido;
     }
