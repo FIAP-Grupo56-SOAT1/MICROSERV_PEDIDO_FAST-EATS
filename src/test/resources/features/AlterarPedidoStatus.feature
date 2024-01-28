@@ -36,3 +36,8 @@ Funcionalidade: Alterar Pedido Status
     Dado que o pedido exista no sistema com status diferente de cancelado
     Quando o status do pedido for alterado para cancelado
     Entao o status do pedido deve ser alterado cancelado
+
+  Cenario: Atualizar status do pedido para aguardando pagamento
+    Dado que o pedido exista no sistema com status criado
+    Quando o status do pedido for atualizado para aguardando pagamento
+    Entao o status do pedido deve ser atualizado para aguardando pagamento

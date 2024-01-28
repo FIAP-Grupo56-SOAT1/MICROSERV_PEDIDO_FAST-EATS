@@ -2,6 +2,7 @@ package br.com.fiap.fasteats.core.usecase.impl;
 
 import br.com.fiap.fasteats.core.dataprovider.ClienteOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.ClienteNotFound;
+import br.com.fiap.fasteats.core.domain.exception.RegraNegocioException;
 import br.com.fiap.fasteats.core.domain.exception.ValidarClienteException;
 import br.com.fiap.fasteats.core.domain.model.Cliente;
 import br.com.fiap.fasteats.core.domain.valueobject.Cpf;
@@ -21,7 +22,7 @@ public class ClienteUseCase implements ClienteInputPort {
     public Cliente criar(Cliente cliente) {
         String cpfFormatado = formatarEValidarCpf(cliente.getCpf());
         if (Boolean.TRUE.equals(clienteExiste(cpfFormatado)))
-            throw new ClienteNotFound("O Cpf " + cliente.getCpf() + " já está cadastrado");
+            throw new RegraNegocioException("O Cpf " + cliente.getCpf() + " já está cadastrado");
         cliente.setCpf(cpfFormatado);
         cliente.setAtivo(true);
         validarCliente(cliente);
@@ -62,7 +63,7 @@ public class ClienteUseCase implements ClienteInputPort {
 
     @Override
     public void validarCliente(Cliente cliente) {
-        validarEmail(cliente.getEmail());
+        validarEmail(cliente);
         if (cliente.getCpf() == null || cliente.getCpf().isEmpty())
             throw new ValidarClienteException("CPF não pode ser vazio");
         formatarEValidarCpf(cliente.getCpf());
@@ -73,9 +74,9 @@ public class ClienteUseCase implements ClienteInputPort {
         return cpfFormatado.valor();
     }
 
-    private void validarEmail(String email) {
-        Email emailFormatado = new Email(email);
-        if (emailFormatado.valor() == null || emailFormatado.valor().isEmpty())
-            throw new ValidarClienteException("Email não pode ser vazio");
+    private void validarEmail(Cliente cliente) {
+        if(cliente.getEmail() == null || cliente.getEmail().isEmpty()) throw new ValidarClienteException("Email não pode ser vazio");
+        Email emailFormatado = new Email(cliente.getEmail());
+        cliente.setEmail(emailFormatado.valor());
     }
 }

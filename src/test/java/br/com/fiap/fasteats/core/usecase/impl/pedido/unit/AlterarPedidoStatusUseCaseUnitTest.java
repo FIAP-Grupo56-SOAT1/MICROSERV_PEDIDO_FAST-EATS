@@ -15,11 +15,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
 import java.util.Optional;
 
 import static br.com.fiap.fasteats.core.constants.StatusPedidoConstants.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @DisplayName("PedidoUseCaseUnitTest")
@@ -45,16 +45,6 @@ class AlterarPedidoStatusUseCaseUnitTest {
         alterarPedidoStatusInputPort = new AlterarPedidoStatusUseCase(alterarPedidoStatusValidator,
                 statusPedidoInputPort, pedidoOutputPort, pagamentoOutputPort);
     }
-
-
-    //1L, "CRIADO"
-    //2L, "AGUARDANDO_PAGAMENTO"
-    //3L, "PAGO"
-    //4L, "RECEBIDO"
-    //5L, "EM_PREPARO"
-    //6L, "PRONTO"
-    //7L, "FINALIZADO"
-
 
     @Test
     @DisplayName("Deve atualizar o status de um pedido para aguardandoPagamento")
@@ -236,28 +226,63 @@ class AlterarPedidoStatusUseCaseUnitTest {
     }
 
     @Test
-    @DisplayName("Deve atualizar o status de um pedido")
+    @DisplayName("Deve atualizar o status de um pedido para aguardando pagamento")
     void testeAtualizarStatusPedido() {
         //Arrange
         Long idPedido = 1L;
         Long idStatusPedido = 2L;
         Long idStatusPedidoCriado = 1L;
-        StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_AGUARDANDO_PAGAMENTO);
         Pedido pedido = getPedido(idPedido, idStatusPedidoCriado);
+        List<String> statusPedidoPossiveis = List.of(
+                STATUS_PEDIDO_AGUARDANDO_PAGAMENTO,
+                STATUS_PEDIDO_PAGO,
+                STATUS_PEDIDO_RECEBIDO,
+                STATUS_PEDIDO_EM_PREPARO,
+                STATUS_PEDIDO_PRONTO,
+                STATUS_PEDIDO_FINALIZADO,
+                STATUS_PEDIDO_CANCELADO);
 
         when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
         when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
-        when(statusPedidoInputPort.consultar(anyLong())).thenReturn(statusPedido);
         doNothing().when(alterarPedidoStatusValidator).validarAguardandoPagamento(anyLong());
-        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
+
         //Act
-        Pedido resultado = alterarPedidoStatusInputPort.atualizarStatusPedido(idPedido,idStatusPedido);
+        Pedido resultado = null;
+        for(String nomeStatusPedido : statusPedidoPossiveis) {
+            StatusPedido statusPedido = criarStatusPedido(idStatusPedido, nomeStatusPedido);
+
+            when(statusPedidoInputPort.consultar(idStatusPedido)).thenReturn(statusPedido);
+            when(statusPedidoInputPort.consultarPorNome(nomeStatusPedido)).thenReturn(statusPedido);
+
+
+            resultado = alterarPedidoStatusInputPort.atualizarStatusPedido(idPedido, idStatusPedido);
+        }
+
         //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
         assertEquals(idStatusPedido, resultado.getStatusPedido());
-        verify(pedidoOutputPort, times(1)).salvarPedido(pedido);
+        verify(statusPedidoInputPort, times(7)).consultarPorNome(anyString());
+        verify(pedidoOutputPort, times(7)).salvarPedido(pedido);
     }
+
+    @Test
+    @DisplayName("Deve apresentar erro ao tentar alterar o status de um pedido para um status inválido")
+    void testeAtualizarStatusPedidoParaStatusInvalido() {
+        //Arrange
+        Long idPedido = 1L;
+        Long idStatusPedido = 2L;
+        String statusPedidoInvalido = "TESTE";
+        StatusPedido statusPedido = criarStatusPedido(idStatusPedido, statusPedidoInvalido);
+
+        when(statusPedidoInputPort.consultar(idStatusPedido)).thenReturn(statusPedido);
+
+        //Act & Assert
+        assertThrows(RuntimeException.class, () -> alterarPedidoStatusInputPort.atualizarStatusPedido(idPedido, idStatusPedido));
+        verify(statusPedidoInputPort).consultar(idStatusPedido);
+        verify(pedidoOutputPort, times(0)).salvarPedido(any());
+    }
+
 
     private static Pedido getPedido(Long idPedido, Long idStatusPedido) {
         Pedido pedido = new Pedido();

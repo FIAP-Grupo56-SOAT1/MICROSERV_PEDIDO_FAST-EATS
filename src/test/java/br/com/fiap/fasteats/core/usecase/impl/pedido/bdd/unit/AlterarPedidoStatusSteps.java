@@ -278,6 +278,29 @@ public class AlterarPedidoStatusSteps {
         verify(pedidoOutputPort, times(1)).salvarPedido(pedido);
     }
 
+    @Quando("o status do pedido for atualizado para aguardando pagamento")
+    public void o_status_do_pedido_for_atualizado_para_aguardando_pagamento() {
+        StatusPedido statusPedido = criarStatusPedido(ID_STATUS_AGUARDAMDO_PAGAMENTO, STATUS_PEDIDO_AGUARDANDO_PAGAMENTO);
+        Pagamento pagamento = getPagamento();
+        resultado = getPedido(PEDIDO_ID, ID_STATUS_AGUARDAMDO_PAGAMENTO);
+        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(resultado);
+        when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
+        when(statusPedidoInputPort.consultar(ID_STATUS_AGUARDAMDO_PAGAMENTO)).thenReturn(statusPedido);
+        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
+        when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
+        //Act
+        resultado = pedidoStatusUseCase.atualizarStatusPedido(PEDIDO_ID,ID_STATUS_AGUARDAMDO_PAGAMENTO);
+    }
+
+    @Entao("o status do pedido deve ser atualizado para aguardando pagamento")
+    public void o_status_do_pedido_deve_ser_atualizado_para_aguardando_pagamento() {
+        //Assert
+        assertNotNull(resultado);
+        assertEquals(PEDIDO_ID, resultado.getId());
+        assertEquals(ID_STATUS_AGUARDAMDO_PAGAMENTO, resultado.getStatusPedido());
+        verify(pedidoOutputPort, times(1)).salvarPedido(pedido);
+    }
+
 
     private static Pedido getPedido(Long idPedido, Long idStatusPedido) {
         Pedido pedido = new Pedido();
