@@ -26,8 +26,8 @@ public class PedidoUseCase implements PedidoInputPort {
     private final PedidoValidator pedidoValidator;
 
     public PedidoUseCase(PedidoOutputPort pedidoOutputPort, ClienteInputPort clienteInputPort,
-            StatusPedidoInputPort statusPedidoInputPort, PagamentoOutputPort pagamentoOutputPort,
-            PedidoValidator pedidoValidator) {
+                         StatusPedidoInputPort statusPedidoInputPort, PagamentoOutputPort pagamentoOutputPort,
+                         PedidoValidator pedidoValidator) {
         this.pedidoOutputPort = pedidoOutputPort;
         this.clienteInputPort = clienteInputPort;
         this.statusPedidoInputPort = statusPedidoInputPort;
@@ -93,16 +93,17 @@ public class PedidoUseCase implements PedidoInputPort {
         return formatarPedido(pedido, pagamentoOutputPort);
     }
 
-    public static Pedido formatarPedido(Pedido pedido, PagamentoOutputPort pagamentoInputPort) {
-       try {
-           Pagamento pagamento = pagamentoInputPort.consultarPorPedidoId(pedido.getId()).orElse(null);
-           if (pagamento != null) {
-               pedido.setIdPagamentoExterno(pagamento.getIdPagamentoExterno());
-               pedido.setUrlPagamento(pagamento.getUrlPagamento());
-               pedido.setQrCode(pagamento.getQrCode());
-           }
-       }catch (Exception ignored){}
-
+    public static Pedido formatarPedido(Pedido pedido, PagamentoOutputPort pagamentoOutputPort) {
+        try {
+            Pagamento pagamento = pagamentoOutputPort.consultarPorPedidoId(pedido.getId()).orElse(null);
+            if (pagamento != null) {
+                pedido.setIdPagamentoExterno(pagamento.getIdPagamentoExterno());
+                pedido.setUrlPagamento(pagamento.getUrlPagamento());
+                pedido.setQrCode(pagamento.getQrCode());
+            }
+        } catch (Exception ignored) {
+            return pedido;
+        }
         return pedido;
     }
 }

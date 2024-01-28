@@ -9,7 +9,7 @@ Funcionalidade: Cliente
   Cenario: Nao deve criar um cliente existente
     Dado que um novo cliente "FIAP" com CPF valido ja cadastrado no sistema
     Quando eu chamar o método de criação de cliente que ja existe
-    Entao devo receber uma exception ClienteNotFound para o cliente existente
+    Entao devo receber uma exception RegraNegocioException para o cliente existente
 
   Cenario: Consultar um cliente existente
     Dado que um cliente com CPF valido existe no sistema

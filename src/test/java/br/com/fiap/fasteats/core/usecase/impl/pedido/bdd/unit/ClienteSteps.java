@@ -87,10 +87,10 @@ public class ClienteSteps {
     @Quando("eu chamar o método de criação de cliente que ja existe")
     public void eu_chamar_o_método_de_criação_de_cliente_que_ja_existe() {
         when(clienteOutputPort.consultarCliente(CPF_VALIDO)).thenReturn(Optional.of(cliente));
-        assertThrows(ClienteNotFound.class, () -> clienteUseCase.criar(cliente));
+        assertThrows(RegraNegocioException.class, () -> clienteUseCase.criar(cliente));
     }
 
-    @Entao("devo receber uma exception ClienteNotFound para o cliente existente")
+    @Entao("devo receber uma exception RegraNegocioException para o cliente existente")
     public void devo_receber_uma_exception_cliente_not_found_para_o_cliente_existente() {
         verify(clienteOutputPort, times(1)).consultarCliente(CPF_VALIDO);
     }
