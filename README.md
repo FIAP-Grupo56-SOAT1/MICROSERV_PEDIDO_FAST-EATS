@@ -55,7 +55,7 @@ Wilian Douglas dos Santos Penaforte - RM348563
 - **`Para facilitar a avaliação do projeto pelos professores já deixamos pronto o arquivo .env com todas as variáveis necessárias.`**
 
 ### Executando com Docker
-Execute o comando abaixo no diretório raiz do projeto para iniciar a aplicação com junto com os seus demais serviços:
+Execute o comando abaixo no diretório raiz do projeto para executar a aplicação em conjunto com os demais serviços:
 
 ```bash
 docker-compose up -d
