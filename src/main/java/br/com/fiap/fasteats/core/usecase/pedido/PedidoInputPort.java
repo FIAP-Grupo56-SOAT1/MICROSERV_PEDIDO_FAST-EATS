@@ -16,4 +16,6 @@ public interface PedidoInputPort {
     void deletar(Long id);
 
     void atualizarValorPedido(Pedido pedido);
+
+    Pedido formatarPedido(Pedido pedido);
 }

@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class IntegracaoPagamentoImplUnitTest {
@@ -100,10 +101,10 @@ class IntegracaoPagamentoImplUnitTest {
         when(pagamentoMapper.toPagamento(pagamentoResponse)).thenReturn(new Pagamento());
 
         // Act
-        Pagamento resultado = integracaoPagamento.gerarPagamento(idPedido, idFormaPagamento);
+        integracaoPagamento.gerarPagamento(idPedido, idFormaPagamento);
 
         // Assert
-        assertNotNull(resultado);
+        verify(restTemplate).postForObject(URL_BASE + "/gerar-pagamento/pedido/{idPedido}/forma-pagamento/{idFormaPagamento}", null, PagamentoResponse.class, idPedido, idFormaPagamento);
     }
 
     @Test
