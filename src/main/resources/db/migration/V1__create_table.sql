@@ -31,12 +31,13 @@ CREATE TABLE IF NOT EXISTS `produtos`
 DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE IF NOT EXISTS `clientes`
 (
+    `id`           bigint      NOT NULL AUTO_INCREMENT,
     `cpf`          varchar(11) NOT NULL,
     `primeironome` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
     `ultimonome`   varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
     `email`        varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
     `ativo`        tinyint(1)                                                    DEFAULT NULL,
-    PRIMARY KEY (`cpf`)
+    PRIMARY KEY (`id`)
     ) ENGINE = InnoDB
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;

@@ -3,6 +3,8 @@ import java.util.Objects;
 
 
 public class Cliente {
+
+    private Long id;
     private String cpf;
     private String primeiroNome;
     private String ultimoNome;
@@ -12,7 +14,8 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(String cpf, String primeiroNome, String ultimoNome, String email, Boolean ativo) {
+    public Cliente(Long id, String cpf, String primeiroNome, String ultimoNome, String email, Boolean ativo) {
+        this.id  = id;
         this.cpf = cpf;
         this.primeiroNome = primeiroNome;
         this.ultimoNome = ultimoNome;
@@ -82,5 +85,12 @@ public class Cliente {
                 ", email='" + email + '\'' +
                 ", ativo=" + ativo +
                 '}';
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public Long getId() {
+        return id;
     }
 }
