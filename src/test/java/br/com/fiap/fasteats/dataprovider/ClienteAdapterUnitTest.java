@@ -114,7 +114,8 @@ class ClienteAdapterUnitTest {
     }
 
     private Cliente getCliente(String cpf) {
-        return new Cliente(cpf, "TESTE", "TESTE", "teste@teste.com", true);
+        long clienteId = 1L;
+        return new Cliente(clienteId,cpf, "TESTE", "TESTE", "teste@teste.com", true);
     }
 
     private ClienteEntity getClienteEntity(String cpf) {
