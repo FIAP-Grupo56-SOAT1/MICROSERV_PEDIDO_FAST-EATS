@@ -6,6 +6,10 @@ import java.util.Objects;
 public class SolicitacaoUsuario {
 
     private Long id;
+    private String cpf;
+    private LocalDateTime dataHoraSolicitacao;
+    private LocalDateTime dataHoraExecucao;
+    private String operacao;
 
     public Long getId() {
         return id;
@@ -47,10 +51,7 @@ public class SolicitacaoUsuario {
         this.operacao = operacao;
     }
 
-    private String cpf;
-    private LocalDateTime dataHoraSolicitacao;
-    private LocalDateTime dataHoraExecucao;
-    private String operacao;
+
 
     public SolicitacaoUsuario(Long id, String cpf, LocalDateTime dataHoraSolicitacao, LocalDateTime dataHoraExecucao, String operacao) {
         this.id = id;
