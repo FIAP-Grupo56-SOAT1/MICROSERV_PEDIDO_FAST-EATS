@@ -27,7 +27,7 @@ public class SolicitacaoUsuarioController {
     @Operation(summary = "Identificação do cliente e criar pedido", description = "Identifica ou não o cliente e cria um novo pedido.")
     public ResponseEntity<SolicitacaoUsuarioResponse> criarPedido(@Valid @RequestBody SolicitacaoUsuarioResponse solicitacaoRequest) {
         SolicitacaoUsuario solicitacaoUsuario = solicitacaoUsuarioMapper.toSolicitacaoUsuario(solicitacaoRequest);
-        SolicitacaoUsuario solicitacaoUsuarioCriado = solicitacaoUsuarioInputPort.criar(pedido);
+        SolicitacaoUsuario solicitacaoUsuarioCriado = solicitacaoUsuarioInputPort.criar(solicitacaoUsuario);
         SolicitacaoUsuarioResponse solicitacaoUsuarioResponse = solicitacaoUsuarioMapper.toSolicitacaoUsuarioResponse(solicitacaoUsuarioCriado);
         return new ResponseEntity<>(solicitacaoUsuarioResponse, HttpStatus.CREATED);
     }

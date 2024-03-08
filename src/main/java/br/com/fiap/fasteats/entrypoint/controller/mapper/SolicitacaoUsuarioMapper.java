@@ -7,4 +7,5 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface SolicitacaoUsuarioMapper {
     SolicitacaoUsuario toSolicitacaoUsuario(SolicitacaoUsuarioResponse solicitacaoUsuarioRequest);
+    SolicitacaoUsuarioResponse toSolicitacaoUsuarioResponse(SolicitacaoUsuario solicitacaoUsuarioRequest);
 }
