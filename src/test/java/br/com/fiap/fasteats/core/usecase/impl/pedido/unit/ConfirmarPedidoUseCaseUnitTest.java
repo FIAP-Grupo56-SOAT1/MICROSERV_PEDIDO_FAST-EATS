@@ -11,6 +11,7 @@ import br.com.fiap.fasteats.core.validator.PedidoValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -25,7 +26,6 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("ConfirmarPedidoUseCaseUnitTest")
 class ConfirmarPedidoUseCaseUnitTest {
-    private ConfirmarPedidoInputPort confirmarPedidoUseCase;
     @Mock
     private PedidoInputPort pedidoInputPort;
     @Mock
@@ -34,15 +34,12 @@ class ConfirmarPedidoUseCaseUnitTest {
     private PagamentoOutputPort pagamentoOutputPort;
     @Mock
     private PedidoValidator pedidoValidator;
+    @InjectMocks
+    private ConfirmarPedidoInputPort confirmarPedidoUseCase;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        confirmarPedidoUseCase = new ConfirmarPedidoUseCase(
-                pedidoInputPort,
-                alterarPedidoStatusInputPort,
-                pagamentoOutputPort,
-                pedidoValidator);
     }
 
     @Test
@@ -93,7 +90,7 @@ class ConfirmarPedidoUseCaseUnitTest {
 
         when(pedidoInputPort.consultar(idPedido)).thenReturn(pedido);
         doNothing().when(pedidoValidator).validarAlterarPedido(pedido);
-        when(pagamentoOutputPort.gerarPagamento(pedido.getId(), tipoPagamentoId)).thenReturn(pagamento);
+        //when(pagamentoOutputPort.gerarPagamento(pedido.getId(), tipoPagamentoId)).thenReturn(pagamento);
         when(alterarPedidoStatusInputPort.aguardandoPagamento(idPedido)).thenReturn(pedidoAguardandoPagamento);
         //Act
         Pedido resultado = confirmarPedidoUseCase.confirmar(idPedido, tipoPagamentoId);

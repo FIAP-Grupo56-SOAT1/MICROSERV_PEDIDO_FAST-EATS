@@ -2,6 +2,8 @@ package br.com.fiap.fasteats.core.validator;
 
 
 public interface AlterarPedidoStatusValidator {
+    void validarCriado(Long pedidoId);
+
     void validarAguardandoPagamento(Long pedidoId);
 
     void validarPago(Long pedidoId);

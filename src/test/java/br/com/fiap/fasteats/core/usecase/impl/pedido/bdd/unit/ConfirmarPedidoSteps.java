@@ -102,7 +102,7 @@ public class ConfirmarPedidoSteps {
     public void o_pedido_for_confirmado_deve_ser_alterado_para_novo_status_aguardando_pagamento() {
         when(pedidoInputPort.consultar(PEDIDO_ID)).thenReturn(pedido);
         doNothing().when(pedidoValidator).validarAlterarPedido(pedido);
-        when(pagamentoOutputPort.gerarPagamento(pedido.getId(), tipoPagamentoId)).thenReturn(pagamento);
+        //when(pagamentoOutputPort.gerarPagamento(pedido.getId(), tipoPagamentoId)).thenReturn(pagamento);
         when(alterarPedidoStatusInputPort.aguardandoPagamento(PEDIDO_ID)).thenReturn(pedidoAguardandoPagamento);
         //Act
         resultado = confirmarPedidoUseCase.confirmar(PEDIDO_ID, tipoPagamentoId);
