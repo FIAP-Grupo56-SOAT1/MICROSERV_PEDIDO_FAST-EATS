@@ -13,12 +13,12 @@ import java.net.URI;
 
 @Configuration
 public class AwsSQSConfig {
-    @Value("${spring.cloud.aws.credentials.access-key}")
-    private String accessKey;
-    @Value("${spring.cloud.aws.credentials.secret-key}")
-    private String secretKey;
-    @Value("${spring.cloud.aws.region.static}")
-    private String region;
+    //@Value("${spring.cloud.aws.credentials.access-key}")
+    private String accessKey = System.getenv("AWS_ACCESS_KEY_ID");
+   // @Value("${spring.cloud.aws.credentials.secret-key}")
+    private String secretKey = System.getenv("AWS_SECRET_ACCESS_KEY");
+    //@Value("${spring.cloud.aws.region.static}")
+    private String region = System.getenv("AWS_REGION");
     @Value("${spring.cloud.aws.sqs.endpoint}")
     private String endpoint;
 
