@@ -14,19 +14,18 @@ import java.net.URI;
 
 @Configuration
 public class AwsSQSConfig {
-    //@Value("${spring.cloud.aws.credentials.access-key}")
-    private final String accessKey = System.getenv("AWS_ACCESS_KEY_ID");
-   // @Value("${spring.cloud.aws.credentials.secret-key}")
-    private final String secretKey = System.getenv("AWS_SECRET_ACCESS_KEY");
-    //@Value("${spring.cloud.aws.region.static}")
 
-    private final String sessionToken = System.getenv("AWS_SESSION_TOKEN");
-    private String region = System.getenv("AWS_REGION");
     @Value("${spring.cloud.aws.sqs.endpoint}")
     private String endpoint;
 
     @Bean
     public SqsAsyncClient sqsAsyncClient() {
+
+        String accessKey = System.getenv("AWS_ACCESS_KEY_ID");
+        String secretKey = System.getenv("AWS_SECRET_ACCESS_KEY");
+        String sessionToken = System.getenv("AWS_SESSION_TOKEN");
+        String region = System.getenv("AWS_REGION");
+        System.out.println("region: " + region);
         System.out.println("accessKey: " + accessKey);
         System.out.println("secretKey: " + secretKey);
         System.out.println("sessionToken: " + sessionToken);
@@ -35,7 +34,7 @@ public class AwsSQSConfig {
                 .endpointOverride(URI.create(endpoint))
                 .region(Region.of(region))
                 .credentialsProvider(StaticCredentialsProvider
-                .create(AwsSessionCredentials.create(accessKey, secretKey, sessionToken)))
+                        .create(AwsSessionCredentials.create(accessKey, secretKey, sessionToken)))
                 .build();
     }
 
