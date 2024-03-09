@@ -10,5 +10,7 @@ public interface IntegracaoPagamento {
 
     Optional<Pagamento> consultarPorPedidoId(long pedidoId);
 
-    Pagamento gerarPagamento(Long idPedido, Long idFormaPagamento);
+    void gerarPagamento(Long idPedido, Long idFormaPagamento);
+
+    void notificarPedidoPago(Long pedidoId);
 }

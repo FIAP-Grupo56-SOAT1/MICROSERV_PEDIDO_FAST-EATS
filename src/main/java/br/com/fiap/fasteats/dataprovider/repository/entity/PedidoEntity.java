@@ -42,6 +42,6 @@ public class PedidoEntity {
     @Column(nullable = true)
     private Double valor;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pedido", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ProdutoPedidoEntity> listaProdutos = new ArrayList<>();
 }

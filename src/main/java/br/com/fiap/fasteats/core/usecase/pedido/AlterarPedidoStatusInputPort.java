@@ -3,6 +3,8 @@ package br.com.fiap.fasteats.core.usecase.pedido;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
 
 public interface AlterarPedidoStatusInputPort {
+    Pedido criado(Long pedidoId);
+
     Pedido aguardandoPagamento(Long pedidoId);
 
     Pedido pago(Long pedidoId);

@@ -89,11 +89,8 @@ public class PedidoUseCase implements PedidoInputPort {
         pedido.setCliente(clienteCriado);
     }
 
-    private Pedido formatarPedido(Pedido pedido) {
-        return formatarPedido(pedido, pagamentoOutputPort);
-    }
-
-    public static Pedido formatarPedido(Pedido pedido, PagamentoOutputPort pagamentoOutputPort) {
+    @Override
+    public Pedido formatarPedido(Pedido pedido) {
         try {
             Pagamento pagamento = pagamentoOutputPort.consultarPorPedidoId(pedido.getId()).orElse(null);
             if (pagamento != null) {
@@ -101,9 +98,9 @@ public class PedidoUseCase implements PedidoInputPort {
                 pedido.setUrlPagamento(pagamento.getUrlPagamento());
                 pedido.setQrCode(pagamento.getQrCode());
             }
+            return pedido;
         } catch (Exception ignored) {
             return pedido;
         }
-        return pedido;
     }
 }
