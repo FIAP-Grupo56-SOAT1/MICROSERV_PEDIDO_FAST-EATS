@@ -35,7 +35,7 @@ public class AwsSQSConfig {
                 .endpointOverride(URI.create(endpoint))
                 .region(Region.of(region))
                 .credentialsProvider(StaticCredentialsProvider
-                        .create(AwsSessionCredentials.create((accessKey, secretKey, sessionToken))))
+                .create(AwsSessionCredentials.create(accessKey, secretKey, sessionToken)))
                 .build();
     }
 
