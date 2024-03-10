@@ -25,32 +25,30 @@ public class SolicitacaoUsuarioUseCase implements SolicitacaoUsuarioInputPort {
     @Override
     public SolicitacaoUsuario criarSolicitacaoDesativarUsuario(SolicitacaoUsuario solicitacaoUsuario) {
 
-        var cliente = buscarClientePorCpf(solicitacaoUsuario.getCpf());
-
-
+        buscarClientePorCpf(solicitacaoUsuario.getCpf());
         solicitacaoUsuario.setDataHoraSolicitacao(LocalDateTime.now());
         solicitacaoUsuario.setOperacao(SolicitacaoUsuarioConstants.OPERACAO_DESATIVAR);
 
-        salvar(solicitacaoUsuario);
-
-        return null;
+        return salvar(solicitacaoUsuario);
     }
 
     @Override
     public SolicitacaoUsuario criarSolicitacaoExcluirUsuario(SolicitacaoUsuario solicitacaoUsuario) {
 
-        var cliente = buscarClientePorCpf(solicitacaoUsuario.getCpf());
+        buscarClientePorCpf(solicitacaoUsuario.getCpf());
         solicitacaoUsuario.setDataHoraSolicitacao(LocalDateTime.now());
         solicitacaoUsuario.setOperacao(SolicitacaoUsuarioConstants.OPERACAO_EXCLUIR);
 
-        salvar(solicitacaoUsuario);
-
-        return null;
+        return salvar(solicitacaoUsuario);
     }
 
 
     private SolicitacaoUsuario salvar(SolicitacaoUsuario solicitacaoUsuario){
-        return solicitacaoUsuarioOutputPort.salvar(solicitacaoUsuario);
+        try {
+            return solicitacaoUsuarioOutputPort.salvar(solicitacaoUsuario);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     private Cliente buscarClientePorCpf(String cpf){

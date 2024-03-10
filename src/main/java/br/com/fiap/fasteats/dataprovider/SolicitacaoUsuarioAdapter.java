@@ -13,15 +13,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SolicitacaoUsuarioAdapter implements SolicitacaoUsuarioOutputPort {
 
-    private final SolicitacaoUsuarioRepository pedidoRepository;
-    private final SolicitacaoUsuarioEntityMapper pedidoEntityMapper;
+    private final SolicitacaoUsuarioRepository solicitacaoUsuarioRepository;
+    private final SolicitacaoUsuarioEntityMapper solicitacaoUsuarioEntityMapper;
 
 
     @Override
     public SolicitacaoUsuario salvar(SolicitacaoUsuario solicitacaoUsuario) {
-        SolicitacaoUsuarioEntity solicitacaoUsuarioEntity = pedidoEntityMapper.toSolicitacaoUsuarioEntity(solicitacaoUsuario);
-        SolicitacaoUsuarioEntity solicitacaoUsuarioEntitySalvo = pedidoRepository.saveAndFlush(solicitacaoUsuarioEntity);
-        pedidoRepository.flush();
-        return pedidoEntityMapper.toSolicitacaoUsuario(solicitacaoUsuarioEntitySalvo);
+        SolicitacaoUsuarioEntity solicitacaoUsuarioEntity = solicitacaoUsuarioEntityMapper.toSolicitacaoUsuarioEntity(solicitacaoUsuario);
+        SolicitacaoUsuarioEntity solicitacaoUsuarioEntitySalvo = solicitacaoUsuarioRepository.save(solicitacaoUsuarioEntity);
+        return solicitacaoUsuarioEntityMapper.toSolicitacaoUsuario(solicitacaoUsuarioEntitySalvo);
     }
 }

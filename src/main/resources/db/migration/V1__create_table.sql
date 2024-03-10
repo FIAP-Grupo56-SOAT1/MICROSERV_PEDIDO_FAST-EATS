@@ -90,13 +90,13 @@ CREATE TABLE IF NOT EXISTS `produtosdeumpedido`
   COLLATE = utf8mb4_0900_ai_ci;
 
 
-DROP TABLE IF EXISTS `solicitacao_usuario`;
-CREATE TABLE IF NOT EXISTS `solicitacao_usuario`
+DROP TABLE IF EXISTS `solicitacaodousuario`;
+CREATE TABLE IF NOT EXISTS `solicitacaodousuario`
 (
-    `id`                        bigint NOT NULL AUTO_INCREMENT,
+    `id`                        bigint      NOT NULL AUTO_INCREMENT,
     `cpf`                       varchar(11) NOT NULL,
-    `dataHoraSolicitacao`       datetime    DEFAULT NULL,
-    `dataHoraExecucao`          datetime    DEFAULT NULL,
+    `datahorasolicitacao`       datetime    DEFAULT NULL,
+    `datahoraexecucao`          datetime    DEFAULT NULL,
     `operacao`                  varchar(200) DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB

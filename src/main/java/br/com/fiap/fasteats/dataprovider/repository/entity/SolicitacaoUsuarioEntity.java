@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "solicitacaoUsuario")
+@Entity(name = "solicitacaodousuario")
+@Table(name = "solicitacaodousuario")
 public class SolicitacaoUsuarioEntity {
 
     @Id
@@ -22,10 +22,10 @@ public class SolicitacaoUsuarioEntity {
     @Column(nullable = true, length = 11, name="cpf")
     private String cpf;
 
-    @Column(name = "dataHoraSolicitacao")
+    @Column(name = "datahorasolicitacao")
     private LocalDateTime dataHoraSolicitacao;
 
-    @Column(name = "dataHoraExecucao")
+    @Column(name = "datahoraexecucao")
     private LocalDateTime dataHoraExecucao;
 
     @Column(name = "operacao")
