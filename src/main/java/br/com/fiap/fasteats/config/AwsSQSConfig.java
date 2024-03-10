@@ -1,5 +1,6 @@
 package br.com.fiap.fasteats.config;
 
+import io.awspring.cloud.sqs.listener.QueueNotFoundStrategy;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +37,8 @@ public class AwsSQSConfig {
 
     @Bean
     public SqsTemplate sqsTemplate(SqsAsyncClient sqsAsyncClient) {
-        return SqsTemplate.builder().sqsAsyncClient(sqsAsyncClient).build();
+        return SqsTemplate.builder().sqsAsyncClient(sqsAsyncClient)
+                .configure(o -> o.queueNotFoundStrategy(QueueNotFoundStrategy.FAIL))
+                .build();
     }
 }
