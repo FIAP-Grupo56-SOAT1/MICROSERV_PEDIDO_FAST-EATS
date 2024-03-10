@@ -26,7 +26,7 @@ public class SolicitacaoUsuarioController {
     private static final String  summaryAndDescritionDesativar= "Cliente solicita desativar sua conta.";
     private static final String  summaryAndDescritionExcluir= "Cliente solicita excluir sua conta.";
 
-    @PostMapping
+    @PostMapping("criarSolicitacaoDesativarUsuario")
     @Operation(summary = summaryAndDescritionDesativar, description = summaryAndDescritionDesativar)
     public ResponseEntity<SolicitacaoUsuarioResponse> criarSolicitacaoDesativarUsuario(@Valid @RequestBody SolicitacaoUsuarioResponse solicitacaoRequest) {
         SolicitacaoUsuario solicitacaoUsuario = solicitacaoUsuarioMapper.toSolicitacaoUsuario(solicitacaoRequest);
@@ -36,7 +36,7 @@ public class SolicitacaoUsuarioController {
     }
 
 
-    @PostMapping
+    @PostMapping("criarSolicitacaoExcluirUsuario")
     @Operation(summary = summaryAndDescritionExcluir, description = summaryAndDescritionExcluir)
     public ResponseEntity<SolicitacaoUsuarioResponse> criarSolicitacaoExcluirUsuario(@Valid @RequestBody SolicitacaoUsuarioResponse solicitacaoRequest) {
         SolicitacaoUsuario solicitacaoUsuario = solicitacaoUsuarioMapper.toSolicitacaoUsuario(solicitacaoRequest);
