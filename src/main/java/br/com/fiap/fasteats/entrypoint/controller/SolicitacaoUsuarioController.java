@@ -1,6 +1,7 @@
 package br.com.fiap.fasteats.entrypoint.controller;
 
 import br.com.fiap.fasteats.core.domain.model.SolicitacaoUsuario;
+import br.com.fiap.fasteats.core.usecase.SolicitacaoUsuarioInputPort;
 import br.com.fiap.fasteats.entrypoint.controller.mapper.SolicitacaoUsuarioMapper;
 import br.com.fiap.fasteats.entrypoint.controller.response.SolicitacaoUsuarioResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,14 +23,26 @@ public class SolicitacaoUsuarioController {
     private final SolicitacaoUsuarioInputPort solicitacaoUsuarioInputPort;
     private final SolicitacaoUsuarioMapper solicitacaoUsuarioMapper;
 
+    private static final String  summaryAndDescritionDesativar= "Cliente solicita desativar sua conta.";
+    private static final String  summaryAndDescritionExcluir= "Cliente solicita excluir sua conta.";
+
     @PostMapping
-    @Operation(summary = "Identificação do cliente e criar pedido", description = "Identifica ou não o cliente e cria um novo pedido.")
-    public ResponseEntity<SolicitacaoUsuarioResponse> criarPedido(@Valid @RequestBody SolicitacaoUsuarioResponse solicitacaoRequest) {
+    @Operation(summary = summaryAndDescritionDesativar, description = summaryAndDescritionDesativar)
+    public ResponseEntity<SolicitacaoUsuarioResponse> criarSolicitacaoDesativarUsuario(@Valid @RequestBody SolicitacaoUsuarioResponse solicitacaoRequest) {
         SolicitacaoUsuario solicitacaoUsuario = solicitacaoUsuarioMapper.toSolicitacaoUsuario(solicitacaoRequest);
-        SolicitacaoUsuario solicitacaoUsuarioCriado = solicitacaoUsuarioInputPort.criar(solicitacaoUsuario);
+        SolicitacaoUsuario solicitacaoUsuarioCriado = solicitacaoUsuarioInputPort.criarSolicitacaoDesativarUsuario(solicitacaoUsuario);
         SolicitacaoUsuarioResponse solicitacaoUsuarioResponse = solicitacaoUsuarioMapper.toSolicitacaoUsuarioResponse(solicitacaoUsuarioCriado);
         return new ResponseEntity<>(solicitacaoUsuarioResponse, HttpStatus.CREATED);
     }
 
+
+    @PostMapping
+    @Operation(summary = summaryAndDescritionExcluir, description = summaryAndDescritionExcluir)
+    public ResponseEntity<SolicitacaoUsuarioResponse> criarSolicitacaoExcluirUsuario(@Valid @RequestBody SolicitacaoUsuarioResponse solicitacaoRequest) {
+        SolicitacaoUsuario solicitacaoUsuario = solicitacaoUsuarioMapper.toSolicitacaoUsuario(solicitacaoRequest);
+        SolicitacaoUsuario solicitacaoUsuarioCriado = solicitacaoUsuarioInputPort.criarSolicitacaoExcluirUsuario(solicitacaoUsuario);
+        SolicitacaoUsuarioResponse solicitacaoUsuarioResponse = solicitacaoUsuarioMapper.toSolicitacaoUsuarioResponse(solicitacaoUsuarioCriado);
+        return new ResponseEntity<>(solicitacaoUsuarioResponse, HttpStatus.CREATED);
+    }
 
 }
