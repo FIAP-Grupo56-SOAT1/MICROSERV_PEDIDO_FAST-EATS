@@ -1,7 +1,6 @@
 package br.com.fiap.fasteats.entrypoint.controller;
 
 import br.com.fiap.fasteats.core.domain.model.SolicitacaoUsuario;
-import br.com.fiap.fasteats.core.usecase.pedido.SolicitacaoUsuarioInputPort;
 import br.com.fiap.fasteats.entrypoint.controller.mapper.SolicitacaoUsuarioMapper;
 import br.com.fiap.fasteats.entrypoint.controller.response.SolicitacaoUsuarioResponse;
 import io.swagger.v3.oas.annotations.Operation;

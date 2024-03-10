@@ -1,4 +1,4 @@
-package br.com.fiap.fasteats.core.usecase.pedido;
+package br.com.fiap.fasteats.core.usecase;
 
 import br.com.fiap.fasteats.core.domain.model.SolicitacaoUsuario;
 
