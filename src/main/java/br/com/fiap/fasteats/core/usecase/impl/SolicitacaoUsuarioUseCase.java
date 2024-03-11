@@ -47,6 +47,7 @@ public class SolicitacaoUsuarioUseCase implements SolicitacaoUsuarioInputPort {
         solicitacaoUsuario.setOperacao(SolicitacaoUsuarioConstants.OPERACAO_EXCLUIR);
         solicitacaoUsuario.setDataHoraExecucao(LocalDateTime.now());
 
+
         clienteInputPort.excluirClienteLgpd(cliente);
 
         return salvar(solicitacaoUsuario);

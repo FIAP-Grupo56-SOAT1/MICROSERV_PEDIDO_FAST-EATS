@@ -10,12 +10,15 @@ import br.com.fiap.fasteats.core.domain.valueobject.Email;
 import br.com.fiap.fasteats.core.usecase.ClienteInputPort;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static br.com.fiap.fasteats.core.constants.ClienteConstants.USUARIO_REMOVIDO_EMAIL;
+import static br.com.fiap.fasteats.core.constants.ClienteConstants.USUARIO_REMOVIDO_NOME;
 
 
 public class ClienteUseCase implements ClienteInputPort {
     private final ClienteOutputPort clienteOutputPort;
+
+
 
     public ClienteUseCase(ClienteOutputPort clienteOutputPort) {
         this.clienteOutputPort = clienteOutputPort;
@@ -83,6 +86,10 @@ public class ClienteUseCase implements ClienteInputPort {
     public Cliente excluirClienteLgpd(Cliente cliente) {
         var novoCpf = FormatarCpfLgpd(cliente);
         cliente.setCpf(novoCpf);
+        cliente.setAtivo(false);
+        cliente.setPrimeiroNome(USUARIO_REMOVIDO_NOME);
+        cliente.setUltimoNome(USUARIO_REMOVIDO_NOME);
+        cliente.setEmail(USUARIO_REMOVIDO_EMAIL);
         return clienteOutputPort.excluirClienteLgpd(cliente);
     }
 
