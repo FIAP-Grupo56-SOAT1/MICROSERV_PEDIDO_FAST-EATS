@@ -33,7 +33,10 @@ public class ClienteAdapter implements ClienteOutputPort {
 
     @Override
     public Optional<List<Cliente>> listar() {
-        var clientesEntity = clienteRepository.findAll();
+        //var clientesEntity = clienteRepository.findAll();
+
+        var clientesEntity = clienteRepository.findByAtivo(true);
+
         var clientes = clientesEntity.stream()
                 .map(clienteEntityMapper::toCliente)
                 .toList();

@@ -18,8 +18,6 @@ import static br.com.fiap.fasteats.core.constants.ClienteConstants.USUARIO_REMOV
 public class ClienteUseCase implements ClienteInputPort {
     private final ClienteOutputPort clienteOutputPort;
 
-
-
     public ClienteUseCase(ClienteOutputPort clienteOutputPort) {
         this.clienteOutputPort = clienteOutputPort;
     }

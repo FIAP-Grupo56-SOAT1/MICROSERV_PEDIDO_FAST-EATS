@@ -5,8 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ClienteRepository extends JpaRepository<ClienteEntity, Long> {
     @Query("SELECT c FROM clientes c WHERE c.ativo = true and c.cpf = :cpf")
     ClienteEntity findByCpf(String cpf);
+
+    List<ClienteEntity> findByAtivo(boolean ativo);
 }
