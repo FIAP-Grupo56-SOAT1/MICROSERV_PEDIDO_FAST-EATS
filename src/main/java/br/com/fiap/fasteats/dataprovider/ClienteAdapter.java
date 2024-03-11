@@ -46,6 +46,20 @@ public class ClienteAdapter implements ClienteOutputPort {
         clienteRepository.deleteById(cliente.getId());
     }
 
+    @Override
+    public Cliente desativarCliente(Cliente cliente) {
+        ClienteEntity clienteEntity = clienteEntityMapper.toClienteEntity(cliente);
+        ClienteEntity clienteEntitySalvo = clienteRepository.save(clienteEntity);
+        return clienteEntityMapper.toCliente(clienteEntitySalvo);
+    }
+
+    @Override
+    public Cliente excluirClienteLgpd(Cliente cliente) {
+        ClienteEntity clienteEntity = clienteEntityMapper.toClienteEntity(cliente);
+        ClienteEntity clienteEntitySalvo = clienteRepository.save(clienteEntity);
+        return clienteEntityMapper.toCliente(clienteEntitySalvo);
+    }
+
     private ClienteEntity findByClienteByCpf(String cpf){
        return clienteRepository.findByCpf(cpf);
     }

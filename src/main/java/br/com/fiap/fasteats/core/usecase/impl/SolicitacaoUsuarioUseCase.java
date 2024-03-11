@@ -7,6 +7,7 @@ import br.com.fiap.fasteats.core.domain.exception.ClienteNotFound;
 import br.com.fiap.fasteats.core.domain.model.Cliente;
 import br.com.fiap.fasteats.core.domain.model.SolicitacaoUsuario;
 import br.com.fiap.fasteats.core.domain.valueobject.Cpf;
+import br.com.fiap.fasteats.core.usecase.ClienteInputPort;
 import br.com.fiap.fasteats.core.usecase.SolicitacaoUsuarioInputPort;
 
 import java.time.LocalDateTime;
@@ -15,19 +16,25 @@ public class SolicitacaoUsuarioUseCase implements SolicitacaoUsuarioInputPort {
     private final SolicitacaoUsuarioOutputPort solicitacaoUsuarioOutputPort;
     private final ClienteOutputPort clienteOutputPort;
 
+    private final ClienteInputPort clienteInputPort;
 
-    public SolicitacaoUsuarioUseCase(SolicitacaoUsuarioOutputPort solicitacaoUsuarioOutputPort, ClienteOutputPort clienteOutputPort) {
+
+    public SolicitacaoUsuarioUseCase(SolicitacaoUsuarioOutputPort solicitacaoUsuarioOutputPort, ClienteOutputPort clienteOutputPort, ClienteInputPort clienteInputPort) {
         this.solicitacaoUsuarioOutputPort = solicitacaoUsuarioOutputPort;
 
         this.clienteOutputPort = clienteOutputPort;
+        this.clienteInputPort = clienteInputPort;
     }
 
     @Override
     public SolicitacaoUsuario criarSolicitacaoDesativarUsuario(SolicitacaoUsuario solicitacaoUsuario) {
 
-        buscarClientePorCpf(solicitacaoUsuario.getCpf());
+        Cliente cliente  = buscarClientePorCpf(solicitacaoUsuario.getCpf());
         solicitacaoUsuario.setDataHoraSolicitacao(LocalDateTime.now());
         solicitacaoUsuario.setOperacao(SolicitacaoUsuarioConstants.OPERACAO_DESATIVAR);
+        solicitacaoUsuario.setDataHoraExecucao(LocalDateTime.now());
+
+        clienteInputPort.desativarCliente(cliente);
 
         return salvar(solicitacaoUsuario);
     }
@@ -35,9 +42,12 @@ public class SolicitacaoUsuarioUseCase implements SolicitacaoUsuarioInputPort {
     @Override
     public SolicitacaoUsuario criarSolicitacaoExcluirUsuario(SolicitacaoUsuario solicitacaoUsuario) {
 
-        buscarClientePorCpf(solicitacaoUsuario.getCpf());
+        Cliente cliente = buscarClientePorCpf(solicitacaoUsuario.getCpf());
         solicitacaoUsuario.setDataHoraSolicitacao(LocalDateTime.now());
         solicitacaoUsuario.setOperacao(SolicitacaoUsuarioConstants.OPERACAO_EXCLUIR);
+        solicitacaoUsuario.setDataHoraExecucao(LocalDateTime.now());
+
+        clienteInputPort.excluirClienteLgpd(cliente);
 
         return salvar(solicitacaoUsuario);
     }

@@ -10,6 +10,9 @@ import br.com.fiap.fasteats.core.domain.valueobject.Email;
 import br.com.fiap.fasteats.core.usecase.ClienteInputPort;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class ClienteUseCase implements ClienteInputPort {
     private final ClienteOutputPort clienteOutputPort;
@@ -69,6 +72,34 @@ public class ClienteUseCase implements ClienteInputPort {
         formatarEValidarCpf(cliente.getCpf());
     }
 
+    @Override
+    public Cliente desativarCliente(Cliente cliente) {
+       var clienteDb =  buscarClientePorCpf(cliente.getCpf());
+        clienteDb.setAtivo(false);
+        return clienteOutputPort.desativarCliente(clienteDb);
+    }
+
+    @Override
+    public Cliente excluirClienteLgpd(Cliente cliente) {
+        var novoCpf = FormatarCpfLgpd(cliente);
+        cliente.setCpf(novoCpf);
+        return clienteOutputPort.excluirClienteLgpd(cliente);
+    }
+
+    private String FormatarCpfLgpd(Cliente cliente) {
+
+        String cpf = cliente.getCpf();
+        String cpfInicial = cpf.substring(0,3);
+        StringBuilder builder = new StringBuilder();
+        builder.append(cpfInicial);
+
+        for (int i = 0; i <= 7; i++) {
+            builder.append("X");
+        }
+
+        return  builder.toString().trim();
+    }
+
     private String formatarEValidarCpf(String cpf) {
         Cpf cpfFormatado = new Cpf(cpf);
         return cpfFormatado.valor();
@@ -78,5 +109,10 @@ public class ClienteUseCase implements ClienteInputPort {
         if(cliente.getEmail() == null || cliente.getEmail().isEmpty()) throw new ValidarClienteException("Email não pode ser vazio");
         Email emailFormatado = new Email(cliente.getEmail());
         cliente.setEmail(emailFormatado.valor());
+    }
+
+    private Cliente buscarClientePorCpf(String cpf){
+        String cpfFormatado = formatarEValidarCpf(cpf);
+        return clienteOutputPort.consultarCliente(cpf).orElseThrow(() -> new ClienteNotFound("Cliente não encontrado cpf " + cpfFormatado));
     }
 }
