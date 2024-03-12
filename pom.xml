@@ -220,9 +220,20 @@
             <version>7.13.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-maven-plugin</artifactId>
+            <version>3.0.5</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
+
+            <plugin>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-maven-plugin</artifactId>
+                <version>3.0.5</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

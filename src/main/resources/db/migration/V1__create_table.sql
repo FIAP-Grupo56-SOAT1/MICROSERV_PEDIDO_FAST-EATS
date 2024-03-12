@@ -93,11 +93,11 @@ CREATE TABLE IF NOT EXISTS `produtosdeumpedido`
 DROP TABLE IF EXISTS `solicitacaodousuario`;
 CREATE TABLE IF NOT EXISTS `solicitacaodousuario`
 (
-    `id`                        bigint      NOT NULL AUTO_INCREMENT,
-    `cpf`                       varchar(11) NOT NULL,
-    `datahorasolicitacao`       datetime    DEFAULT NULL,
-    `datahoraexecucao`          datetime    DEFAULT NULL,
-    `operacao`                  varchar(200) DEFAULT NULL,
+    `id`                        bigint          NOT NULL AUTO_INCREMENT,
+    `cpf`                       varchar(200)    NOT NULL,
+    `datahorasolicitacao`       datetime        DEFAULT NULL,
+    `datahoraexecucao`          datetime        DEFAULT NULL,
+    `operacao`                  varchar(200)    DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4

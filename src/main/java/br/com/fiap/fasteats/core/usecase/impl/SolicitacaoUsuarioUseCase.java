@@ -1,5 +1,6 @@
 package br.com.fiap.fasteats.core.usecase.impl;
 
+import br.com.fiap.fasteats.core.Encryptor.SimpleEncryption;
 import br.com.fiap.fasteats.core.constants.SolicitacaoUsuarioConstants;
 import br.com.fiap.fasteats.core.dataprovider.ClienteOutputPort;
 import br.com.fiap.fasteats.core.dataprovider.SolicitacaoUsuarioOutputPort;
@@ -30,6 +31,8 @@ public class SolicitacaoUsuarioUseCase implements SolicitacaoUsuarioInputPort {
     public SolicitacaoUsuario criarSolicitacaoDesativarUsuario(SolicitacaoUsuario solicitacaoUsuario) {
 
         Cliente cliente  = buscarClientePorCpf(solicitacaoUsuario.getCpf());
+
+        solicitacaoUsuario.setCpf(SimpleEncryption.Encrypt(solicitacaoUsuario.getCpf()));
         solicitacaoUsuario.setDataHoraSolicitacao(LocalDateTime.now());
         solicitacaoUsuario.setOperacao(SolicitacaoUsuarioConstants.OPERACAO_DESATIVAR);
         solicitacaoUsuario.setDataHoraExecucao(LocalDateTime.now());
@@ -43,6 +46,8 @@ public class SolicitacaoUsuarioUseCase implements SolicitacaoUsuarioInputPort {
     public SolicitacaoUsuario criarSolicitacaoExcluirUsuario(SolicitacaoUsuario solicitacaoUsuario) {
 
         Cliente cliente = buscarClientePorCpf(solicitacaoUsuario.getCpf());
+
+        solicitacaoUsuario.setCpf(SimpleEncryption.Encrypt(solicitacaoUsuario.getCpf()));
         solicitacaoUsuario.setDataHoraSolicitacao(LocalDateTime.now());
         solicitacaoUsuario.setOperacao(SolicitacaoUsuarioConstants.OPERACAO_EXCLUIR);
         solicitacaoUsuario.setDataHoraExecucao(LocalDateTime.now());
