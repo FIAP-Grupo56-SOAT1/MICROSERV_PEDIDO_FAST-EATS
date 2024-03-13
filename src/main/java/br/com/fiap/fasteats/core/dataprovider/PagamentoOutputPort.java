@@ -9,4 +9,6 @@ public interface PagamentoOutputPort {
     Optional<Pagamento> consultarPorPedidoId(long pedidoId);
 
     void notificarPedidoPago(Long pedidoId);
+
+    void cancelarPagamento(Long pedidoId);
 }

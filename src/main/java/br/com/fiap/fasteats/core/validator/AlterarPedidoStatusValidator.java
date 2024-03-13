@@ -16,5 +16,7 @@ public interface AlterarPedidoStatusValidator {
 
     void validarFinalizado(Long pedidoId);
 
+    void validarAguardandoCancelamento(Long pedidoId);
+
     void validarCancelado(Long pedidoId);
 }

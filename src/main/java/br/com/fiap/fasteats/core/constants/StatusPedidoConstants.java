@@ -8,6 +8,7 @@ public class StatusPedidoConstants {
     public static final String STATUS_PEDIDO_EM_PREPARO = "EM_PREPARO";
     public static final String STATUS_PEDIDO_PRONTO = "PRONTO";
     public static final String STATUS_PEDIDO_FINALIZADO = "FINALIZADO";
+    public static final String STATUS_PEDIDO_AGUARDANDO_CANCELAMENTO = "AGUARDANDO_CANCELAMENTO";
     public static final String STATUS_PEDIDO_CANCELADO = "CANCELADO";
 
     private StatusPedidoConstants() {

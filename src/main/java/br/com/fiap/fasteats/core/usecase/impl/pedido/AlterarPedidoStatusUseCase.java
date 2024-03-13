@@ -92,6 +92,15 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
     }
 
     @Override
+    public Pedido aguardandoCancelamento(Long pedidoId) {
+        Pedido pedido = recuperarPedido(pedidoId);
+        alterarPedidoStatusValidator.validarAguardandoCancelamento(pedidoId);
+        Pedido pedidoAtualizado = atualizarStatusPedidoPorNomeStatus(pedido, STATUS_PEDIDO_AGUARDANDO_CANCELAMENTO);
+        pedidoAtualizado.setDataHoraFinalizado(LocalDateTime.now());
+        return formatarPedido(pedidoOutputPort.salvarPedido(pedidoAtualizado));
+    }
+
+    @Override
     public Pedido cancelado(Long pedidoId) {
         Pedido pedido = recuperarPedido(pedidoId);
         alterarPedidoStatusValidator.validarCancelado(pedidoId);
