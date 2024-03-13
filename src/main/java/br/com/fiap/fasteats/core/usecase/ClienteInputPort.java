@@ -20,7 +20,7 @@ public interface ClienteInputPort {
 
     void validarCliente(Cliente cliente);
 
-    Cliente desativarCliente(Cliente cliente);
+    Cliente desativarCliente(String cpf);
 
-    Cliente excluirClienteLgpd(Cliente cliente);
+    Cliente excluirClienteLgpd(String cpf);
 }

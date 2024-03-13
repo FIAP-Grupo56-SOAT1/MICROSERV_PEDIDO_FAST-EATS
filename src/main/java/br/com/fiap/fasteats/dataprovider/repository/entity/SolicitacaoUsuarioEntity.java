@@ -14,12 +14,11 @@ import java.time.LocalDateTime;
 @Entity(name = "solicitacaodousuario")
 @Table(name = "solicitacaodousuario")
 public class SolicitacaoUsuarioEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = true, length = 11, name="cpf")
+    @Column(nullable = true, length = 11, name = "cpf")
     private String cpf;
 
     @Column(name = "datahorasolicitacao")
@@ -30,5 +29,4 @@ public class SolicitacaoUsuarioEntity {
 
     @Column(name = "operacao")
     private String operacao;
-
 }

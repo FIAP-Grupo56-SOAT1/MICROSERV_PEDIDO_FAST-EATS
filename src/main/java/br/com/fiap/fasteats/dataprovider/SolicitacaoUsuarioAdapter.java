@@ -8,14 +8,11 @@ import br.com.fiap.fasteats.dataprovider.repository.mapper.SolicitacaoUsuarioEnt
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-
 @Component
 @RequiredArgsConstructor
 public class SolicitacaoUsuarioAdapter implements SolicitacaoUsuarioOutputPort {
-
     private final SolicitacaoUsuarioRepository solicitacaoUsuarioRepository;
     private final SolicitacaoUsuarioEntityMapper solicitacaoUsuarioEntityMapper;
-
 
     @Override
     public SolicitacaoUsuario salvar(SolicitacaoUsuario solicitacaoUsuario) {

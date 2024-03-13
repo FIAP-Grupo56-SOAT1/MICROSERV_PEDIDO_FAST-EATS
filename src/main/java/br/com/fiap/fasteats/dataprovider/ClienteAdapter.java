@@ -33,10 +33,7 @@ public class ClienteAdapter implements ClienteOutputPort {
 
     @Override
     public Optional<List<Cliente>> listar() {
-        //var clientesEntity = clienteRepository.findAll();
-
         var clientesEntity = clienteRepository.findByAtivo(true);
-
         var clientes = clientesEntity.stream()
                 .map(clienteEntityMapper::toCliente)
                 .toList();
@@ -47,20 +44,6 @@ public class ClienteAdapter implements ClienteOutputPort {
     public void deletar(String cpf) {
         var  cliente = findByClienteByCpf(cpf);
         clienteRepository.deleteById(cliente.getId());
-    }
-
-    @Override
-    public Cliente desativarCliente(Cliente cliente) {
-        ClienteEntity clienteEntity = clienteEntityMapper.toClienteEntity(cliente);
-        ClienteEntity clienteEntitySalvo = clienteRepository.save(clienteEntity);
-        return clienteEntityMapper.toCliente(clienteEntitySalvo);
-    }
-
-    @Override
-    public Cliente excluirClienteLgpd(Cliente cliente) {
-        ClienteEntity clienteEntity = clienteEntityMapper.toClienteEntity(cliente);
-        ClienteEntity clienteEntitySalvo = clienteRepository.save(clienteEntity);
-        return clienteEntityMapper.toCliente(clienteEntitySalvo);
     }
 
     private ClienteEntity findByClienteByCpf(String cpf){

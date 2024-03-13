@@ -1,15 +1,21 @@
 package br.com.fiap.fasteats.core.domain.model;
-import java.time.LocalDateTime;
-import java.util.Objects;
 
+import java.time.LocalDateTime;
 
 public class SolicitacaoUsuario {
-
     private Long id;
     private String cpf;
     private LocalDateTime dataHoraSolicitacao;
     private LocalDateTime dataHoraExecucao;
     private String operacao;
+
+    public SolicitacaoUsuario(Long id, String cpf, LocalDateTime dataHoraSolicitacao, LocalDateTime dataHoraExecucao, String operacao) {
+        this.id = id;
+        this.cpf = cpf;
+        this.dataHoraSolicitacao = dataHoraSolicitacao;
+        this.dataHoraExecucao = dataHoraExecucao;
+        this.operacao = operacao;
+    }
 
     public Long getId() {
         return id;
@@ -48,16 +54,6 @@ public class SolicitacaoUsuario {
     }
 
     public void setOperacao(String operacao) {
-        this.operacao = operacao;
-    }
-
-
-
-    public SolicitacaoUsuario(Long id, String cpf, LocalDateTime dataHoraSolicitacao, LocalDateTime dataHoraExecucao, String operacao) {
-        this.id = id;
-        this.cpf = cpf;
-        this.dataHoraSolicitacao = dataHoraSolicitacao;
-        this.dataHoraExecucao = dataHoraExecucao;
         this.operacao = operacao;
     }
 }
