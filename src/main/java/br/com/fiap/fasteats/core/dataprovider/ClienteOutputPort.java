@@ -14,4 +14,8 @@ public interface ClienteOutputPort {
     Optional<List<Cliente>> listar();
 
     void deletar(String cpf);
+
+    Cliente desativarCliente(Cliente cliente);
+
+    Cliente excluirClienteLgpd(Cliente cliente);
 }
