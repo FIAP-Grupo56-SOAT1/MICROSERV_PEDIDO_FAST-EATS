@@ -1,11 +1,12 @@
 package br.com.fiap.fasteats.core.usecase.impl.pedido;
 
-import br.com.fiap.fasteats.core.dataprovider.PagamentoOutputPort;
+import br.com.fiap.fasteats.core.dataprovider.ConcluirPedidoPagoOutputPort;
 import br.com.fiap.fasteats.core.dataprovider.PedidoOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.PedidoNotFound;
 import br.com.fiap.fasteats.core.domain.exception.RegraNegocioException;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
 import br.com.fiap.fasteats.core.usecase.pedido.AlterarPedidoStatusInputPort;
+import br.com.fiap.fasteats.core.usecase.pedido.PedidoInputPort;
 import br.com.fiap.fasteats.core.usecase.pedido.StatusPedidoInputPort;
 import br.com.fiap.fasteats.core.validator.AlterarPedidoStatusValidator;
 
@@ -17,16 +18,27 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
     private final AlterarPedidoStatusValidator alterarPedidoStatusValidator;
     private final StatusPedidoInputPort statusPedidoInputPort;
     private final PedidoOutputPort pedidoOutputPort;
-    private final PagamentoOutputPort pagamentoOutputPort;
+    private final PedidoInputPort pedidoInputPort;
+    private final ConcluirPedidoPagoOutputPort concluirPedidoPagoOutputPort;
 
     public AlterarPedidoStatusUseCase(AlterarPedidoStatusValidator alterarPedidoStatusValidator,
                                       StatusPedidoInputPort statusPedidoInputPort,
                                       PedidoOutputPort pedidoOutputPort,
-                                      PagamentoOutputPort pagamentoOutputPort) {
+                                      PedidoInputPort pedidoInputPort,
+                                      ConcluirPedidoPagoOutputPort concluirPedidoPagoOutputPort) {
         this.alterarPedidoStatusValidator = alterarPedidoStatusValidator;
         this.statusPedidoInputPort = statusPedidoInputPort;
         this.pedidoOutputPort = pedidoOutputPort;
-        this.pagamentoOutputPort = pagamentoOutputPort;
+        this.pedidoInputPort = pedidoInputPort;
+        this.concluirPedidoPagoOutputPort = concluirPedidoPagoOutputPort;
+    }
+
+    @Override
+    public Pedido criado(Long pedidoId) {
+        Pedido pedido = recuperarPedido(pedidoId);
+        alterarPedidoStatusValidator.validarCriado(pedidoId);
+        Pedido pedidoAtualizado = atualizarStatusPedidoPorNomeStatus(pedido, STATUS_PEDIDO_CRIADO);
+        return formatarPedido(pedidoOutputPort.salvarPedido(pedidoAtualizado));
     }
 
     @Override
@@ -42,7 +54,7 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
         Pedido pedido = recuperarPedido(pedidoId);
         alterarPedidoStatusValidator.validarPago(pedidoId);
         Pedido pedidoAtualizado = atualizarStatusPedidoPorNomeStatus(pedido, STATUS_PEDIDO_PAGO);
-        return formatarPedido(pedidoOutputPort.salvarPedido(pedidoAtualizado));
+        return formatarPedido(concluirPedidoPagoOutputPort.concluirPagamento(pedidoAtualizado));
     }
 
     @Override
@@ -80,6 +92,15 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
     }
 
     @Override
+    public Pedido aguardandoCancelamento(Long pedidoId) {
+        Pedido pedido = recuperarPedido(pedidoId);
+        alterarPedidoStatusValidator.validarAguardandoCancelamento(pedidoId);
+        Pedido pedidoAtualizado = atualizarStatusPedidoPorNomeStatus(pedido, STATUS_PEDIDO_AGUARDANDO_CANCELAMENTO);
+        pedidoAtualizado.setDataHoraFinalizado(LocalDateTime.now());
+        return formatarPedido(pedidoOutputPort.salvarPedido(pedidoAtualizado));
+    }
+
+    @Override
     public Pedido cancelado(Long pedidoId) {
         Pedido pedido = recuperarPedido(pedidoId);
         alterarPedidoStatusValidator.validarCancelado(pedidoId);
@@ -105,11 +126,12 @@ public class AlterarPedidoStatusUseCase implements AlterarPedidoStatusInputPort 
     }
 
     private Pedido formatarPedido(Pedido pedido) {
-        return PedidoUseCase.formatarPedido(pedido, pagamentoOutputPort);
+        return pedidoInputPort.formatarPedido(pedido);
     }
 
     private Pedido verificarAtualizarStatusPedido(Long pedidoId, String novoStatusPedido) {
         return switch (novoStatusPedido) {
+            case STATUS_PEDIDO_CRIADO -> criado(pedidoId);
             case STATUS_PEDIDO_AGUARDANDO_PAGAMENTO -> aguardandoPagamento(pedidoId);
             case STATUS_PEDIDO_PAGO -> pago(pedidoId);
             case STATUS_PEDIDO_RECEBIDO -> recebido(pedidoId);

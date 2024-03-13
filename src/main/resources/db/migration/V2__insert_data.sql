@@ -28,4 +28,5 @@ VALUES (1, 'CRIADO', 1),
        (5, 'EM_PREPARO', 1),
        (6, 'PRONTO', 1),
        (7, 'FINALIZADO', 1),
-       (8, 'CANCELADO', 1);
+       (8, 'AGUARDANDO_CANCELAMENTO', 1),
+       (9, 'CANCELADO', 1);

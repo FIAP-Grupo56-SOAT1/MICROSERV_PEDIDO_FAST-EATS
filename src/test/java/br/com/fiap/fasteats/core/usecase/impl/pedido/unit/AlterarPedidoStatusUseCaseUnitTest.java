@@ -6,12 +6,12 @@ import br.com.fiap.fasteats.core.domain.model.Pagamento;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
 import br.com.fiap.fasteats.core.domain.model.StatusPedido;
 import br.com.fiap.fasteats.core.usecase.impl.pedido.AlterarPedidoStatusUseCase;
-import br.com.fiap.fasteats.core.usecase.pedido.AlterarPedidoStatusInputPort;
 import br.com.fiap.fasteats.core.usecase.pedido.StatusPedidoInputPort;
 import br.com.fiap.fasteats.core.validator.AlterarPedidoStatusValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -24,9 +24,6 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("PedidoUseCaseUnitTest")
 class AlterarPedidoStatusUseCaseUnitTest {
-
-    private AlterarPedidoStatusInputPort alterarPedidoStatusInputPort;
-
     @Mock
     private PedidoOutputPort pedidoOutputPort;
 
@@ -38,12 +35,12 @@ class AlterarPedidoStatusUseCaseUnitTest {
 
     @Mock
     private AlterarPedidoStatusValidator alterarPedidoStatusValidator;
+    @InjectMocks
+    private AlterarPedidoStatusUseCase alterarPedidoStatusUseCase;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        alterarPedidoStatusInputPort = new AlterarPedidoStatusUseCase(alterarPedidoStatusValidator,
-                statusPedidoInputPort, pedidoOutputPort, pagamentoOutputPort);
     }
 
     @Test
@@ -66,7 +63,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
         doNothing().when(alterarPedidoStatusValidator).validarAguardandoPagamento(anyLong());
 
         //Act
-        Pedido resultado = alterarPedidoStatusInputPort.aguardandoPagamento(anyLong());
+        Pedido resultado = alterarPedidoStatusUseCase.aguardandoPagamento(anyLong());
 
         // Assert
         assertNotNull(resultado);
@@ -92,7 +89,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
 
         doNothing().when(alterarPedidoStatusValidator).validarPago(anyLong());
         //Act
-        Pedido resultado = alterarPedidoStatusInputPort.pago(anyLong());
+        Pedido resultado = alterarPedidoStatusUseCase.pago(anyLong());
         // Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
@@ -117,7 +114,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
 
         doNothing().when(alterarPedidoStatusValidator).validarRecebido(anyLong());
         //Act
-        Pedido resultado = alterarPedidoStatusInputPort.recebido(anyLong());
+        Pedido resultado = alterarPedidoStatusUseCase.recebido(anyLong());
         //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
@@ -142,7 +139,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
 
         doNothing().when(alterarPedidoStatusValidator).validarEmPreparo(anyLong());
         //Act
-        Pedido resultado = alterarPedidoStatusInputPort.emPreparo(anyLong());
+        Pedido resultado = alterarPedidoStatusUseCase.emPreparo(anyLong());
         //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
@@ -167,7 +164,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
 
         doNothing().when(alterarPedidoStatusValidator).validarPronto(anyLong());
         //Act
-        Pedido resultado = alterarPedidoStatusInputPort.pronto(anyLong());
+        Pedido resultado = alterarPedidoStatusUseCase.pronto(anyLong());
         //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
@@ -192,7 +189,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
 
         doNothing().when(alterarPedidoStatusValidator).validarFinalizado(anyLong());
         //Act
-        Pedido resultado = alterarPedidoStatusInputPort.finalizado(anyLong());
+        Pedido resultado = alterarPedidoStatusUseCase.finalizado(anyLong());
         //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
@@ -217,7 +214,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
 
         doNothing().when(alterarPedidoStatusValidator).validarCancelado(anyLong());
         //Act
-        Pedido resultado = alterarPedidoStatusInputPort.cancelado(anyLong());
+        Pedido resultado = alterarPedidoStatusUseCase.cancelado(anyLong());
         //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
@@ -255,7 +252,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
             when(statusPedidoInputPort.consultarPorNome(nomeStatusPedido)).thenReturn(statusPedido);
 
 
-            resultado = alterarPedidoStatusInputPort.atualizarStatusPedido(idPedido, idStatusPedido);
+            resultado = alterarPedidoStatusUseCase.atualizarStatusPedido(idPedido, idStatusPedido);
         }
 
         //Assert
@@ -278,7 +275,7 @@ class AlterarPedidoStatusUseCaseUnitTest {
         when(statusPedidoInputPort.consultar(idStatusPedido)).thenReturn(statusPedido);
 
         //Act & Assert
-        assertThrows(RuntimeException.class, () -> alterarPedidoStatusInputPort.atualizarStatusPedido(idPedido, idStatusPedido));
+        assertThrows(RuntimeException.class, () -> alterarPedidoStatusUseCase.atualizarStatusPedido(idPedido, idStatusPedido));
         verify(statusPedidoInputPort).consultar(idStatusPedido);
         verify(pedidoOutputPort, times(0)).salvarPedido(any());
     }
