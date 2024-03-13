@@ -12,7 +12,7 @@
     </parent>
     <groupId>br.com.fiap</groupId>
     <artifactId>api-fasteats</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
     <name>api-fasteats-pedido</name>
     <description>Projeto FIAP para lanchonete fictícia</description>
     <properties>
