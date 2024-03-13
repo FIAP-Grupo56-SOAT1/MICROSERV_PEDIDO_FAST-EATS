@@ -13,4 +13,4 @@ ENV MERCADO_PAGO_EMAIL_EMPRESA=pagamento@fasteats-fiap.com.br
 ENV MERCADO_PAGO_CREDENCIAL=TEST-2087963774082813-080820-ee2b9b80edbdecf3ea8453bb8c088bc7-64946408
 ENV MERCADO_PAGO_USERID=64946408
 ENV MERCADO_PAGO_TIPO_PAGAMENTO=pix
-ENTRYPOINT ["java", "-jar","/home/app/target/api-fasteats-3.0.0-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar","/home/app/target/api-fasteats-4.0.0-SNAPSHOT.jar"]

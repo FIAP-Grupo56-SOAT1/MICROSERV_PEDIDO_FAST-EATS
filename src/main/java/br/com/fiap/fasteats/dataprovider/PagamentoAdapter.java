@@ -22,4 +22,9 @@ public class PagamentoAdapter implements PagamentoOutputPort {
     public void notificarPedidoPago(Long pedidoId) {
         integracaoPagamento.notificarPedidoPago(pedidoId);
     }
+
+    @Override
+    public void cancelarPagamento(Long pedidoId) {
+        integracaoPagamento.cancelarPagamento(pedidoId);
+    }
 }

@@ -69,6 +69,14 @@ public class AlterarPedidoStatusValidatorImpl implements AlterarPedidoStatusVali
     }
 
     @Override
+    public void validarAguardandoCancelamento(Long pedidoId) {
+        Pedido pedido = recuperarPedido(pedidoId);
+        if (recuperarNomeStatusPedido(pedido).equals(STATUS_PEDIDO_CANCELADO))
+            throw new RegraNegocioException("O Pedido não pode ser alterado para " + STATUS_PEDIDO_AGUARDANDO_CANCELAMENTO +
+                    " se estiver com status " + STATUS_PEDIDO_CANCELADO);
+    }
+
+    @Override
     public void validarCancelado(Long pedidoId) {
         Pedido pedido = recuperarPedido(pedidoId);
         if (recuperarNomeStatusPedido(pedido).equals(STATUS_PEDIDO_CANCELADO))

@@ -13,4 +13,6 @@ public interface IntegracaoPagamento {
     void gerarPagamento(Long idPedido, Long idFormaPagamento);
 
     void notificarPedidoPago(Long pedidoId);
+
+    void cancelarPagamento(Long pedidoId);
 }

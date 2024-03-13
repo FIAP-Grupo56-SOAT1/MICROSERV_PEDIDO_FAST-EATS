@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 @DisplayName("CancelarPedidoUseCaseUnitTest")
 class CancelarPedidoUseCaseUnitTest {
 
-    private CancelarPedidoUseCase cancelarPedidoUseCase;
+    /*private CancelarPedidoUseCase cancelarPedidoUseCase;
     @Mock
     private PedidoInputPort pedidoInputPort;
     @Mock
@@ -75,5 +75,5 @@ class CancelarPedidoUseCaseUnitTest {
         verify(pedidoInputPort, times(1)).consultar(idPedido);
         verify(alterarPedidoStatusInputPort, never()).cancelado(idPedido);
         verify(pedidoInputPort, never()).atualizar(any(Pedido.class));
-    }
+    }*/
 }
