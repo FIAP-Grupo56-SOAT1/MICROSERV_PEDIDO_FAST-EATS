@@ -74,35 +74,26 @@ public class ClienteUseCase implements ClienteInputPort {
     }
 
     @Override
-    public Cliente desativarCliente(Cliente cliente) {
-       var clienteDb =  buscarClientePorCpf(cliente.getCpf());
-        clienteDb.setAtivo(false);
-        return clienteOutputPort.desativarCliente(clienteDb);
+    public Cliente desativarCliente(String cpf) {
+        Cliente cliente = consultar(cpf);
+        cliente.setAtivo(false);
+        return clienteOutputPort.salvarCliente(cliente);
     }
 
     @Override
-    public Cliente excluirClienteLgpd(Cliente cliente) {
-        var novoCpf = FormatarCpfLgpd(cliente);
-        cliente.setCpf(novoCpf);
-        cliente.setAtivo(false);
+    public Cliente excluirClienteLgpd(String cpf) {
+        Cliente cliente = consultar(cpf);
+        cliente.setCpf(FormatarCpfLgpd(cpf));
         cliente.setPrimeiroNome(USUARIO_REMOVIDO_NOME);
         cliente.setUltimoNome(USUARIO_REMOVIDO_NOME);
         cliente.setEmail(USUARIO_REMOVIDO_EMAIL);
-        return clienteOutputPort.excluirClienteLgpd(cliente);
+        cliente.setAtivo(false);
+        return clienteOutputPort.salvarCliente(cliente);
     }
 
-    private String FormatarCpfLgpd(Cliente cliente) {
-
-        String cpf = cliente.getCpf();
-        String cpfInicial = cpf.substring(0,3);
-        StringBuilder builder = new StringBuilder();
-        builder.append(cpfInicial);
-
-        for (int i = 0; i <= 7; i++) {
-            builder.append("X");
-        }
-
-        return  builder.toString().trim();
+    private String FormatarCpfLgpd(String cpf) {
+        String cpfInicial = cpf.substring(0, 3);
+        return String.format("%s%s", cpfInicial, "XXXXXXXX");
     }
 
     private String formatarEValidarCpf(String cpf) {
@@ -111,13 +102,9 @@ public class ClienteUseCase implements ClienteInputPort {
     }
 
     private void validarEmail(Cliente cliente) {
-        if(cliente.getEmail() == null || cliente.getEmail().isEmpty()) throw new ValidarClienteException("Email não pode ser vazio");
+        if (cliente.getEmail() == null || cliente.getEmail().isEmpty())
+            throw new ValidarClienteException("Email não pode ser vazio");
         Email emailFormatado = new Email(cliente.getEmail());
         cliente.setEmail(emailFormatado.valor());
-    }
-
-    private Cliente buscarClientePorCpf(String cpf){
-        String cpfFormatado = formatarEValidarCpf(cpf);
-        return clienteOutputPort.consultarCliente(cpf).orElseThrow(() -> new ClienteNotFound("Cliente não encontrado cpf " + cpfFormatado));
     }
 }

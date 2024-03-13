@@ -16,17 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("solicitacaoUsuario")
+@RequestMapping("solicitacao-usuario")
 @RequiredArgsConstructor
-@Tag(name = "solicitacaoUsuario", description = "Controller que gerencia o processo de criação de um solicitação do usuário")
+@Tag(name = "Solicitação Usuário", description = "Controller que gerencia o processo de criação de um solicitação do usuário")
 public class SolicitacaoUsuarioController {
     private final SolicitacaoUsuarioInputPort solicitacaoUsuarioInputPort;
     private final SolicitacaoUsuarioMapper solicitacaoUsuarioMapper;
+    private static final String summaryAndDescritionDesativar = "Cliente solicita desativar sua conta.";
+    private static final String summaryAndDescritionExcluir = "Cliente solicita excluir sua conta.";
 
-    private static final String  summaryAndDescritionDesativar= "Cliente solicita desativar sua conta.";
-    private static final String  summaryAndDescritionExcluir= "Cliente solicita excluir sua conta.";
-
-    @PostMapping("criarSolicitacaoDesativarUsuario")
+    @PostMapping("desativar-usuario")
     @Operation(summary = summaryAndDescritionDesativar, description = summaryAndDescritionDesativar)
     public ResponseEntity<SolicitacaoUsuarioResponse> criarSolicitacaoDesativarUsuario(@Valid @RequestBody SolicitacaoUsuarioResponse solicitacaoRequest) {
         SolicitacaoUsuario solicitacaoUsuario = solicitacaoUsuarioMapper.toSolicitacaoUsuario(solicitacaoRequest);
@@ -35,8 +34,7 @@ public class SolicitacaoUsuarioController {
         return new ResponseEntity<>(solicitacaoUsuarioResponse, HttpStatus.CREATED);
     }
 
-
-    @PostMapping("criarSolicitacaoExcluirUsuario")
+    @PostMapping("excluir-usuario")
     @Operation(summary = summaryAndDescritionExcluir, description = summaryAndDescritionExcluir)
     public ResponseEntity<SolicitacaoUsuarioResponse> criarSolicitacaoExcluirUsuario(@Valid @RequestBody SolicitacaoUsuarioResponse solicitacaoRequest) {
         SolicitacaoUsuario solicitacaoUsuario = solicitacaoUsuarioMapper.toSolicitacaoUsuario(solicitacaoRequest);
@@ -44,5 +42,4 @@ public class SolicitacaoUsuarioController {
         SolicitacaoUsuarioResponse solicitacaoUsuarioResponse = solicitacaoUsuarioMapper.toSolicitacaoUsuarioResponse(solicitacaoUsuarioCriado);
         return new ResponseEntity<>(solicitacaoUsuarioResponse, HttpStatus.CREATED);
     }
-
 }

@@ -228,6 +228,7 @@
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-sqs</artifactId>
             <version>1.12.656</version>
+        </dependency>
         <dependency>
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-maven-plugin</artifactId>
@@ -247,7 +248,6 @@
     </dependencyManagement>
     <build>
         <plugins>
-
             <plugin>
                 <groupId>com.github.ulisesbocchio</groupId>
                 <artifactId>jasypt-maven-plugin</artifactId>
