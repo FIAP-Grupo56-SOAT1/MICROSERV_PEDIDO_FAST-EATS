@@ -26,12 +26,14 @@ public class ClienteAdapter implements ClienteOutputPort {
 
     @Override
     public Optional<Cliente> consultarCliente(String cpf) {
-        return clienteRepository.findById(cpf).map(clienteEntityMapper::toCliente);
+        var cliente =  clienteRepository.findByCpf(cpf);
+
+        return Optional.ofNullable(clienteEntityMapper.toCliente(cliente));
     }
 
     @Override
     public Optional<List<Cliente>> listar() {
-        var clientesEntity = clienteRepository.findAll();
+        var clientesEntity = clienteRepository.findByAtivo(true);
         var clientes = clientesEntity.stream()
                 .map(clienteEntityMapper::toCliente)
                 .toList();
@@ -40,6 +42,11 @@ public class ClienteAdapter implements ClienteOutputPort {
 
     @Override
     public void deletar(String cpf) {
-        clienteRepository.deleteById(cpf);
+        var  cliente = findByClienteByCpf(cpf);
+        clienteRepository.deleteById(cliente.getId());
+    }
+
+    private ClienteEntity findByClienteByCpf(String cpf){
+       return clienteRepository.findByCpf(cpf);
     }
 }

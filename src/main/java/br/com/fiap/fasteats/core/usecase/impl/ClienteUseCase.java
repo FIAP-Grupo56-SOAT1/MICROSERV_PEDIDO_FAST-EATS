@@ -11,6 +11,10 @@ import br.com.fiap.fasteats.core.usecase.ClienteInputPort;
 
 import java.util.List;
 
+import static br.com.fiap.fasteats.core.constants.ClienteConstants.USUARIO_REMOVIDO_EMAIL;
+import static br.com.fiap.fasteats.core.constants.ClienteConstants.USUARIO_REMOVIDO_NOME;
+
+
 public class ClienteUseCase implements ClienteInputPort {
     private final ClienteOutputPort clienteOutputPort;
 
@@ -69,13 +73,37 @@ public class ClienteUseCase implements ClienteInputPort {
         formatarEValidarCpf(cliente.getCpf());
     }
 
+    @Override
+    public Cliente desativarCliente(String cpf) {
+        Cliente cliente = consultar(cpf);
+        cliente.setAtivo(false);
+        return clienteOutputPort.salvarCliente(cliente);
+    }
+
+    @Override
+    public Cliente excluirClienteLgpd(String cpf) {
+        Cliente cliente = consultar(cpf);
+        cliente.setCpf(FormatarCpfLgpd(cpf));
+        cliente.setPrimeiroNome(USUARIO_REMOVIDO_NOME);
+        cliente.setUltimoNome(USUARIO_REMOVIDO_NOME);
+        cliente.setEmail(USUARIO_REMOVIDO_EMAIL);
+        cliente.setAtivo(false);
+        return clienteOutputPort.salvarCliente(cliente);
+    }
+
+    private String FormatarCpfLgpd(String cpf) {
+        String cpfInicial = cpf.substring(0, 3);
+        return String.format("%s%s", cpfInicial, "XXXXXXXX");
+    }
+
     private String formatarEValidarCpf(String cpf) {
         Cpf cpfFormatado = new Cpf(cpf);
         return cpfFormatado.valor();
     }
 
     private void validarEmail(Cliente cliente) {
-        if(cliente.getEmail() == null || cliente.getEmail().isEmpty()) throw new ValidarClienteException("Email não pode ser vazio");
+        if (cliente.getEmail() == null || cliente.getEmail().isEmpty())
+            throw new ValidarClienteException("Email não pode ser vazio");
         Email emailFormatado = new Email(cliente.getEmail());
         cliente.setEmail(emailFormatado.valor());
     }

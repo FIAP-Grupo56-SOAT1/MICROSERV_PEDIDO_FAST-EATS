@@ -19,4 +19,8 @@ public interface ClienteInputPort {
     Boolean clienteExiste(String cpf);
 
     void validarCliente(Cliente cliente);
+
+    Cliente desativarCliente(String cpf);
+
+    Cliente excluirClienteLgpd(String cpf);
 }

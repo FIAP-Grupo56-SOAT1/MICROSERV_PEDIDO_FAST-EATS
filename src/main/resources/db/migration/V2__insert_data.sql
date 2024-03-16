@@ -4,8 +4,8 @@ VALUES (1, 'LANCHE', 'LANCHE', 1),
        (3, 'ACOMPANHAMENTO', 'ACOMPANHAMENTO', 1),
        (4, 'SOBREMESA', 'SOBREMESA', 1);
 
-INSERT INTO `clientes` (`cpf`, `primeironome`, `ultimonome`, `email`, `ativo`)
-VALUES ('29234725897', 'Fiap', 'SOAT1', 'grupo56@fiapl.com', 1);
+INSERT INTO `clientes` (`id`,`cpf`, `primeironome`, `ultimonome`, `email`, `ativo`)
+VALUES (1,'29234725897', 'Fiap', 'SOAT1', 'grupo56@fiapl.com', 1);
 
 INSERT INTO `produtos` (`id`, `nome`, `descricao`, `valor`, `ativo`, `categoriaId_fk`, `imagemBase64`, `imagemUrl`)
 VALUES (1, 'X-SALADA', 'X-salada com um hamburger 180g', 20, 1, 1, NULL, NULL),
@@ -28,4 +28,5 @@ VALUES (1, 'CRIADO', 1),
        (5, 'EM_PREPARO', 1),
        (6, 'PRONTO', 1),
        (7, 'FINALIZADO', 1),
-       (8, 'CANCELADO', 1);
+       (8, 'AGUARDANDO_CANCELAMENTO', 1),
+       (9, 'CANCELADO', 1);

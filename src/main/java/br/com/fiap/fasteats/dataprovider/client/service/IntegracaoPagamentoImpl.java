@@ -6,6 +6,7 @@ import br.com.fiap.fasteats.dataprovider.client.IntegracaoPagamento;
 import br.com.fiap.fasteats.dataprovider.client.exeption.AwsSQSException;
 import br.com.fiap.fasteats.dataprovider.client.exeption.MicroservicoPagamentoException;
 import br.com.fiap.fasteats.dataprovider.client.mapper.PagamentoMapper;
+import br.com.fiap.fasteats.dataprovider.client.request.CancelarPagamentoRequest;
 import br.com.fiap.fasteats.dataprovider.client.request.GerarPagamentoRequest;
 import br.com.fiap.fasteats.dataprovider.client.request.NotificarPedidoPagoRequest;
 import br.com.fiap.fasteats.dataprovider.client.response.PagamentoResponse;
@@ -13,8 +14,6 @@ import com.google.gson.Gson;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -30,6 +29,8 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
     private String filaPagamentoGerarPagamento;
     @Value("${sqs.queue.pagamento.receber-pedido-pago}")
     private String filaPagamentoReceberPedidoPago;
+    @Value("${sqs.queue.pagamento.cancelar-pagamento}")
+    private String filaPagamentoCancelarPagamento;
     @Value("${URL_PAGAMENTO_SERVICE}")
     private String URL_BASE;
     private final RestTemplate restTemplate;
@@ -86,6 +87,20 @@ public class IntegracaoPagamentoImpl implements IntegracaoPagamento {
             log.info(String.format("Pedido %d enviado para fila %s com sucesso!", pedidoId, filaPagamentoReceberPedidoPago));
         } catch (Exception ex) {
             String resposta = String.format("Erro na comunicação com a fila %s: %s", filaPagamentoReceberPedidoPago, ex.getMessage());
+            log.error(resposta);
+            throw new AwsSQSException(resposta);
+        }
+    }
+
+    @Override
+    public void cancelarPagamento(Long pedidoId) {
+        try {
+            CancelarPagamentoRequest request = new CancelarPagamentoRequest(pedidoId);
+            String mensagem = new Gson().toJson(request);
+            sqsTemplate.send(filaPagamentoCancelarPagamento, mensagem);
+            log.info(String.format("Pedido %d enviado para fila %s com sucesso!", pedidoId, filaPagamentoCancelarPagamento));
+        } catch (Exception ex) {
+            String resposta = String.format("Erro na comunicação com a fila %s: %s", filaPagamentoCancelarPagamento, ex.getMessage());
             log.error(resposta);
             throw new AwsSQSException(resposta);
         }

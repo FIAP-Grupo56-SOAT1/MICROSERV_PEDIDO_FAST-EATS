@@ -5,7 +5,6 @@ import br.com.fiap.fasteats.core.usecase.impl.pedido.PedidoUseCase;
 import br.com.fiap.fasteats.core.usecase.impl.pedido.StatusPedidoUseCase;
 import br.com.fiap.fasteats.core.validator.impl.AlterarPedidoStatusValidatorImpl;
 import br.com.fiap.fasteats.dataprovider.ConcluirPedidoPagoAdapter;
-import br.com.fiap.fasteats.dataprovider.PagamentoAdapter;
 import br.com.fiap.fasteats.dataprovider.PedidoAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
