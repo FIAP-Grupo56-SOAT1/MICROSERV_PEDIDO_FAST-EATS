@@ -5,9 +5,11 @@ import br.com.fiap.fasteats.core.domain.exception.PedidoNotFound;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
 import br.com.fiap.fasteats.core.usecase.impl.pedido.AndamentoPedidoUseCase;
 import br.com.fiap.fasteats.core.usecase.pedido.AndamentoPedidoInputPort;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -20,20 +22,21 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("AndamentoPedidoUseCaseUnitTest")
 class AndamentoPedidoUseCaseUnitTest {
-
-    private AndamentoPedidoInputPort andamentoPedidoUseCase;
-
     @Mock
     private PedidoOutputPort pedidoOutputPort;
-
+    @InjectMocks
+    private AndamentoPedidoUseCase andamentoPedidoUseCase;
+    private AutoCloseable openMocks;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        andamentoPedidoUseCase = new AndamentoPedidoUseCase(pedidoOutputPort);
+        openMocks = MockitoAnnotations.openMocks(this);
     }
 
-
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
+    }
 
     @Test
     @DisplayName("Deve consultar lista de pedidos em andamento")
@@ -95,6 +98,4 @@ class AndamentoPedidoUseCaseUnitTest {
         assertThrows(PedidoNotFound.class, () -> andamentoPedidoUseCase.consultarAndamentoPedido(anyLong()));
         verify(pedidoOutputPort, times(1)).consultarPedidoAndamento(anyLong());
     }
-
-
 }

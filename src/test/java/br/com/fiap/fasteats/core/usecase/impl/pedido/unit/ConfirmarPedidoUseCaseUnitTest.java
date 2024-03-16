@@ -1,5 +1,6 @@
 package br.com.fiap.fasteats.core.usecase.impl.pedido.unit;
 
+import br.com.fiap.fasteats.core.dataprovider.GerarPagamentoOutputPort;
 import br.com.fiap.fasteats.core.dataprovider.PagamentoOutputPort;
 import br.com.fiap.fasteats.core.domain.exception.ProdutoNotFound;
 import br.com.fiap.fasteats.core.domain.model.*;
@@ -8,6 +9,7 @@ import br.com.fiap.fasteats.core.usecase.pedido.AlterarPedidoStatusInputPort;
 import br.com.fiap.fasteats.core.usecase.pedido.ConfirmarPedidoInputPort;
 import br.com.fiap.fasteats.core.usecase.pedido.PedidoInputPort;
 import br.com.fiap.fasteats.core.validator.PedidoValidator;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,97 +31,65 @@ class ConfirmarPedidoUseCaseUnitTest {
     @Mock
     private PedidoInputPort pedidoInputPort;
     @Mock
-    private AlterarPedidoStatusInputPort alterarPedidoStatusInputPort;
-    @Mock
-    private PagamentoOutputPort pagamentoOutputPort;
+    private GerarPagamentoOutputPort gerarPagamentoOutputPort;
     @Mock
     private PedidoValidator pedidoValidator;
     @InjectMocks
-    private ConfirmarPedidoInputPort confirmarPedidoUseCase;
+    private ConfirmarPedidoUseCase confirmarPedidoUseCase;
+    private AutoCloseable openMocks;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test
-    @DisplayName("Deve confirmar um pedido")
-    void testeConfirmarPedido() {
+    @DisplayName("Deve confirmar um pedido com sucesso")
+    void testeConfirmarPedidoComSucesso() {
         //Arrange
         Long idPedido = 1L;
-        Long idStatusPedidoAguardandoPagamento = 2L;
         Long tipoPagamentoId = 2L;
-
-        ProdutoPedido produtoPedido = new ProdutoPedido();
-        produtoPedido.setIdPedido(idPedido);
-        produtoPedido.setQuantidade(1);
-        produtoPedido.setValor(10.0);
 
         Pedido pedido = new Pedido();
         pedido.setId(idPedido);
-        pedido.setStatusPedido(1L);
-        pedido.getProdutos().add(produtoPedido);
-
-        Pedido pedidoAguardandoPagamento = new Pedido();
-        pedidoAguardandoPagamento.setId(idPedido);
-        pedidoAguardandoPagamento.setStatusPedido(idStatusPedidoAguardandoPagamento);
-        pedidoAguardandoPagamento.getProdutos().add(produtoPedido);
-        pedidoAguardandoPagamento.setQrCode("qrCode");
-        pedidoAguardandoPagamento.setUrlPagamento("urlPagamento");
-
-        FormaPagamento formaPagamento = new FormaPagamento(1L, MERCADO_PAGO, true);
-        StatusPagamento statusPagamento = new StatusPagamento(1L, STATUS_EM_PROCESSAMENTO, true);
-
-        LocalDateTime dataHoraTeste = LocalDateTime.now();
-
-        Pagamento pagamento = new Pagamento(1L, formaPagamento, statusPagamento, pedido,
-                dataHoraTeste, dataHoraTeste, dataHoraTeste,
-                123456L, "qrCode", "urlPagamento");
-
-        Pagamento pagamentoAtualizado = new Pagamento();
-        pagamentoAtualizado.setId(1L);
-        pagamentoAtualizado.setFormaPagamento(formaPagamento);
-        pagamentoAtualizado.setStatusPagamento(statusPagamento);
-        pagamentoAtualizado.setPedido(pedido);
-        pagamentoAtualizado.setDataHoraCriado(dataHoraTeste);
-        pagamentoAtualizado.setDataHoraProcessamento(dataHoraTeste);
-        pagamentoAtualizado.setDataHoraFinalizado(dataHoraTeste);
-        pagamentoAtualizado.setIdPagamentoExterno(123456L);
-        pagamentoAtualizado.setQrCode("qrCode");
-        pagamentoAtualizado.setUrlPagamento("urlPagamento");
+        pedido.getProdutos().add(new ProdutoPedido());
 
         when(pedidoInputPort.consultar(idPedido)).thenReturn(pedido);
         doNothing().when(pedidoValidator).validarAlterarPedido(pedido);
-        //when(pagamentoOutputPort.gerarPagamento(pedido.getId(), tipoPagamentoId)).thenReturn(pagamento);
-        when(alterarPedidoStatusInputPort.aguardandoPagamento(idPedido)).thenReturn(pedidoAguardandoPagamento);
+        when(gerarPagamentoOutputPort.gerar(pedido.getId(), tipoPagamentoId)).thenReturn(pedido);
+
         //Act
         Pedido resultado = confirmarPedidoUseCase.confirmar(idPedido, tipoPagamentoId);
+
         //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
-        assertEquals(pagamentoAtualizado.getQrCode(), resultado.getQrCode());
-        assertEquals(pagamentoAtualizado.getUrlPagamento(), resultado.getUrlPagamento());
-        assertEquals(idStatusPedidoAguardandoPagamento, resultado.getStatusPedido());
         verify(pedidoInputPort, times(1)).consultar(idPedido);
-        verify(alterarPedidoStatusInputPort, times(1)).aguardandoPagamento(idPedido);
+        verify(pedidoValidator, times(1)).validarAlterarPedido(pedido);
+        verify(gerarPagamentoOutputPort, times(1)).gerar(pedido.getId(), tipoPagamentoId);
     }
 
     @Test
     @DisplayName("Deve lançar ProdutoNotFound ao confirmar um pedido sem produtos")
-    void testeConfirmarPedidoInexistente() {
+    void testeConfirmarPedidoSemProdutos() {
         //Arrange
         Long idPedido = 1L;
         Long tipoPagamentoId = 2L;
 
         Pedido pedido = new Pedido();
         pedido.setId(idPedido);
-        pedido.setStatusPedido(1L);
-        pedido.setProdutos(new ArrayList<>());
 
         when(pedidoInputPort.consultar(idPedido)).thenReturn(pedido);
+
         //Act e Assert
         assertThrows(ProdutoNotFound.class, () -> confirmarPedidoUseCase.confirmar(idPedido, tipoPagamentoId));
         verify(pedidoInputPort, times(1)).consultar(idPedido);
-        verify(pedidoInputPort, never()).atualizar(any(Pedido.class));
+        verify(pedidoValidator, never()).validarAlterarPedido(pedido);
+        verify(gerarPagamentoOutputPort, never()).gerar(pedido.getId(), tipoPagamentoId);
     }
 }

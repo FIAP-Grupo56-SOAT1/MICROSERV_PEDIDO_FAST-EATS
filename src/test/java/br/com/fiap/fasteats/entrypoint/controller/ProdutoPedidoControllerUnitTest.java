@@ -7,6 +7,7 @@ import br.com.fiap.fasteats.entrypoint.controller.mapper.PedidoMapper;
 import br.com.fiap.fasteats.entrypoint.controller.request.ProdutoPedidoRequest;
 import br.com.fiap.fasteats.entrypoint.controller.response.PedidoResponse;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -102,6 +103,6 @@ class ProdutoPedidoControllerUnitTest {
 
         // Assert
         assertEquals(HttpStatus.OK, resposta.getStatusCode());
-        assertNull(resposta.getBody());
+        Assertions.assertNull(resposta.getBody());
     }
 }

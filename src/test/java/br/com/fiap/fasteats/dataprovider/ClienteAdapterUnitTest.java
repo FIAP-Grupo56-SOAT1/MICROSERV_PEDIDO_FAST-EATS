@@ -67,8 +67,7 @@ class ClienteAdapterUnitTest {
         ClienteEntity clienteEntity = getClienteEntity(CPF_VALIDO);
         String nomeCompleto = cliente.getPrimeiroNome() + " " + cliente.getUltimoNome();
 
-
-        //when(clienteRepository.findByCpf(CPF_VALIDO)).thenReturn(java.util.Optional.of(clienteEntity));
+        when(clienteRepository.findByCpf(CPF_VALIDO)).thenReturn(clienteEntity);
         when(clienteEntityMapper.toCliente(clienteEntity)).thenReturn(cliente);
 
         // Act
@@ -89,7 +88,7 @@ class ClienteAdapterUnitTest {
         List<ClienteEntity> clientesEntity = List.of(getClienteEntity(CPF_VALIDO), getClienteEntity("98765432109"));
         List<Cliente> clientes = List.of(getCliente(CPF_VALIDO), getCliente("98765432109"));
 
-        when(clienteRepository.findAll()).thenReturn(clientesEntity);
+        when(clienteRepository.findByAtivo(true)).thenReturn(clientesEntity);
         when(clienteEntityMapper.toCliente(clientesEntity.get(0))).thenReturn(clientes.get(0));
         when(clienteEntityMapper.toCliente(clientesEntity.get(1))).thenReturn(clientes.get(1));
 
@@ -100,17 +99,25 @@ class ClienteAdapterUnitTest {
         assertTrue(clientesListados.isPresent());
         assertEquals(clientes.get(0).getCpf(), clientesListados.get().get(0).getCpf());
         assertEquals(clientes.get(1).getCpf(), clientesListados.get().get(1).getCpf());
-        verify(clienteRepository).findAll();
+        verify(clienteRepository).findByAtivo(true);
         verify(clienteEntityMapper).toCliente(clientesEntity.get(0));
     }
 
     @Test
     void deletar() {
+        // Arrange
+        Long clienteId = 1L;
+        ClienteEntity clienteEntity = getClienteEntity(CPF_VALIDO);
+        clienteEntity.setId(clienteId);
+
+        when(clienteRepository.findByCpf(CPF_VALIDO)).thenReturn(clienteEntity);
+
         // Act
         clienteAdapter.deletar(CPF_VALIDO);
 
         // Assert
-        //verify(clienteRepository).deleteById(CPF_VALIDO);
+        verify(clienteRepository).findByCpf(CPF_VALIDO);
+        verify(clienteRepository).deleteById(clienteId);
     }
 
     private Cliente getCliente(String cpf) {

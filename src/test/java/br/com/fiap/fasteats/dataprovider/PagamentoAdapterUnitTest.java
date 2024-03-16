@@ -7,6 +7,7 @@ import br.com.fiap.fasteats.core.domain.model.StatusPagamento;
 import br.com.fiap.fasteats.dataprovider.client.IntegracaoPagamento;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -68,22 +69,31 @@ class PagamentoAdapterUnitTest {
     }
 
     @Test
-    void gerarPagamento() {
+    @DisplayName("Deve notificar um pedido pago")
+    void notificarPedidoPago() {
         // Arrange
-        Long idPedido = 1L;
-        Long idFormaPagamento = 1L;
-        Pagamento pagamento = new Pagamento();
-        pagamento.setId(1L);
-
-        //when(integracaoPagamento.gerarPagamento(idPedido, idFormaPagamento)).thenReturn(pagamento);
+        Long pedidoId = 1L;
 
         // Act
-        //Pagamento result = pagamentoAdapterUnderTest.gerarPagamento(idPedido, idFormaPagamento);
+        pagamentoAdapterUnderTest.notificarPedidoPago(pedidoId);
 
         // Assert
-        //assertEquals(pagamento.getId(), result.getId());
-        verify(integracaoPagamento).gerarPagamento(idPedido, idFormaPagamento);
+        verify(integracaoPagamento).notificarPedidoPago(pedidoId);
     }
+
+    @Test
+    @DisplayName("Deve cancelar um pagamento")
+    void cancelarPagamento() {
+        // Arrange
+        Long pedidoId = 1L;
+
+        // Act
+        pagamentoAdapterUnderTest.cancelarPagamento(pedidoId);
+
+        // Assert
+        verify(integracaoPagamento).cancelarPagamento(pedidoId);
+    }
+
 
     private Pagamento getPagamento(Long pagamentoId) {
         return new Pagamento(pagamentoId,

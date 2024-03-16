@@ -40,6 +40,11 @@ public class ClienteUseCase implements ClienteInputPort {
     }
 
     @Override
+    public Cliente consultarPorID(Long id) {
+        return clienteOutputPort.consultarClientePorID(id).orElseThrow(() -> new ClienteNotFound("Cliente " + id + " não encontrado"));
+    }
+
+    @Override
     public List<Cliente> listar() {
         return clienteOutputPort.listar().orElseThrow(() -> new ClienteNotFound("Não foram encontrados registros de Clientes"));
     }

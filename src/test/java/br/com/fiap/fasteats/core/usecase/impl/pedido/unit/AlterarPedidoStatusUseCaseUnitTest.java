@@ -1,13 +1,16 @@
 package br.com.fiap.fasteats.core.usecase.impl.pedido.unit;
 
+import br.com.fiap.fasteats.core.dataprovider.ConcluirPedidoPagoOutputPort;
 import br.com.fiap.fasteats.core.dataprovider.PagamentoOutputPort;
 import br.com.fiap.fasteats.core.dataprovider.PedidoOutputPort;
 import br.com.fiap.fasteats.core.domain.model.Pagamento;
 import br.com.fiap.fasteats.core.domain.model.Pedido;
 import br.com.fiap.fasteats.core.domain.model.StatusPedido;
 import br.com.fiap.fasteats.core.usecase.impl.pedido.AlterarPedidoStatusUseCase;
+import br.com.fiap.fasteats.core.usecase.pedido.PedidoInputPort;
 import br.com.fiap.fasteats.core.usecase.pedido.StatusPedidoInputPort;
 import br.com.fiap.fasteats.core.validator.AlterarPedidoStatusValidator;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,22 +28,28 @@ import static org.mockito.Mockito.*;
 @DisplayName("PedidoUseCaseUnitTest")
 class AlterarPedidoStatusUseCaseUnitTest {
     @Mock
-    private PedidoOutputPort pedidoOutputPort;
-
+    private AlterarPedidoStatusValidator alterarPedidoStatusValidator;
     @Mock
     private StatusPedidoInputPort statusPedidoInputPort;
-
     @Mock
-    private PagamentoOutputPort pagamentoOutputPort;
-
+    private PedidoOutputPort pedidoOutputPort;
     @Mock
-    private AlterarPedidoStatusValidator alterarPedidoStatusValidator;
+    private PedidoInputPort pedidoInputPort;
+    @Mock
+    private ConcluirPedidoPagoOutputPort concluirPedidoPagoOutputPort;
     @InjectMocks
     private AlterarPedidoStatusUseCase alterarPedidoStatusUseCase;
+    private AutoCloseable openMocks;
+
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test
@@ -50,17 +59,13 @@ class AlterarPedidoStatusUseCaseUnitTest {
         Long idPedido = 1L;
         Long idStatusPedido = 2L;
         StatusPedido statusPedido = criarStatusPedido(2L, STATUS_PEDIDO_AGUARDANDO_PAGAMENTO);
-
-        Pagamento pagamento = getPagamento();
-
         Pedido pedido = getPedido(idPedido, idStatusPedido);
 
-        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
         when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
-        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
-        when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
-
         doNothing().when(alterarPedidoStatusValidator).validarAguardandoPagamento(anyLong());
+        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
+        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
+        when(pedidoInputPort.formatarPedido(any())).thenReturn(pedido);
 
         //Act
         Pedido resultado = alterarPedidoStatusUseCase.aguardandoPagamento(anyLong());
@@ -79,22 +84,23 @@ class AlterarPedidoStatusUseCaseUnitTest {
         Long idPedido = 1L;
         Long idStatusPedido = 3L;
         StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_PAGO);
-        Pagamento pagamento = getPagamento();
         Pedido pedido = getPedido(idPedido, idStatusPedido);
 
-        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
         when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
-        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
-        when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
-
         doNothing().when(alterarPedidoStatusValidator).validarPago(anyLong());
+        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
+        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
+        when(concluirPedidoPagoOutputPort.concluirPagamento(any())).thenReturn(pedido);
+        when(pedidoInputPort.formatarPedido(pedido)).thenReturn(pedido);
+
         //Act
-        Pedido resultado = alterarPedidoStatusUseCase.pago(anyLong());
+        Pedido resultado = alterarPedidoStatusUseCase.pago(idPedido);
+
         // Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
         assertEquals(idStatusPedido, resultado.getStatusPedido());
-        verify(pedidoOutputPort, times(1)).salvarPedido(pedido);
+        verify(concluirPedidoPagoOutputPort, times(1)).concluirPagamento(pedido);
     }
 
     @Test
@@ -104,17 +110,17 @@ class AlterarPedidoStatusUseCaseUnitTest {
         Long idPedido = 1L;
         Long idStatusPedido = 4L;
         StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_RECEBIDO);
-        Pagamento pagamento = getPagamento();
         Pedido pedido = getPedido(idPedido, idStatusPedido);
 
-        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
         when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
-        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
-        when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
-
         doNothing().when(alterarPedidoStatusValidator).validarRecebido(anyLong());
+        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
+        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
+        when(pedidoInputPort.formatarPedido(any())).thenReturn(pedido);
+
         //Act
-        Pedido resultado = alterarPedidoStatusUseCase.recebido(anyLong());
+        Pedido resultado = alterarPedidoStatusUseCase.recebido(idPedido);
+
         //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
@@ -129,17 +135,17 @@ class AlterarPedidoStatusUseCaseUnitTest {
         Long idPedido = 1L;
         Long idStatusPedido = 5L;
         StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_EM_PREPARO);
-        Pagamento pagamento = getPagamento();
         Pedido pedido = getPedido(idPedido, idStatusPedido);
 
-        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
         when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
-        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
-        when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
-
         doNothing().when(alterarPedidoStatusValidator).validarEmPreparo(anyLong());
+        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
+        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
+        when(pedidoInputPort.formatarPedido(any())).thenReturn(pedido);
+
         //Act
-        Pedido resultado = alterarPedidoStatusUseCase.emPreparo(anyLong());
+        Pedido resultado = alterarPedidoStatusUseCase.emPreparo(idPedido);
+
         //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
@@ -154,17 +160,17 @@ class AlterarPedidoStatusUseCaseUnitTest {
         Long idPedido = 1L;
         Long idStatusPedido = 6L;
         StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_PRONTO);
-        Pagamento pagamento = getPagamento();
         Pedido pedido = getPedido(idPedido, idStatusPedido);
 
-        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
         when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
-        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
-        when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
-
         doNothing().when(alterarPedidoStatusValidator).validarPronto(anyLong());
+        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
+        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
+        when(pedidoInputPort.formatarPedido(any())).thenReturn(pedido);
+
         //Act
-        Pedido resultado = alterarPedidoStatusUseCase.pronto(anyLong());
+        Pedido resultado = alterarPedidoStatusUseCase.pronto(idPedido);
+
         //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
@@ -179,17 +185,17 @@ class AlterarPedidoStatusUseCaseUnitTest {
         Long idPedido = 1L;
         Long idStatusPedido = 7L;
         StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_FINALIZADO);
-        Pagamento pagamento = getPagamento();
         Pedido pedido = getPedido(idPedido, idStatusPedido);
 
-        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
         when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
-        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
-        when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
-
         doNothing().when(alterarPedidoStatusValidator).validarFinalizado(anyLong());
+        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
+        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
+        when(pedidoInputPort.formatarPedido(any())).thenReturn(pedido);
+
         //Act
-        Pedido resultado = alterarPedidoStatusUseCase.finalizado(anyLong());
+        Pedido resultado = alterarPedidoStatusUseCase.finalizado(idPedido);
+
         //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
@@ -204,17 +210,17 @@ class AlterarPedidoStatusUseCaseUnitTest {
         Long idPedido = 1L;
         Long idStatusPedido = 8L;
         StatusPedido statusPedido = criarStatusPedido(idStatusPedido, STATUS_PEDIDO_CANCELADO);
-        Pagamento pagamento = getPagamento();
         Pedido pedido = getPedido(idPedido, idStatusPedido);
 
-        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
         when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
-        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
-        when(pagamentoOutputPort.consultarPorPedidoId(anyLong())).thenReturn(Optional.of(pagamento));
-
         doNothing().when(alterarPedidoStatusValidator).validarCancelado(anyLong());
+        when(statusPedidoInputPort.consultarPorNome(anyString())).thenReturn(statusPedido);
+        when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
+        when(pedidoInputPort.formatarPedido(any())).thenReturn(pedido);
+
         //Act
-        Pedido resultado = alterarPedidoStatusUseCase.cancelado(anyLong());
+        Pedido resultado = alterarPedidoStatusUseCase.cancelado(idPedido);
+
         //Assert
         assertNotNull(resultado);
         assertEquals(idPedido, resultado.getId());
@@ -241,26 +247,21 @@ class AlterarPedidoStatusUseCaseUnitTest {
 
         when(pedidoOutputPort.salvarPedido(pedido)).thenReturn(pedido);
         when(pedidoOutputPort.consultarPedido(anyLong())).thenReturn(Optional.of(pedido));
-        doNothing().when(alterarPedidoStatusValidator).validarAguardandoPagamento(anyLong());
 
         //Act
-        Pedido resultado = null;
         for(String nomeStatusPedido : statusPedidoPossiveis) {
             StatusPedido statusPedido = criarStatusPedido(idStatusPedido, nomeStatusPedido);
 
             when(statusPedidoInputPort.consultar(idStatusPedido)).thenReturn(statusPedido);
             when(statusPedidoInputPort.consultarPorNome(nomeStatusPedido)).thenReturn(statusPedido);
 
-
-            resultado = alterarPedidoStatusUseCase.atualizarStatusPedido(idPedido, idStatusPedido);
+            alterarPedidoStatusUseCase.atualizarStatusPedido(idPedido, idStatusPedido);
         }
 
         //Assert
-        assertNotNull(resultado);
-        assertEquals(idPedido, resultado.getId());
-        assertEquals(idStatusPedido, resultado.getStatusPedido());
         verify(statusPedidoInputPort, times(7)).consultarPorNome(anyString());
-        verify(pedidoOutputPort, times(7)).salvarPedido(pedido);
+        verify(pedidoOutputPort, times(6)).salvarPedido(any(Pedido.class));
+        verify(concluirPedidoPagoOutputPort, times(1)).concluirPagamento(any(Pedido.class));
     }
 
     @Test
