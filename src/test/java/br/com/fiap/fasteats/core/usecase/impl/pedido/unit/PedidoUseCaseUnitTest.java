@@ -29,7 +29,6 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("PedidoUseCaseUnitTest")
 class PedidoUseCaseUnitTest {
-
     private PedidoInputPort pedidoUseCase;
 
     @Mock

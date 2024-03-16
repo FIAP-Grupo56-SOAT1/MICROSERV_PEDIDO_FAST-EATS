@@ -27,7 +27,6 @@ public class AwsSQSConfig {
 
     @Bean
     public SqsAsyncClient sqsAsyncClient() {
-        System.out.println("accessKey: " + accessKey);
         return SqsAsyncClient
                 .builder()
                 .endpointOverride(URI.create(endpoint))

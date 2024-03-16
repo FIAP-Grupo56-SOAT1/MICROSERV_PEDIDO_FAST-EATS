@@ -14,4 +14,6 @@ public interface ClienteOutputPort {
     Optional<List<Cliente>> listar();
 
     void deletar(String cpf);
+
+    Optional<Cliente> consultarClientePorID(Long id);
 }

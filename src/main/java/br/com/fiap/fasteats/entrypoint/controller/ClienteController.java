@@ -32,10 +32,17 @@ public class ClienteController {
         return new ResponseEntity<>(clienteMapper.toClienteResponse(cliente), HttpStatus.CREATED);
     }
 
-    @GetMapping("{cpf}")
+    @GetMapping("{cpf}/pesquisar-por-cpf")
     @Operation(summary = "Consultar cliente por CPF", description = "Retorna os dados do cliente cadastrado por CPF.")
     public ResponseEntity<ClienteResponse> consultarCliente(@PathVariable("cpf") String cpf) {
         Cliente cliente = clienteInputPort.consultar(cpf);
+        return new ResponseEntity<>(clienteMapper.toClienteResponse(cliente), HttpStatus.OK);
+    }
+
+    @GetMapping("{id}")
+    @Operation(summary = "Consultar cliente por ID", description = "Retorna os dados do cliente cadastrado por ID.")
+    public ResponseEntity<ClienteResponse> consultarClientePorID(@PathVariable("id") Long id) {
+        Cliente cliente = clienteInputPort.consultarPorID(id);
         return new ResponseEntity<>(clienteMapper.toClienteResponse(cliente), HttpStatus.OK);
     }
 

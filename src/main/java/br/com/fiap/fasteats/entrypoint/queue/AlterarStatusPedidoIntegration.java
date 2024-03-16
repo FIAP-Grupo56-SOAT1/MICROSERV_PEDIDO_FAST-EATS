@@ -1,7 +1,6 @@
-package br.com.fiap.fasteats.dataprovider.client.service;
+package br.com.fiap.fasteats.entrypoint.queue;
 
 import br.com.fiap.fasteats.core.usecase.pedido.AlterarPedidoStatusInputPort;
-import br.com.fiap.fasteats.dataprovider.client.AlterarStatusPedidoIntegration;
 import br.com.fiap.fasteats.dataprovider.client.request.CozinhaPedidoRequest;
 import br.com.fiap.fasteats.dataprovider.client.request.PagamentoCancelarPedidoRequest;
 import br.com.fiap.fasteats.dataprovider.client.request.PagamentoPedidoRequest;
@@ -12,6 +11,7 @@ import io.awspring.cloud.sqs.operations.SqsTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import static br.com.fiap.fasteats.core.constants.StatusPedidoConstants.*;
@@ -19,7 +19,8 @@ import static br.com.fiap.fasteats.core.constants.StatusPedidoConstants.*;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AlterarStatusPedidoIntegrationImpl implements AlterarStatusPedidoIntegration {
+@ConditionalOnProperty(value = "spring.cloud.aws.sqs.enabled", havingValue = "true", matchIfMissing = true)
+public class AlterarStatusPedidoIntegration {
     @Value("${sqs.queue.pedido.criado}")
     private String filaPedidoCriado;
     @Value("${sqs.queue.pedido.aguardando-pagamento}")
@@ -53,7 +54,6 @@ public class AlterarStatusPedidoIntegrationImpl implements AlterarStatusPedidoIn
     private static final String MENSAGEM_SUCESSO = "Alteração de status do pedido %d para %s recebido da fila %s com sucesso!";
     private static final String MENSAGEM_ERRO = "Erro ao processar pedido %d da fila %s: {}";
 
-    @Override
     @SqsListener("${sqs.queue.pedido.criado}")
     public void criado(String mensagem) {
         Long pedidoId = pedidoIdFromJson(mensagem);
@@ -67,7 +67,6 @@ public class AlterarStatusPedidoIntegrationImpl implements AlterarStatusPedidoIn
         }
     }
 
-    @Override
     @SqsListener("${sqs.queue.pedido.aguardando-pagamento}")
     public void aguardandoPagamento(String mensagem) {
         Long pedidoId = pedidoIdFromJson(mensagem);
@@ -81,7 +80,6 @@ public class AlterarStatusPedidoIntegrationImpl implements AlterarStatusPedidoIn
         }
     }
 
-    @Override
     @SqsListener("${sqs.queue.pedido.pago}")
     public void pago(String mensagem) {
         Long pedidoId = pedidoIdFromJson(mensagem);
@@ -97,7 +95,6 @@ public class AlterarStatusPedidoIntegrationImpl implements AlterarStatusPedidoIn
         }
     }
 
-    @Override
     @SqsListener("${sqs.queue.pedido.recebido}")
     public void recebido(String mensagem) {
         Long pedidoId = pedidoIdFromJson(mensagem);
@@ -113,7 +110,6 @@ public class AlterarStatusPedidoIntegrationImpl implements AlterarStatusPedidoIn
         }
     }
 
-    @Override
     @SqsListener("${sqs.queue.pedido.em-preparo}")
     public void emPreparo(String mensagem) {
         Long pedidoId = pedidoIdFromJson(mensagem);
@@ -129,7 +125,6 @@ public class AlterarStatusPedidoIntegrationImpl implements AlterarStatusPedidoIn
         }
     }
 
-    @Override
     @SqsListener("${sqs.queue.pedido.pronto}")
     public void pronto(String mensagem) {
         Long pedidoId = pedidoIdFromJson(mensagem);
@@ -145,7 +140,6 @@ public class AlterarStatusPedidoIntegrationImpl implements AlterarStatusPedidoIn
         }
     }
 
-    @Override
     @SqsListener("${sqs.queue.pedido.finalizado}")
     public void finalizado(String mensagem) {
         Long pedidoId = pedidoIdFromJson(mensagem);
@@ -161,7 +155,6 @@ public class AlterarStatusPedidoIntegrationImpl implements AlterarStatusPedidoIn
         }
     }
 
-    @Override
     @SqsListener("${sqs.queue.pedido.cancelado}")
     public void cancelado(String mensagem) {
         Long pedidoId = pedidoIdFromJson(mensagem);
@@ -179,6 +172,6 @@ public class AlterarStatusPedidoIntegrationImpl implements AlterarStatusPedidoIn
 
     private Long pedidoIdFromJson(String mensagem) {
         AlterarStatusPedidoResponse alterarStatusPedidoResponse = new Gson().fromJson(mensagem, AlterarStatusPedidoResponse.class);
-        return  alterarStatusPedidoResponse.getPedidoId();
+        return alterarStatusPedidoResponse.getPedidoId();
     }
 }

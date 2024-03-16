@@ -10,6 +10,8 @@ public interface ClienteInputPort {
 
     Cliente consultar(String cpf);
 
+    Cliente consultarPorID(Long id);
+
     List<Cliente> listar();
 
     Cliente atualizar(Cliente cliente);

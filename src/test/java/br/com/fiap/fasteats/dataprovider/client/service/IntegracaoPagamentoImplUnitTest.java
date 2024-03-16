@@ -2,9 +2,14 @@ package br.com.fiap.fasteats.dataprovider.client.service;
 
 import br.com.fiap.fasteats.core.domain.exception.PagamentoNotFound;
 import br.com.fiap.fasteats.core.domain.model.Pagamento;
+import br.com.fiap.fasteats.dataprovider.client.exeption.AwsSQSException;
 import br.com.fiap.fasteats.dataprovider.client.exeption.MicroservicoPagamentoException;
 import br.com.fiap.fasteats.dataprovider.client.mapper.PagamentoMapper;
+import br.com.fiap.fasteats.dataprovider.client.request.GerarPagamentoRequest;
 import br.com.fiap.fasteats.dataprovider.client.response.PagamentoResponse;
+import br.com.fiap.fasteats.dataprovider.client.service.IntegracaoPagamentoImpl;
+import com.google.gson.Gson;
+import io.awspring.cloud.sqs.operations.SqsTemplate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,12 +22,15 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 class IntegracaoPagamentoImplUnitTest {
     @Mock
     private RestTemplate restTemplate;
+    @Mock
+    private SqsTemplate sqsTemplate;
     @Mock
     private PagamentoMapper pagamentoMapper;
     @Value("${URL_PAGAMENTO_SERVICE}")
@@ -96,15 +104,13 @@ class IntegracaoPagamentoImplUnitTest {
         // Arrange
         Long idPedido = 1L;
         Long idFormaPagamento = 2L;
-        PagamentoResponse pagamentoResponse = new PagamentoResponse();
-        when(restTemplate.postForObject(URL_BASE + "/gerar-pagamento/pedido/{idPedido}/forma-pagamento/{idFormaPagamento}", null, PagamentoResponse.class, idPedido, idFormaPagamento)).thenReturn(pagamentoResponse);
-        when(pagamentoMapper.toPagamento(pagamentoResponse)).thenReturn(new Pagamento());
+        String mensagem = new Gson().toJson(new GerarPagamentoRequest(idPedido, idFormaPagamento));
 
         // Act
         integracaoPagamento.gerarPagamento(idPedido, idFormaPagamento);
 
         // Assert
-        verify(restTemplate).postForObject(URL_BASE + "/gerar-pagamento/pedido/{idPedido}/forma-pagamento/{idFormaPagamento}", null, PagamentoResponse.class, idPedido, idFormaPagamento);
+        verify(sqsTemplate).send(any(), eq(mensagem));
     }
 
     @Test
@@ -112,9 +118,10 @@ class IntegracaoPagamentoImplUnitTest {
         // Arrange
         Long idPedido = 1L;
         Long idFormaPagamento = 2L;
-        when(restTemplate.postForObject(URL_BASE + "/gerar-pagamento/pedido/{idPedido}/forma-pagamento/{idFormaPagamento}", null, PagamentoResponse.class, idPedido, idFormaPagamento)).thenThrow(new RuntimeException());
+
+        when(sqsTemplate.send(any(), anyString())).thenThrow(new RuntimeException());
 
         // Act/Assert
-        assertThrows(MicroservicoPagamentoException.class, () -> integracaoPagamento.gerarPagamento(idPedido, idFormaPagamento));
+        assertThrows(AwsSQSException.class, () -> integracaoPagamento.gerarPagamento(idPedido, idFormaPagamento));
     }
 }
