@@ -9,6 +9,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,9 +62,11 @@ public class ProdutoController {
     @GetMapping
     @Operation(summary = "Listar produto", description = "Retorna todos os produtos cadastrados.")
     public ResponseEntity<List<ProdutoResponse>> listarProdutos() {
+        final HttpHeaders httpHeaders= new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         List<Produto> produtos = produtoInputPort.listar();
         List<ProdutoResponse> produtosResponse = produtoMapper.toProdutoResponseList(produtos);
-        return ResponseEntity.ok().body(produtosResponse);
+        return new ResponseEntity<List<ProdutoResponse>>(produtosResponse, httpHeaders, HttpStatus.OK);
     }
 
     @GetMapping("consultar-por-nome/{nome}")
